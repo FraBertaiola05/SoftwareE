@@ -8,16 +8,40 @@ class User
     private string $password;
     private RoleEnum $role;
 
-    public function getId(): int;
-    public function setId(int $id): void;
-    public function getName(): string;
-    public function setName(string $name): void;
-    public function getEmail(): string;
-    public function setEmail(string $email): void;
-    public function getPassword(): string;
-    public function setPassword(string $password): void;
-    public function getRole(): RoleEnum;
-    public function setRole(RoleEnum $role): void;
-    public function login(): bool;
-    public function hasPermission(string $action): bool;
+    public function getId(): int{
+        return $this->id;
+    }
+    public function setId(int $id): void{
+        $this->id = $id;
+    }
+    public function getName(): string{
+        return $this->name;
+    }
+    public function setName(string $name): void{
+        $this->name = $name;
+    }
+    public function getEmail(): string{
+        return $this->email;
+    }
+    public function setEmail(string $email): void{
+        $this->email = $email;
+    }
+    public function getPassword(): string{
+        return $this->password;
+    }
+    public function setPassword(string $password): void{
+        $this->password = $password;
+    }
+    public function getRole(): RoleEnum{
+        return $this->role;
+    }
+    public function setRole(RoleEnum $role): void{
+        $this->role = $role;
+    }
+    public function login(string $email, string $password): bool{
+        // Implementation for user login
+    }
+    public function hasPermission(string $action): bool{
+        // Implementation for checking user permissions
+    }
 }

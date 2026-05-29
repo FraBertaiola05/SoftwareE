@@ -7,7 +7,13 @@ class User
     private string $email;
     private string $password;
     private RoleEnum $role;
-
+    public User(int $id, string $name, string $email, string $password, RoleEnum $role){
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+    }
     public function getId(): int{
         return $this->id;
     }
@@ -30,7 +36,7 @@ class User
         return $this->password;
     }
     public function setPassword(string $password): void{
-        $this->password = $password;
+        $this->password = hashPassword($password);
     }
     public function getRole(): RoleEnum{
         return $this->role;
@@ -43,5 +49,8 @@ class User
     }
     public function hasPermission(string $action): bool{
         // Implementation for checking user permissions
+    }
+    private function hashPassword(string $password): string{
+        // Implementation for hashing passwords
     }
 }

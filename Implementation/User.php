@@ -11,7 +11,7 @@ class User
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->password = $password;
+        $this->password = $this->hashPassword($password);
         $this->role = $role;
     }
     public function getId(): int{
@@ -32,11 +32,8 @@ class User
     public function setEmail(string $email): void{
         $this->email = $email;
     }
-    public function getPassword(): string{
-        return $this->password;
-    }
     public function setPassword(string $password): void{
-        $this->password = hashPassword($password);
+        $this->password = $this->hashPassword($password);
     }
     public function getRole(): RoleEnum{
         return $this->role;
@@ -45,12 +42,15 @@ class User
         $this->role = $role;
     }
     public function login(string $email, string $password): bool{
-        // Implementation for user login
+        if($this->email === $email && $this->password === $this->hashPassword($password))){
+            return true;
+        }
+        return false;
     }
     public function hasPermission(string $action): bool{
         // Implementation for checking user permissions
     }
     private function hashPassword(string $password): string{
-        // Implementation for hashing passwords
+        return md5($password);
     }
 }

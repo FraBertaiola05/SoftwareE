@@ -42,8 +42,12 @@ class User
         $this->role = $role;
     }
     public function login(string $email, string $password): bool{
-        if($this->email === $email && $this->password === $this->hashPassword($password)){
-            return true;
+        int try = 0;
+        while(try < 3){
+             if($this->email === $email && $this->password === $this->hashPassword($password)){
+                return true;
+            }
+            try++;
         }
         return false;
     }

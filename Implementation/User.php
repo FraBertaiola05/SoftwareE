@@ -7,7 +7,7 @@ class User
     private string $email;
     private string $password;
     private RoleEnum $role;
-    public User(int $id, string $name, string $email, string $password, RoleEnum $role){
+    public function __construct(int $id, string $name, string $email, string $password, RoleEnum $role){
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
@@ -42,7 +42,7 @@ class User
         $this->role = $role;
     }
     public function login(string $email, string $password): bool{
-        if($this->email === $email && $this->password === $this->hashPassword($password))){
+        if($this->email === $email && $this->password === $this->hashPassword($password)){
             return true;
         }
         return false;
@@ -51,6 +51,6 @@ class User
         // Implementation for checking user permissions
     }
     private function hashPassword(string $password): string{
-        return md5($password);
+        return hash('sha512', $password);
     }
 }

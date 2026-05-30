@@ -4,11 +4,14 @@ class AccountManager
     public function createAccount(User $admin, int $id, string $email,
     string $name, string $password, Role $r): bool{
         new User( $id, $name, $email, $password, $r);
+        return true;
     }
     public function modifyAccount(User $admin, int $id, string $email, string $name, 
     string $password, Role $r): bool{
         
     }
-    public function deleteAccount(User $admin, int $id): bool{}
+    public function deleteAccount(User $admin, int $id): bool{
+
+    }
 }
 ?>

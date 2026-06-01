@@ -1,17 +1,19 @@
 <?php
-
+require "RoleEnum.php";
 class User
 {
     private int $id;
     private string $name;
+    private string $surname;
     private string $email;
     private string $password;
     private RoleEnum $role;
-    public function __construct(int $id, string $name, string $email, string $password, RoleEnum $role){
+    public function __construct(int $id, string $name, string $surname, string $email, string $password, RoleEnum $role){
         $this->id = $id;
         $this->name = $name;
+        $this->surname = $surname;
         $this->email = $email;
-        $this->password = $this->hashPassword($password);
+        $this->password = $password;
         $this->role = $role;
     }
     public function getId(): int{
@@ -26,11 +28,20 @@ class User
     public function setName(string $name): void{
         $this->name = $name;
     }
+    public function getSurname(): string{
+        return $this->surname;
+    }
+    public function setSurname(string $surname): void{
+        $this->name = $surname;
+    }
     public function getEmail(): string{
         return $this->email;
     }
     public function setEmail(string $email): void{
         $this->email = $email;
+    }
+    public function getPassword(): string{
+        return $this->password;
     }
     public function setPassword(string $password): void{
         $this->password = $this->hashPassword($password);
@@ -47,9 +58,9 @@ class User
         }
         return false;
     }
-    public function hasPermission(string $action): bool{
+    /*public function hasPermission(string $action): bool{
         // Implementation for checking user permissions
-    }
+    }*/
     private function hashPassword(string $password): string{
         return hash('sha512', $password);
     }

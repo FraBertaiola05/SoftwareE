@@ -2,13 +2,18 @@
 session_start();
 require "DatabaseInfo.php";
 require "Classes/User.php";
+if(!isset($_COOKIE["timeout"]))
+    setcookie("timeout", 0, time() + 300, "/");
 try {
   $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e){
   die("Could not connect. ".$e->getMessage());
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"]) && isset($_POST["password"])) {
+if(isset($_COOKIE["timeout"])&&$_COOKIE["timeout"]==5){
+    $error="Wrong data inserted too many times. Retry in 5 minutes";
+}else if (isset($_POST["email"]) && isset($_POST["password"])) {
+    setcookie("timeout", $_COOKIE["timeout"]+1, time() + 300, "/");
     $query=$conn->prepare("SELECT * FROM users WHERE email=:email");
     $query->bindParam(':email',$_POST["email"]);
     $query->execute();
@@ -43,9 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"]) && isset($_PO
         if($user->login($_POST["email"],$_POST["password"])){
             $_SESSION["user"]=serialize($user);
             $error=null;
+            setcookie("timeout", 0, 1, "/");
         }
     }
 }
+
 if(isset($_SESSION["user"])){
     $user=unserialize($_SESSION["user"]);
     switch($user->getRole()){
@@ -68,7 +75,7 @@ if(isset($_SESSION["user"])){
             header('Location: .php');
             break;
         case RoleEnum::AirportAnalyst:
-            header('Location: .php');
+            header('Location: AnalystPage.php');
             break;
     }
 }

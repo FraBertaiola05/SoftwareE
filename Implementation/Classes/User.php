@@ -61,7 +61,7 @@ class User
     /*public function hasPermission(string $action): bool{
         // Implementation for checking user permissions
     }*/
-    private function hashPassword(string $password): string{
+    public static function hashPassword(string $password): string{
         return hash('sha512', $password);
     }
 }

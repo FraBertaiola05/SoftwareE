@@ -79,6 +79,6 @@ if(isset($_POST["id"])&&isset($_POST["email"])&&isset($_POST["name"])&&isset($_P
                 echo "<p>$result</p>"
         ?>
         <div id="container"></div>
-        <button onclick="window.location.href='logout.php'">Logout</button>
+        <button onclick="window.location.href="Logout.php'">Logout</button>
     </body>
 </html>

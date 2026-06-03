@@ -8,6 +8,7 @@ class User
     private string $email;
     private string $password;
     private RoleEnum $role;
+    private int $company;
     public function __construct(int $id, string $name, string $surname, string $email, string $password, RoleEnum $role){
         $this->id = $id;
         $this->name = $name;
@@ -51,6 +52,12 @@ class User
     }
     public function setRole(RoleEnum $role): void{
         $this->role = $role;
+    }
+    public function getCompany(): int{
+        return $this->company;
+    }
+    public function setCompany(int $company): void{
+        $this->company = $company;
     }
     public function login(string $email, string $password): bool{
         if($this->email === $email && $this->password === $this->hashPassword($password)){

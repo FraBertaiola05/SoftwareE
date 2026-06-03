@@ -1,6 +1,7 @@
 <?php
 require "Classes/User.php";
 require "Classes/FlightScheduleSystem.php";
+require "DatabaseInfo.php";
 session_start();
 $user=null;
 if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::AirlineCompanyManager){
@@ -10,7 +11,11 @@ if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum
 }
 
 $result="";
-if(isset($_POST["id"])&&isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"])&&isset($_POST["dAirport"])&&isset($_POST["aAirport"])&&isset($_POST["status"]))
+if(isset($_POST["id"])&&isset($_POST["type"])&&$_POST["type"]=="Confirm")
+    $result=FlightScheduleSystem::updateAccepted($_POST["id"]);
+else if(isset($_POST["id"])&&isset($_POST["type"])&&$_POST["type"]=="Delete")
+    $result=FlightScheduleSystem::deleteRejected($_POST["id"]);
+else if(isset($_POST["id"])&&isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"])&&isset($_POST["dAirport"])&&isset($_POST["aAirport"])&&isset($_POST["status"]))
     $result=FlightScheduleSystem::requestModifyFlight($_POST["datetime"],$_POST["plane"],$_POST["pilot"],$_POST["dAirport"],$_POST["aAirport"],$_POST["status"],$_POST["id"]);
 else if(isset($_POST["flight"]))
     $result=FlightScheduleSystem::deleteFlight($_POST["flight"]);
@@ -49,14 +54,6 @@ else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"]
                     xmlhttp.send();
                 }
             }
-
-            function updateCompany(){
-                var roleValue = document.getElementById("role").value;
-                if(roleValue==2||roleValue==6)
-                    document.getElementById("company").removeAttribute("disabled");
-                else
-                    document.getElementById("company").setAttribute("disabled", "disabled");
-            }
         </script>
     </head>
     <body>
@@ -69,6 +66,37 @@ else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"]
         ?>
         <div id="container"></div>
         <p>Notifications</p>
+        <?php
+            try {
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch(PDOException $e){
+                echo "Could not connect. ".$e->getMessage();
+            }
+            try {
+                $query=$conn->prepare("SELECT f.id AS id, f.plane_id AS plane, d.code AS dAirport, a.code AS aAirport, f.scheduled_time AS time, f.validation AS validation
+                FROM flights AS f INNER JOIN airports AS d ON f.departure_airport_id=d.id
+                INNER JOIN airports AS a ON f.arrival_airport_id=a.id
+                INNER JOIN planes AS p ON f.plane_id=p.plane_number
+                WHERE p.company_id=:company AND f.validation IN ('ACCEPTED','REJECTED') AND f.scheduled_time>=CURDATE()");
+                $company=$user->getCompany();
+                $query->bindParam(':company',$company);
+                $query->execute();
+            } catch(PDOException $e){
+                echo "Query Error. ".$e->getMessage();
+            }
+            while($row = $query->fetch()){
+                echo "<form action=AirlinePage.php method=POST>";
+                if($row["validation"]=="ACCEPTED")
+                    echo "<label for='id'>The following flight was accepted: ".$row["plane"].": ".$row["dAirport"]." -> ".$row["aAirport"]." - ".$row["time"]."</label>
+                    <input type='hidden' name='id' id='id' value=".$row["id"].">
+                    <input type='submit' name='type' id='type' value='Confirm'></form>";
+                else
+                    echo "<label for='id'>The following flight was rejected: ".$row["plane"].": ".$row["dAirport"]." -> ".$row["aAirport"]." - ".$row["time"]."</label>
+                    <input type='hidden' name='id' id='id' value=".$row["id"].">
+                    <input type='submit' name='type' id='type' value='Delete'></form>";
+            }
+        ?>
         <p>Departures</p>
         <?php
             echo FlightScheduleSystem::getFlightHistoryTable(true);

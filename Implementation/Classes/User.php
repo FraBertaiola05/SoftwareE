@@ -60,12 +60,8 @@ class User
         $this->company = $company;
     }
     public function login(string $email, string $password): bool{
-        int try = 0;
-        while(try < 3){
-             if($this->email === $email && $this->password === $this->hashPassword($password)){
-                return true;
-            }
-            try++;
+        if($this->email === $email && $this->password === $this->hashPassword($password)){
+            return true;
         }
         return false;
     }

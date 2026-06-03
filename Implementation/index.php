@@ -60,10 +60,10 @@ if(isset($_SESSION["user"])){
     $user=unserialize($_SESSION["user"]);
     switch($user->getRole()){
         case RoleEnum::TowerController:
-            header('Location: .php');
+            header('Location: TowerController.php');
             break;
         case RoleEnum::Pilot:
-            header('Location: .php');
+            header('Location: PilotPage.php');
             break;
         case RoleEnum::GroundCrew:
             header('Location: .php');

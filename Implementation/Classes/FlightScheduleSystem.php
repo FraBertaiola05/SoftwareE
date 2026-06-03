@@ -27,6 +27,7 @@ class FlightScheduleSystem
             return "The inserted data is wrong";
         }
     }
+
     public static function requestModifyFlight(string $datetime, string $plane, int $pilot, int $dAirport, int $aAirport, int $status, int $id): string{
         require 'DatabaseInfo.php';
         try {
@@ -54,6 +55,7 @@ class FlightScheduleSystem
             return "The inserted data is wrong";
         }
     }
+
     public static function deleteFlight(int $id): string{
         require 'DatabaseInfo.php';
         try {
@@ -75,6 +77,51 @@ class FlightScheduleSystem
             return "The inserted data is wrong";
         }
     }
+
+    public static function updateAccepted(int $id): string{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return "Could not connect. ".$e->getMessage();
+        }
+        if(!is_null($id)){
+            try {
+                $query=$conn->prepare("UPDATE flights SET validation='CONFIRMED' WHERE id=:id AND validation='ACCEPTED'");
+                $query->bindParam(':id',$id);
+                $query->execute();
+                return "";
+            } catch(PDOException $e){
+                return "Query Error. ".$e->getMessage();
+            }
+        }else{
+            return "The inserted data is wrong";
+        }
+    }
+
+    public static function deleteRejected(int $id): string{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return "Could not connect. ".$e->getMessage();
+        }
+        if(!is_null($id)){
+            try {
+                $query=$conn->prepare("DELETE FROM flights WHERE validation='REJECTED' AND id=:id");
+                $query->bindParam(':id',$id);
+                $query->execute();
+                return "";
+            } catch(PDOException $e){
+                return "Query Error. ".$e->getMessage();
+            }
+        }else{
+            return "The inserted data is wrong";
+        }
+    }
+
     public static function getFlightHistoryTable($b=true, string $t1="", string $t2="9999-12-31 23:59:59.999"): string{
         $s="";
         if($t1==""){

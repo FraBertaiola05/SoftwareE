@@ -66,7 +66,7 @@ if(isset($_SESSION["user"])){
             header('Location: PilotPage.php');
             break;
         case RoleEnum::GroundCrew:
-            header('Location: .php');
+            header('Location: GroundCrewPage.php');
             break;
         case RoleEnum::GateAgent:
             header('Location: .php');

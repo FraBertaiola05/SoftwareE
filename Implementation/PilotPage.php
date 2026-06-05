@@ -27,7 +27,7 @@ $upcomingQuery = $conn->prepare("SELECT f.id, f.plane_id, f.scheduled_time, f.pr
     INNER JOIN airports a ON f.arrival_airport_id = a.id
     INNER JOIN flight_status fs ON f.status_id = fs.id
     LEFT JOIN gates g ON f.id = g.flight_id
-    WHERE f.pilot_id = :pilotId AND f.scheduled_time > NOW() AND f.validation IN ('ACCEPTED','CONFIRMED')
+    WHERE f.pilot_id = :pilotId AND f.scheduled_time > NOW() AND f.validation = 'CONFIRMED'
     ORDER BY f.scheduled_time ASC");
 $upcomingQuery->bindParam(':pilotId', $pilotId);
 $upcomingQuery->execute();
@@ -51,7 +51,7 @@ $notificationQuery = $conn->prepare("SELECT f.id, f.plane_id, f.scheduled_time, 
     f2.plane_id AS old_plane, f2.scheduled_time AS old_time
     FROM flights f
     LEFT JOIN flights f2 ON f.modify_id = f2.id
-    WHERE f.pilot_id = :pilotId AND f.validation IN ('NOT_ACCEPTED','ACCEPTED','REJECTED')
+    WHERE f.pilot_id = :pilotId AND f.validation IN ('NOT_ACCEPTED','REJECTED')
     AND f.scheduled_time > NOW()
     ORDER BY f.id DESC LIMIT 10");
 $notificationQuery->bindParam(':pilotId', $pilotId);
@@ -76,15 +76,11 @@ $notifications = $notificationQuery->fetchAll(PDO::FETCH_ASSOC);
                     if($n["modify_id"] !== null){
                         if($n["validation"] == "NOT_ACCEPTED")
                             $msg = "Modification requested - awaiting TC approval";
-                        elseif($n["validation"] == "ACCEPTED")
-                            $msg = "Flight modification approved";
                         elseif($n["validation"] == "REJECTED")
                             $msg = "Flight modification was rejected";
                     }else{
                         if($n["validation"] == "NOT_ACCEPTED")
                             $msg = "New flight assigned - awaiting TC approval";
-                        elseif($n["validation"] == "ACCEPTED")
-                            $msg = "New flight approved";
                         elseif($n["validation"] == "REJECTED")
                             $msg = "New flight was rejected";
                     }

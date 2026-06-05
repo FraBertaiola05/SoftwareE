@@ -74,40 +74,6 @@ if(isset($_SESSION["user"])){
         case RoleEnum::SystemAdmin:
             header('Location: AdminPage.php');
             break;
-        case RoleEnum::AirlineCompanyManager:
-            header('Location: AirlinePage.php');
-            break;
-        case RoleEnum::AirportAnalyst:
-            header('Location: AnalystPage.php');
-            break;
-    }
-}
 
-?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Povo International Airport Login</title>
-    </head>
-    <body>
-        <form action="index.php" method="POST">
-            <label for="email">Email:</label>
-            <input type="text" name="email" required><br><br>
-            <label for="password">Password:</label>
-            <input type="password" name="password" required><br><br>
-            <input type="submit" value="Login">
-        </form>
-        <?php
-            if(isset($error) && $error!=null)
-                echo "<p>".$error."</p>";
-        ?>
-        <p>Departures</p>
-        <?php
-            echo FlightScheduleSystem::getFlightHistoryTable(true);
-        ?>
-        <p>Arrivals</p>
-        <?php
-            echo FlightScheduleSystem::getFlightHistoryTable(false);
-        ?>
     </body>
 </html>

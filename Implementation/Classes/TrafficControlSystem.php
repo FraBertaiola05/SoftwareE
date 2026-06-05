@@ -82,9 +82,6 @@ class TrafficControlSystem
                 $conn->rollBack();
                 return "The runway is not available";
             }
-            $query = $conn->prepare("UPDATE flights SET status_id = 2 WHERE id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
             $conn->commit();
             return "Runway assigned for take off successfully";
         } catch(PDOException $e){
@@ -111,9 +108,6 @@ class TrafficControlSystem
                 $conn->rollBack();
                 return "The runway is not available";
             }
-            $query = $conn->prepare("UPDATE flights SET status_id = 5 WHERE id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
             $conn->commit();
             return "Runway assigned for landing successfully";
         } catch(PDOException $e){
@@ -136,19 +130,15 @@ class TrafficControlSystem
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             $flight = $query->fetch(PDO::FETCH_ASSOC);
-
             $query = $conn->prepare("UPDATE planes SET status_id = 4 WHERE plane_number = :planeId");
             $query->bindParam(':planeId', $flight['plane_id']);
             $query->execute();
-
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-
-            $query = $conn->prepare("UPDATE flights SET validation = 'DELETED' WHERE id = :flightId");
+            $query = $conn->prepare("UPDATE flights SET priority = NULL, validation = 'DELETED' WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-
             $conn->commit();
             return "Take off confirmed successfully";
         } catch(PDOException $e){
@@ -171,19 +161,15 @@ class TrafficControlSystem
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             $flight = $query->fetch(PDO::FETCH_ASSOC);
-
             $query = $conn->prepare("UPDATE planes SET status_id = 1 WHERE plane_number = :planeId");
             $query->bindParam(':planeId', $flight['plane_id']);
             $query->execute();
-
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-
-            $query = $conn->prepare("UPDATE flights SET status_id = 5, validation = 'DELETED' WHERE id = :flightId");
+            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 5, validation = 'DELETED' WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-
             $conn->commit();
             return "Landing confirmed successfully";
         } catch(PDOException $e){
@@ -225,18 +211,31 @@ class TrafficControlSystem
         }
         try {
             $conn->beginTransaction();
-            $query = $conn->prepare("SELECT modify_id FROM flights WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
+            $query = $conn->prepare("SELECT scheduled_time, plane_id, pilot_id, departure_airport_id, arrival_airport_id, status_id, modify_id FROM flights WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             $flight = $query->fetch(PDO::FETCH_ASSOC);
+            if(!$flight){
+                $conn->rollBack();
+                return "Flight not found";
+            }
 
-            $query = $conn->prepare("UPDATE flights SET validation = 'ACCEPTED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
-
-            if($flight && $flight['modify_id'] !== null){
-                $query = $conn->prepare("UPDATE flights SET validation = 'DELETED' WHERE id = :modifyId");
-                $query->bindParam(':modifyId', $flight['modify_id']);
+            if($flight['modify_id'] !== null){
+                $query = $conn->prepare("UPDATE flights SET scheduled_time = :time, plane_id = :plane, pilot_id = :pilot, departure_airport_id = :dep, arrival_airport_id = :arr, status_id = :status WHERE id = :oldId");
+                $query->bindParam(':time', $flight['scheduled_time']);
+                $query->bindParam(':plane', $flight['plane_id']);
+                $query->bindParam(':pilot', $flight['pilot_id']);
+                $query->bindParam(':dep', $flight['departure_airport_id']);
+                $query->bindParam(':arr', $flight['arrival_airport_id']);
+                $query->bindParam(':status', $flight['status_id']);
+                $query->bindParam(':oldId', $flight['modify_id']);
+                $query->execute();
+                $query = $conn->prepare("DELETE FROM flights WHERE id = :flightId");
+                $query->bindParam(':flightId', $flightId);
+                $query->execute();
+            }else{
+                $query = $conn->prepare("UPDATE flights SET validation = 'CONFIRMED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
+                $query->bindParam(':flightId', $flightId);
                 $query->execute();
             }
 
@@ -257,11 +256,30 @@ class TrafficControlSystem
             return "Could not connect. ".$e->getMessage();
         }
         try {
-            $query = $conn->prepare("UPDATE flights SET validation = 'REJECTED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
+            $conn->beginTransaction();
+            $query = $conn->prepare("SELECT modify_id FROM flights WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
+            $flight = $query->fetch(PDO::FETCH_ASSOC);
+            if(!$flight){
+                $conn->rollBack();
+                return "Flight not found";
+            }
+
+            if($flight['modify_id'] !== null){
+                $query = $conn->prepare("DELETE FROM flights WHERE id = :flightId");
+                $query->bindParam(':flightId', $flightId);
+                $query->execute();
+            }else{
+                $query = $conn->prepare("UPDATE flights SET validation = 'REJECTED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
+                $query->bindParam(':flightId', $flightId);
+                $query->execute();
+            }
+
+            $conn->commit();
             return "Flight rejected successfully";
         } catch(PDOException $e){
+            $conn->rollBack();
             return "Query Error. ".$e->getMessage();
         }
     }

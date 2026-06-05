@@ -96,6 +96,9 @@ class GroundManagementSystem
                 $conn->rollBack();
                 return "The parking spot is not available";
             }
+            $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
             $query = $conn->prepare("UPDATE parking_spots SET flight_id = NULL WHERE flight_id = :flightId AND id != :spotId");
             $query->bindParam(':flightId', $flightId);
             $query->bindParam(':spotId', $spotId);
@@ -127,6 +130,9 @@ class GroundManagementSystem
         }
         try {
             $conn->beginTransaction();
+            $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
             $query = $conn->prepare("UPDATE parking_spots SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
@@ -172,6 +178,10 @@ class GroundManagementSystem
                 $conn->rollBack();
                 return "The runway is not available";
             }
+            $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId AND id != :runwayId");
+            $query->bindParam(':flightId', $flightId);
+            $query->bindParam(':runwayId', $runwayId);
+            $query->execute();
             $query = $conn->prepare("UPDATE parking_spots SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();

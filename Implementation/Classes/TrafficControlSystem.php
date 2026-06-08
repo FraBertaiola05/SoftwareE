@@ -16,7 +16,7 @@ class TrafficControlSystem
                 FROM flights f
                 INNER JOIN planes p ON f.plane_id = p.plane_number
                 INNER JOIN users u ON f.pilot_id = u.id
-                WHERE f.status_id = 3 AND f.validation = 'CONFIRMED'
+                WHERE f.status_id = 3 AND f.validation IN ('CONFIRMED','ACCEPTED')
                 ORDER BY f.priority ASC, f.scheduled_time ASC");
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -39,7 +39,7 @@ class TrafficControlSystem
                 FROM flights f
                 INNER JOIN planes p ON f.plane_id = p.plane_number
                 INNER JOIN users u ON f.pilot_id = u.id
-                WHERE f.status_id = 4 AND f.validation = 'CONFIRMED'
+                WHERE f.status_id = 4 AND f.validation IN ('CONFIRMED','ACCEPTED')
                 ORDER BY f.priority ASC, f.scheduled_time ASC");
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -221,7 +221,7 @@ class TrafficControlSystem
             }
 
             if($flight['modify_id'] !== null){
-                $query = $conn->prepare("UPDATE flights SET scheduled_time = :time, plane_id = :plane, pilot_id = :pilot, departure_airport_id = :dep, arrival_airport_id = :arr, status_id = :status WHERE id = :oldId");
+                $query = $conn->prepare("UPDATE flights SET scheduled_time = :time, plane_id = :plane, pilot_id = :pilot, departure_airport_id = :dep, arrival_airport_id = :arr, status_id = :status, validation = 'ACCEPTED' WHERE id = :oldId");
                 $query->bindParam(':time', $flight['scheduled_time']);
                 $query->bindParam(':plane', $flight['plane_id']);
                 $query->bindParam(':pilot', $flight['pilot_id']);
@@ -234,7 +234,7 @@ class TrafficControlSystem
                 $query->bindParam(':flightId', $flightId);
                 $query->execute();
             }else{
-                $query = $conn->prepare("UPDATE flights SET validation = 'CONFIRMED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
+                $query = $conn->prepare("UPDATE flights SET validation = 'ACCEPTED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
                 $query->bindParam(':flightId', $flightId);
                 $query->execute();
             }

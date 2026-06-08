@@ -204,4 +204,65 @@ class GroundManagementSystem
             return "Query Error. ".$e->getMessage();
         }
     }
+
+    public function getFlightsForGates(): array{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT f.id AS id, f.scheduled_time AS time, da.code AS dAirport, aa.code AS aAirport, p.plane_number AS plane
+            FROM flights AS f INNER JOIN planes AS p ON f.plane_id=p.plane_number
+            INNER JOIN parking_spots AS ps ON p.plane_number=ps.plane_id
+            INNER JOIN airports AS da ON da.id=f.departure_airport_id
+            INNER JOIN airports AS aa ON aa.id=f.arrival_airport_id
+            WHERE f.validation IN ('CONFIRMED','ACCEPTED') AND status_id=1 AND (SELECT COUNT(*) FROM gates WHERE f.id=flight_id)=0 AND (SELECT COUNT(*) FROM gates INNER JOIN flights ON gates.flight_id=flights.id WHERE flights.plane_id=p.plane_number)=0 AND da.id=1
+            ORDER BY f.scheduled_time");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
+
+    public function getAvailableGates(): array{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT * FROM gates WHERE flight_id IS NULL");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
+
+    public static function updateGate(int $flight, int $gate): string{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return "Could not connect. ".$e->getMessage();
+        }
+        if(!is_null($flight)&&is_numeric($flight)&&!is_null($gate)&&is_numeric($gate)){
+            try {
+                $query=$conn->prepare("UPDATE gates SET flight_id=:flight WHERE id=:gate");
+                $query->bindParam(':flight',$flight);
+                $query->bindParam(':gate',$gate);
+                $query->execute();
+                return "The gate was assigned with success";
+            } catch(PDOException $e){
+                return "Query Error. ".$e->getMessage();
+            }
+        }else{
+            return "The inserted data is wrong";
+        }
+    }
 }

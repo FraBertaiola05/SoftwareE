@@ -8,4 +8,5 @@ enum FlightStatus: string
     case Arrived = 'arrived';
     case Cancelled = 'cancelled';
     case Delayed = 'delayed';
+    case Finished = 'finished';
 }

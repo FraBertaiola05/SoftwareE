@@ -38,7 +38,7 @@ class FlightScheduleSystem
         }
         if(!is_null($datetime)&&$datetime!=""&&strtotime($datetime)&&strtotime($datetime)>time()&&!is_null($plane)&&$plane!=""&&!is_null($pilot)&&!is_null($dAirport)&&!is_null($aAirport)&&!is_null($status)&&($dAirport==1||$aAirport==1)&&$dAirport!=$aAirport){
             try {
-                $query=$conn->prepare("INSERT INTO flights (scheduled_time, plane_id, pilot_id, departure_airport_id, arrival_airport_id, status_id, modify_id) VALUES(:datetime,:plane,:pilot,:dAirport,:aAirport,:status,:id)");
+                $query=$conn->prepare("UPDATE flights SET scheduled_time=:datetime, plane_id=:plane, pilot_id=:pilot, departure_airport_id=:dAirport, arrival_airport_id=:aAirport, status_id=:status, validation='NOT_ACCEPTED' WHERE id=:id");
                 $query->bindParam(':datetime',$datetime);
                 $query->bindParam(':plane',$plane);
                 $query->bindParam(':pilot',$pilot);
@@ -47,7 +47,7 @@ class FlightScheduleSystem
                 $query->bindParam(':status',$status);
                 $query->bindParam(':id',$id);
                 $query->execute();
-                return "The flight was modified with success. Check the notifications to see if the flight modifications were accepted by the Tower Controller";
+                return "The flight was modified with success. The Tower Controller will review the changes";
             } catch(PDOException $e){
                 return "Query Error. ".$e->getMessage();
             }
@@ -142,7 +142,7 @@ class FlightScheduleSystem
                 INNER JOIN airports AS b ON b.id=f.arrival_airport_id
                 INNER JOIN flight_status AS fs ON f.status_id=fs.id
                 LEFT JOIN gates ON f.id=gates.flight_id
-                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND a.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED','DELETED') AND f.modify_id IS NULL
+                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND a.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED','DELETED')
                 ORDER BY f.scheduled_time";
                 $s="<table border=1>
                     <tr>
@@ -159,7 +159,7 @@ class FlightScheduleSystem
                 INNER JOIN airports AS b ON b.id=f.arrival_airport_id
                 INNER JOIN flight_status AS fs ON f.status_id=fs.id
                 LEFT JOIN gates ON f.id=gates.flight_id
-                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND b.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED','DELETED') AND f.modify_id IS NULL
+                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND b.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED','DELETED')
                 ORDER BY f.scheduled_time";
                 $s="<table border=1>
                         <tr>

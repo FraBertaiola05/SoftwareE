@@ -23,9 +23,6 @@ if(isset($_POST["action"])){
         case "confirmTakeOff":
             $result=$tcs->confirmTakeOff($_POST["flight_id"]);
             break;
-        case "confirmLanding":
-            $result=$tcs->confirmLanding($_POST["flight_id"]);
-            break;
         case "approveFlight":
             $result=$tcs->confirmFlight($_POST["flight_id"]);
             break;
@@ -136,17 +133,6 @@ $pendingFlights = $tcs->getPendingFlights();
                 </label>
                 <input type="submit" value="Assign Runway">
             </form>
-            <form method="POST" style="margin-top:10px;">
-                <input type="hidden" name="action" value="confirmLanding">
-                <label>Confirm Landing:
-                    <select name="flight_id" required>
-                        <?php foreach($landingQueue as $f){ ?>
-                            <option value="<?php echo $f["id"]; ?>"><?php echo $f["plane_id"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <input type="submit" value="Confirm Landing">
-            </form>
         <?php }else{ ?>
             <p>No planes in landing queue</p>
         <?php } ?>
@@ -154,7 +140,7 @@ $pendingFlights = $tcs->getPendingFlights();
         <h2>Pending Flights</h2>
         <?php if(count($pendingFlights)>0){ ?>
             <table border=1>
-                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Scheduled Time</th><th>Pilot</th><th>Type</th></tr>
+                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Scheduled Time</th><th>Pilot</th></tr>
                 <?php foreach($pendingFlights as $f){ ?>
                     <tr>
                         <td><?php echo $f["id"]; ?></td>
@@ -162,7 +148,6 @@ $pendingFlights = $tcs->getPendingFlights();
                         <td><?php echo $f["model"]; ?></td>
                         <td><?php echo $f["scheduled_time"]; ?></td>
                         <td><?php echo $f["pilot_name"]." ".$f["pilot_surname"]; ?></td>
-                        <td><?php echo $f["modify_id"] ? "Modification" : "New Flight"; ?></td>
                     </tr>
                 <?php } ?>
             </table>

@@ -1,11 +1,4 @@
 <?php
-/*use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require '../ExternalLibraries/PHPMailer/src/Exception.php';
-require '../ExternalLibraries/PHPMailer/src/PHPMailer.php';
-require '../ExternalLibraries/PHPMailer/src/SMTP.php';*/
-//require 'User.php';
 class AccountManager
 {
     public static function createAccount(string $email, string $name, string $surname, int $role, int $company=NULL): string{
@@ -57,7 +50,7 @@ class AccountManager
                 if(!is_null($changePassword)&&$changePassword){
                     $newPass=self::generatePassword();
                     $hashedPass=User::hashPassword($newPass);
-                    $s=$s.", password=:password";
+                    $s=$s.", password=:password, password_reset=1";
                 }
                 $s=$s." WHERE id=:id";
                 $query=$conn->prepare($s);
@@ -120,10 +113,39 @@ class AccountManager
         return str_shuffle($pass);
     }
     public static function checkPassword(string $password): bool{
-        if(preg_match("^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{12,128}$",$password))
+        if(preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{12,128}$/',$password))
             return true;
         else 
             return false;
+    }
+
+    public static function updateUserPassword(int $id, string $newPass, string $newPassBis): string{
+        if(isset($newPass)&&!is_null($newPass)&&isset($newPassBis)&&!is_null($newPassBis)&&$newPass==$newPassBis){
+            if(AccountManager::checkPassword($newPass)){
+                require 'DatabaseInfo.php';
+                require_once 'Classes/User.php';
+                try {
+                    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                } catch(PDOException $e){
+                    return "Could not connect. ".$e->getMessage();
+                }
+                try {
+                    $query=$conn->prepare("UPDATE users SET password=:password, password_reset=0 WHERE id=:id");
+                    $hashedPass=User::hashPassword($newPass);
+                    $query->bindParam(':password',$hashedPass);
+                    $query->bindParam(':id',$id);
+                    $query->execute();
+                    return "";
+                } catch(PDOException $e){
+                    return "Query Error. ".$e->getMessage();
+                }
+            }else{
+                return "The password format is wrong";
+            }
+        }else{
+            return "The two passwords inserted are different";
+        }
     }
 }
 ?>

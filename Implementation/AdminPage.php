@@ -1,10 +1,12 @@
 <?php
 require "Classes/User.php";
-require "Classes/AccountManager.php";
+require "Controllers/AccountManager.php";
 session_start();
 $user=null;
 if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::SystemAdmin){
     $user=unserialize($_SESSION["user"]);
+    if($user->getChangePass())
+        header('Location: ChangePassword.php');
 }else{
     header('Location: index.php');
 }

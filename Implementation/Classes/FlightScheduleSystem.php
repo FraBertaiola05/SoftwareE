@@ -142,7 +142,7 @@ class FlightScheduleSystem
                 INNER JOIN airports AS b ON b.id=f.arrival_airport_id
                 INNER JOIN flight_status AS fs ON f.status_id=fs.id
                 LEFT JOIN gates ON f.id=gates.flight_id
-                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND a.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED','DELETED')
+                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND a.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED')
                 ORDER BY f.scheduled_time";
                 $s="<table border=1>
                     <tr>
@@ -159,7 +159,7 @@ class FlightScheduleSystem
                 INNER JOIN airports AS b ON b.id=f.arrival_airport_id
                 INNER JOIN flight_status AS fs ON f.status_id=fs.id
                 LEFT JOIN gates ON f.id=gates.flight_id
-                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND b.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED','DELETED')
+                WHERE f.scheduled_time BETWEEN :t1 AND :t2 AND b.code='POV' AND f.validation IN ('ACCEPTED','CONFIRMED')
                 ORDER BY f.scheduled_time";
                 $s="<table border=1>
                         <tr>

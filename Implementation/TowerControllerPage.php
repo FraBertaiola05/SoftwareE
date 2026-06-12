@@ -20,9 +20,6 @@ if(isset($_POST["action"])){
         case "assignLanding":
             $result=$tcs->assignRunwayForLanding($_POST["flight_id"], $_POST["runway_id"]);
             break;
-        case "confirmTakeOff":
-            $result=$tcs->confirmTakeOff($_POST["flight_id"]);
-            break;
         case "approveFlight":
             $result=$tcs->confirmFlight($_POST["flight_id"]);
             break;
@@ -84,17 +81,6 @@ $pendingFlights = $tcs->getPendingFlights();
                     </select>
                 </label>
                 <input type="submit" value="Assign Runway">
-            </form>
-            <form method="POST" style="margin-top:10px;">
-                <input type="hidden" name="action" value="confirmTakeOff">
-                <label>Confirm Take Off:
-                    <select name="flight_id" required>
-                        <?php foreach($takeOffQueue as $f){ ?>
-                            <option value="<?php echo $f["id"]; ?>"><?php echo $f["plane_id"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <input type="submit" value="Confirm Take Off">
             </form>
         <?php }else{ ?>
             <p>No planes in take off queue</p>

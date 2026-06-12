@@ -39,7 +39,7 @@ if(isset($_POST["flight"])&&is_numeric($_POST["flight"])&&isset($_POST["gate"])&
         ?>
         <?php
             if($result!="")
-                echo "<p>$result</p>"
+                echo "<p>$result</p>";
         ?>
         <button onclick="window.location.href='Logout.php'">Logout</button>
     </body>

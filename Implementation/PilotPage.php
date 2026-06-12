@@ -21,9 +21,14 @@ try {
 $pilotId = $user->getId();
 
 $tcs = new TrafficControlSystem();
-$confirmResult = "";
-if(isset($_POST["action"]) && $_POST["action"] == "confirmLanding"){
-    $confirmResult = $tcs->confirmLanding($_POST["flight_id"]);
+$landingResult = "";
+$takeOffResult = "";
+if(isset($_POST["action"])){
+    if($_POST["action"] == "confirmLanding"){
+        $landingResult = $tcs->confirmLanding($_POST["flight_id"]);
+    } elseif($_POST["action"] == "confirmTakeOff"){
+        $takeOffResult = $tcs->confirmTakeOff($_POST["flight_id"]);
+    }
 }
 
 $upcomingQuery = $conn->prepare("SELECT f.id, f.plane_id, f.scheduled_time, f.priority, f.validation,
@@ -135,7 +140,49 @@ $notifications = $notificationQuery->fetchAll(PDO::FETCH_ASSOC);
             <p>No flights ready to land</p>
         <?php } ?>
 
-        <?php if($confirmResult != "") echo "<p>$confirmResult</p>"; ?>
+        <?php if($landingResult != "") echo "<p>$landingResult</p>"; ?>
+
+        <h2>Ready for Take Off</h2>
+        <?php
+        $takeOffQuery = $conn->prepare("SELECT f.id, f.plane_id, f.scheduled_time, f.priority,
+            d.code AS dep_code, d.city AS dep_city,
+            a.code AS arr_code, a.city AS arr_city,
+            r.runway_number
+            FROM flights f
+            INNER JOIN airports d ON f.departure_airport_id = d.id
+            INNER JOIN airports a ON f.arrival_airport_id = a.id
+            INNER JOIN runways r ON r.flight_id = f.id
+            WHERE f.pilot_id = :pilotId AND f.status_id = 3 AND f.validation IN ('CONFIRMED','ACCEPTED')
+            ORDER BY f.priority ASC, f.scheduled_time ASC");
+        $takeOffQuery->bindParam(':pilotId', $pilotId);
+        $takeOffQuery->execute();
+        $readyForTakeOff = $takeOffQuery->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+        <?php if(count($readyForTakeOff) > 0){ ?>
+            <table border=1>
+                <tr><th>Plane</th><th>From</th><th>To</th><th>Scheduled Time</th><th>Runway</th><th>Action</th></tr>
+                <?php foreach($readyForTakeOff as $f){ ?>
+                    <tr>
+                        <td><?php echo $f["plane_id"]; ?></td>
+                        <td><?php echo $f["dep_code"]." (".$f["dep_city"].")"; ?></td>
+                        <td><?php echo $f["arr_code"]." (".$f["arr_city"].")"; ?></td>
+                        <td><?php echo $f["scheduled_time"]; ?></td>
+                        <td><?php echo $f["runway_number"]; ?></td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="action" value="confirmTakeOff">
+                                <input type="hidden" name="flight_id" value="<?php echo $f["id"]; ?>">
+                                <input type="submit" value="Confirm Take Off">
+                            </form>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </table>
+        <?php }else{ ?>
+            <p>No flights ready for take off</p>
+        <?php } ?>
+
+        <?php if($takeOffResult != "") echo "<p>$takeOffResult</p>"; ?>
 
         <h2>Upcoming Flights</h2>
         <?php if(count($upcomingFlights)>0){ ?>

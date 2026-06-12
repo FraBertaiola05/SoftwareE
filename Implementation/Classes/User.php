@@ -9,13 +9,15 @@ class User
     private string $password;
     private RoleEnum $role;
     private int $company;
-    public function __construct(int $id, string $name, string $surname, string $email, string $password, RoleEnum $role){
+    private bool $changePass;
+    public function __construct(int $id, string $name, string $surname, string $email, string $password, RoleEnum $role, bool $changePass){
         $this->id = $id;
         $this->name = $name;
         $this->surname = $surname;
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
+        $this->changePass = $changePass;
     }
     public function getId(): int{
         return $this->id;
@@ -58,6 +60,12 @@ class User
     }
     public function setCompany(int $company): void{
         $this->company = $company;
+    }
+    public function getChangePass(): bool{
+        return $this->changePass;
+    }
+    public function setChangePass(int $changePass): void{
+        $this->changePass = $changePass;
     }
     public function login(string $email, string $password): bool{
         if($this->email === $email && $this->password === $this->hashPassword($password)){

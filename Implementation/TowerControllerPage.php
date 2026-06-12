@@ -1,10 +1,12 @@
 <?php
 require "Classes/User.php";
-require "Classes/TrafficControlSystem.php";
+require "Controllers/TrafficControlSystem.php";
 session_start();
 $user=null;
 if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::TowerController){
     $user=unserialize($_SESSION["user"]);
+    if($user->getChangePass())
+        header('Location: ChangePassword.php');
 }else{
     header('Location: index.php');
 }

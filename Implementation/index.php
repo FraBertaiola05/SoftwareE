@@ -2,7 +2,7 @@
 session_start();
 require "DatabaseInfo.php";
 require "Classes/User.php";
-require "Classes/FlightScheduleSystem.php";
+require "Controllers/FlightScheduleSystem.php";
 if(!isset($_COOKIE["timeout"]))
     setcookie("timeout", 0, time() + 300, "/");
 try {
@@ -45,7 +45,7 @@ if(isset($_COOKIE["timeout"])&&$_COOKIE["timeout"]==5){
                 $role=RoleEnum::AirportAnalyst;
                 break;
         }
-        $user=new User($r["id"],$r["name"],$r["surname"],$r["email"],$r["password"],$role);
+        $user=new User($r["id"],$r["name"],$r["surname"],$r["email"],$r["password"],$role,$r["password_reset"]);
         if(isset($r["company_id"])&&!is_null($r["company_id"]))
             $user->setCompany($r["company_id"]);
         if($user->login($_POST["email"],$_POST["password"])){
@@ -58,28 +58,32 @@ if(isset($_COOKIE["timeout"])&&$_COOKIE["timeout"]==5){
 
 if(isset($_SESSION["user"])){
     $user=unserialize($_SESSION["user"]);
-    switch($user->getRole()){
-        case RoleEnum::TowerController:
-            header('Location: TowerControllerPage.php');
-            break;
-        case RoleEnum::Pilot:
-            header('Location: PilotPage.php');
-            break;
-        case RoleEnum::GroundCrew:
-            header('Location: GroundCrewPage.php');
-            break;
-        case RoleEnum::GateAgent:
-            header('Location: GateAgentPage.php');
-            break;
-        case RoleEnum::SystemAdmin:
-            header('Location: AdminPage.php');
-            break;
-        case RoleEnum::AirlineCompanyManager:
-            header('Location: AirlinePage.php');
-            break;
-        case RoleEnum::AirportAnalyst:
-            header('Location: AnalystPage.php');
-            break;
+    if($user->getChangePass()==1)
+        header('Location: ChangePassword.php');
+    else{
+        switch($user->getRole()){
+            case RoleEnum::TowerController:
+                header('Location: TowerControllerPage.php');
+                break;
+            case RoleEnum::Pilot:
+                header('Location: PilotPage.php');
+                break;
+            case RoleEnum::GroundCrew:
+                header('Location: GroundCrewPage.php');
+                break;
+            case RoleEnum::GateAgent:
+                header('Location: GateAgentPage.php');
+                break;
+            case RoleEnum::SystemAdmin:
+                header('Location: AdminPage.php');
+                break;
+            case RoleEnum::AirlineCompanyManager:
+                header('Location: AirlinePage.php');
+                break;
+            case RoleEnum::AirportAnalyst:
+                header('Location: AnalystPage.php');
+                break;
+        }
     }
 }
 

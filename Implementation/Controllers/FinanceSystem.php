@@ -16,13 +16,13 @@ class FinanceSystem
             return 0;
         }
         try {
-            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND f.validation IN ('ACCEPTED','CONFIRMED') AND f.modify_id IS NULL");
+            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') AND modify_id IS NULL");
             $query->bindParam(':t1',$t1);
             $query->bindParam(':t2',$t2);
             $query->execute();
             $result=$query->fetch();
             $tot=$result["n"]*self::TAKING_OFF_COST;
-            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND arrival_airport_id=1 AND f.validation IN ('ACCEPTED','CONFIRMED') AND f.modify_id IS NULL");
+            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND arrival_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') AND modify_id IS NULL");
             $query->bindParam(':t1',$t1);
             $query->bindParam(':t2',$t2);
             $query->execute();
@@ -43,7 +43,7 @@ class FinanceSystem
             return 0;
         }
         try {
-            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND f.validation IN ('ACCEPTED','CONFIRMED') AND f.modify_id IS NULL");
+            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') AND modify_id IS NULL");
             $query->bindParam(':t1',$t1);
             $query->bindParam(':t2',$t2);
             $query->execute();
@@ -56,7 +56,7 @@ class FinanceSystem
         }
     }
     public static function getFinancialOverview(String $t1, String $t2): array{
-        if(strtotime($t1)&&strtotime($t1)&&$t1<=$t2){
+        if(strtotime($t1)&&strtotime($t2)&&$t1<=$t2){
             $cost=self::calculateAirportCosts($t1,$t2);
             $revenue=self::calculateAirportRevenue($t1,$t2);
             $total=$revenue-$cost;

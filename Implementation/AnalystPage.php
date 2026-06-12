@@ -1,14 +1,16 @@
 <?php
 require "Classes/User.php";
-require "Classes/FinanceSystem.php";
+require "Controllers/FinanceSystem.php";
 session_start();
 $user=null;
 if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::AirportAnalyst){
     $user=unserialize($_SESSION["user"]);
+    if($user->getChangePass())
+        header('Location: ChangePassword.php');
 }else{
     header('Location: index.php');
 }
-if(isset($_POST["sDate"])&&!is_null($_POST["sDate"])&&isset($_POST["fDate"])&&!is_null($_POST["fDate"])){
+if(isset($_POST["sDate"])&&!is_null($_POST["sDate"])&&isset($_POST["fDate"])&&!is_null($_POST["fDate"])&&$_POST["fDate"]>=$_POST["sDate"]){
     [$cost, $revenue, $total]=FinanceSystem::getFinancialOverview($_POST["sDate"],$_POST["fDate"]);
     $s="<table border=1><tr><th>Start Date</th><th>End Date</th><th>Cost</th><th>Revenue</th><th>Total</th></tr>".
     "<tr><td>".$_POST["sDate"]."</td><td>".$_POST["fDate"]."</td><td>$cost</td><td>$revenue</td><td>$total</td></tr></table>";

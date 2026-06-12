@@ -1,11 +1,13 @@
 <?php
 require "Classes/User.php";
-require "Classes/FlightScheduleSystem.php";
+require "Controllers/FlightScheduleSystem.php";
 require "DatabaseInfo.php";
 session_start();
 $user=null;
 if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::AirlineCompanyManager){
     $user=unserialize($_SESSION["user"]);
+    if($user->getChangePass())
+        header('Location: ChangePassword.php');
 }else{
     header('Location: index.php');
 }

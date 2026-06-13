@@ -205,7 +205,9 @@ class GroundManagementSystem
         }
     }
 
+    //Get flights that are elegible to be assigned to a gates
     public function getFlightsForGates(): array{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -227,8 +229,9 @@ class GroundManagementSystem
         }
     }
 
-
+    //Get free gates
     public function getAvailableGates(): array{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -244,7 +247,9 @@ class GroundManagementSystem
         }
     }
 
+    //Assign a free gate to one flight that is elegible to be assigned to a gate
     public static function updateGate(int $flight, int $gate): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -252,6 +257,7 @@ class GroundManagementSystem
         } catch(PDOException $e){
             return "Could not connect. ".$e->getMessage();
         }
+        //Check if inserted data is not null and of the right type
         if(!is_null($flight)&&is_numeric($flight)&&!is_null($gate)&&is_numeric($gate)){
             try {
                 $query=$conn->prepare("UPDATE gates SET flight_id=:flight WHERE id=:gate");

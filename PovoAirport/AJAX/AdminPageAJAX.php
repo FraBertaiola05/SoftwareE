@@ -1,8 +1,10 @@
 <?php
+//Import required file
 require "../DatabaseInfo.php";
 $s="";
+//Check if there is data that was sent in GET
 if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
-
+    //Generate and return the form to add a user
     if($_GET["type"]=="ADD"){
 
         $s="<form action='AdminPage.php' method='POST'>".
@@ -15,6 +17,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         "<label for='role'>Role: </label>".
         "<select id='role' name='role' onchange='updateCompany()' required>".
         "<option value=''></option>";
+        //Fetch roles and create the select
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -33,6 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='company'>Company: </label>".
         "<select id='company' name='company' disabled>".
         "<option value=''></option>";
+        //Fetch companies and create the select
         try {
             $query="SELECT * FROM companies";
             $result = $conn->query($query);
@@ -43,8 +47,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         }
         $s=$s."</select><br><input type='submit' value='Add'></form>";
         echo $s;
+    }
 
-    }else if($_GET["type"]=="MODIFY"){
+    //Generate and return the select to select a user
+    else if($_GET["type"]=="MODIFY"){
 
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -55,6 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s="<form action='AdminPage.php' method='POST'>".
         "<select id='user' name='user' onchange='loadModify()' required>".
         "<option value=''></option>";
+        //Fetch users and create the select
         try {
             $query="SELECT id, email, name, surname FROM users";
             $result = $conn->query($query);
@@ -66,8 +73,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."</select></form><div id='container2'></div>";
         echo $s;
 
-    }else if($_GET["type"]=="MODIFY2"&&isset($_GET["id"])){
-
+    }
+    //Generate and return the form to modify a user
+    else if($_GET["type"]=="MODIFY2"&&isset($_GET["id"])){
+        //Fetch the chosen user and insert it into the form
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -93,6 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         "<label for='role'>Role: </label>".
         "<select id='role' name='role' onchange='updateCompany()' required>".
         "<option value=''></option>";
+        //Fetch roles and create the select
         try {
             $query="SELECT * FROM roles";
             $res = $conn->query($query);
@@ -112,6 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
             $s=$s." disabled";
         $s=$s.">".
         "<option value=''></option>";
+        //Fetch companies and create the select
         try {
             $query="SELECT * FROM companies";
             $res = $conn->query($query);
@@ -129,7 +140,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         "<input type='submit' value='Modify'></form>";
         echo $s;
 
-    }else if($_GET["type"]=="DELETE"){
+    }
+    //Generate and return the form to choose a user to delete
+    else if($_GET["type"]=="DELETE"){
 
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -140,6 +153,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s="<form action='AdminPage.php' method='POST'>".
         "<select id='user' name='user' required>".
         "<option value=''></option>";
+        //Fetch users and create the select
          try {
             $query="SELECT id, email, name, surname FROM users";
             $result = $conn->query($query);

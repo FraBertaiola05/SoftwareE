@@ -1,11 +1,18 @@
 <?php
+//Import required files
 require "Classes/User.php";
 require "Controllers/FlightScheduleSystem.php";
 require "DatabaseInfo.php";
+
+//Start the session to handle user login status
 session_start();
 $user=null;
+
+//Check if the user is logged with the correct role for this page. If not, redirect it to the login page
 if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::AirlineCompanyManager){
+    //Obtain the User object of the logged user
     $user=unserialize($_SESSION["user"]);
+    //If the user is logged but it still has the same password as when the account was created, redirrect it to the page to change the password
     if($user->getChangePass())
         header('Location: ChangePassword.php');
 }else{
@@ -13,14 +20,23 @@ if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum
 }
 
 $result="";
+//When the user confirms a notification about a confirmed added/modified flight by the tower controller, call the function to set the status of the flight to "Confirmed"
 if(isset($_POST["id"])&&isset($_POST["type"])&&$_POST["type"]=="Confirm")
     $result=FlightScheduleSystem::updateAccepted($_POST["id"]);
+
+//When the user confirms a notification about a rejected added/modified flight by the tower controller, call the function that remove the rejected added/modified flight
 else if(isset($_POST["id"])&&isset($_POST["type"])&&$_POST["type"]=="Delete")
     $result=FlightScheduleSystem::deleteRejected($_POST["id"]);
+
+//Check if there is data entered in the form to modify a flight. If this is the case, send the data to the function to modify the flight
 else if(isset($_POST["id"])&&isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"])&&isset($_POST["dAirport"])&&isset($_POST["aAirport"])&&isset($_POST["status"]))
     $result=FlightScheduleSystem::requestModifyFlight($_POST["datetime"],$_POST["plane"],$_POST["pilot"],$_POST["dAirport"],$_POST["aAirport"],$_POST["status"],$_POST["id"]);
+
+//Check if there is data entered in the form to delete a flight. If this is the case, send the data to the function to delete the flight
 else if(isset($_POST["flight"]))
     $result=FlightScheduleSystem::deleteFlight($_POST["flight"]);
+
+//Check if there is data entered in the form to add a flight. If this is the case, send the data to the function to add the flight
 else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"])&&isset($_POST["dAirport"])&&isset($_POST["aAirport"])&&isset($_POST["status"]))
     $result=FlightScheduleSystem::requestAddFlight($_POST["datetime"],$_POST["plane"],$_POST["pilot"],$_POST["dAirport"],$_POST["aAirport"],$_POST["status"]);
 
@@ -30,6 +46,7 @@ else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"]
     <head>
         <title>Airline Page</title>
         <script>
+            //Load from the AJAX page the form to enter the data
             function loadForm(str){
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
@@ -40,7 +57,7 @@ else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"]
                 xmlhttp.open("GET", "AJAX/AirlinePageAJAX.php?type=" + str, true);
                 xmlhttp.send();
             }
-
+            //Load from the AJAX page the form to modify a user with its data
             function loadModify(){
                 var flightId = document.getElementById("flight").value;
                 if(!flightId)
@@ -59,16 +76,21 @@ else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"]
         </script>
     </head>
     <body>
+        <!--Buttons to call the AJAX functionalities to load the forms for the various operations-->
         <button onclick="loadForm('ADD')">Add a Flight</button>
         <button onclick="loadForm('MODIFY')">Modify a Flight</button>
         <button onclick="loadForm('DELETE')">Delete a Flight</button>
         <?php
+            //Show the result of an operation (Add/Modify/Delete)
             if($result!="")
                 echo "<p>$result</p>";
         ?>
+        <!--Container where the JavaScrip puts the form-->
         <div id="container"></div>
+        <!--Button to redirrect to the logout page-->
         <p>Notifications</p>
         <?php
+            //Connect to the database and fetch the notifcations
             try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -87,6 +109,7 @@ else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"]
             } catch(PDOException $e){
                 echo "Query Error. ".$e->getMessage();
             }
+            //Format the fetched data into HTML
             while($row = $query->fetch()){
                 echo "<form action=AirlinePage.php method=POST>";
                 if($row["validation"]=="ACCEPTED")
@@ -101,12 +124,15 @@ else if(isset($_POST["datetime"])&&isset($_POST["plane"])&&isset($_POST["pilot"]
         ?>
         <p>Departures</p>
         <?php
+            //Print the table with the upcoming departures
             echo FlightScheduleSystem::getFlightHistoryTable(true);
         ?>
         <p>Arrivals</p>
         <?php
+            //Print the table with the upcoming arrivals
             echo FlightScheduleSystem::getFlightHistoryTable(false);
         ?>
+        <!--Button to redirect to the logout page-->
         <button onclick="window.location.href='Logout.php'">Logout</button>
     </body>
 </html>

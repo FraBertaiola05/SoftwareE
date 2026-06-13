@@ -1,16 +1,21 @@
 <?php
+//Import required files
 require "../Classes/User.php";
 require "../DatabaseInfo.php";
 $s="";
+//Start the session to handle user login status
 session_start();
 $user=null;
+//Check if the user is logged with the correct role for this page. If not, redirrect it to the login page
 if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::AirlineCompanyManager){
+    //Obtain the User object of the logged user
     $user=unserialize($_SESSION["user"]);
 }else{
     header('Location: index.php');
 }
+//Check if there is data that was sent in GET
 if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
-
+    //Generate and return the form to add a flight
     if($_GET["type"]=="ADD"){
 
         $s="<form action='AirlinePage.php' method='POST'>".
@@ -25,6 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         } catch(PDOException $e){
             echo "Could not connect. ".$e->getMessage();
         }
+        //Fetch planes and create the select
         try {
             $query="SELECT * FROM planes WHERE company_id=".$user->getCompany();
             $result = $conn->query($query);
@@ -37,6 +43,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='pilot'>Pilot: </label>".
         "<select id='pilot' name='pilot' required>".
         "<option value=''></option>";
+        //Fetch users and create the select
         try {
             $query="SELECT * FROM users WHERE role_id=2 AND company_id=".$user->getCompany();
             $result = $conn->query($query);
@@ -49,6 +56,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='dAirport'>Departure Airport: </label>".
         "<select id='dAirport' name='dAirport' required>".
         "<option value=''></option>";
+        //Fetch airports and create the select
         try {
             $query="SELECT * FROM airports";
             $result = $conn->query($query);
@@ -61,6 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='aAirport'>Arrival Airport: </label>".
         "<select id='aAirport' name='aAirport' required>".
         "<option value=''></option>";
+        //Fetch airports and create the select
         try {
             $query="SELECT * FROM airports";
             $result = $conn->query($query);
@@ -73,6 +82,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='status'>Status: </label>".
         "<select id='status' name='status' required>".
         "<option value=''></option>";
+        //Fetch flight status and create the select
         try {
             $query="SELECT * FROM flight_status";
             $result = $conn->query($query);
@@ -85,7 +95,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<input type='submit' value='Add'></form>";
         echo $s;
 
-    }else if($_GET["type"]=="MODIFY"){
+    }
+    //Generate and return the select to select a flight
+    else if($_GET["type"]=="MODIFY"){
 
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -96,6 +108,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s="<form action='AirlinePage.php' method='POST'>".
         "<select id='flight' name='flight' onchange='loadModify()' required>".
         "<option value=''></option>";
+        //Fetch flights and create the select
         try {
             $dateNow=date('Y-m-d H:i:s');
             $query="SELECT f.id AS id, f.plane_id AS plane, d.code AS dAirport, a.code AS aAirport, f.scheduled_time AS time
@@ -112,8 +125,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."</select></form><div id='container2'></div>";
         echo $s;
 
-    }else if($_GET["type"]=="MODIFY2"&&isset($_GET["id"])){
-
+    }
+    //Generate and return the form to modify a flight
+    else if($_GET["type"]=="MODIFY2"&&isset($_GET["id"])){
+        //Fetch the chosen user and insert it into the form
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -135,6 +150,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         "<label for='plane'>Plane: </label>".
         "<select id='plane' name='plane' required>".
         "<option value=''></option>";
+        //Fetch planes and create the select
         try {
             $query="SELECT * FROM planes WHERE company_id=".$user->getCompany();
             $result = $conn->query($query);
@@ -150,6 +166,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='pilot'>Pilot: </label>".
         "<select id='pilot' name='pilot' required>".
         "<option value=''></option>";
+        //Fetch users and create the select
         try {
             $query="SELECT * FROM users WHERE role_id=2 AND company_id=".$user->getCompany();
             $result = $conn->query($query);
@@ -165,6 +182,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='dAirport'>Departure Airport: </label>".
         "<select id='dAirport' name='dAirport' required>".
         "<option value=''></option>";
+        //Fetch airports and create the select
         try {
             $query="SELECT * FROM airports";
             $result = $conn->query($query);
@@ -180,6 +198,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='aAirport'>Arrival Airport: </label>".
         "<select id='aAirport' name='aAirport' required>".
         "<option value=''></option>";
+        //Fetch airports and create the select
         try {
             $query="SELECT * FROM airports";
             $result = $conn->query($query);
@@ -195,6 +214,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<label for='status'>Status: </label>".
         "<select id='status' name='status' required>".
         "<option value=''></option>";
+        //Fetch flight status and create the select
         try {
             $query="SELECT * FROM flight_status";
             $result = $conn->query($query);
@@ -210,7 +230,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s=$s."<input type='submit' value='Modify'></form>";
         echo $s;
 
-    }else if($_GET["type"]=="DELETE"){
+    }
+    //Generate and return the form to choose a flight to delete
+    else if($_GET["type"]=="DELETE"){
 
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -221,6 +243,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["type"])){
         $s="<form action='AirlinePage.php' method='POST'>".
         "<select id='flight' name='flight' required>".
         "<option value=''></option>";
+        //Fetch flights and create the select
         try {
             $dateNow=date('Y-m-d H:i:s');
             $query="SELECT f.id AS id, f.plane_id AS plane, d.code AS dAirport, a.code AS aAirport, f.scheduled_time AS time

@@ -14,6 +14,7 @@ class FinanceSystem
 
     //Given a starting and an ending date, calculates the cost in this timespan
     public static function calculateAirportCosts(String $t1, String $t2): float{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -45,6 +46,7 @@ class FinanceSystem
 
     //Given a starting and an ending date, calculates the revenue in this timespan
     public static function calculateAirportRevenue(String $t1, String $t2): float{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

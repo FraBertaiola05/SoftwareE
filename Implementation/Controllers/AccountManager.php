@@ -1,7 +1,9 @@
 <?php
 class AccountManager
 {
+    //Given the data to create a User, create a user in the database
     public static function createAccount(string $email, string $name, string $surname, int $role, int $company=NULL): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -9,7 +11,9 @@ class AccountManager
         } catch(PDOException $e){
             return "Could not connect. ".$e->getMessage();
         }
+        //Regular expression to check if the email is well formatted
         $pattern = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i";
+        //Check if the data that was given to the function is not null
         if(!is_null($email)&&$email!=""&&preg_match($pattern,$email)&&!is_null($name)&&$name!=""&&!is_null($surname)&&$surname!=""&&!is_null($role)){
             try {
                 if(($role==2||$role==6)&&!is_null($company)){
@@ -22,7 +26,9 @@ class AccountManager
                 $query->bindParam(':name',$name);
                 $query->bindParam(':surname',$surname);
                 $query->bindParam(':role',$role);
+                //Generate a random password
                 $pass=self::generatePassword();
+                //Hash the generated password
                 $hashedPass=User::hashPassword($pass);
                 $query->bindParam(':password',$hashedPass);
                 $query->execute();
@@ -35,7 +41,9 @@ class AccountManager
         }
     }
 
+    //Given the data to modify a User, modify a user in the database
     public static function modifyAccount(int $id, string $email, string $name, string $surname, int $role, bool $changePassword, int $company=NULL): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -43,10 +51,13 @@ class AccountManager
         } catch(PDOException $e){
             return "Could not connect. ".$e->getMessage();
         }
+        //Regular expression to check if the email is well formatted
         $pattern = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i";
+        //Check if the data that was given to the function is not null
         if(!is_null($email)&&$email!=""&&preg_match($pattern,$email)&&!is_null($name)&&$name!=""&&!is_null($surname)&&$surname!=""&&!is_null($role)){
             try {
                 $s="UPDATE users SET email=:email, name=:name, surname=:surname, role_id=:role, company_id=:company";
+                //If the admin has selected to re-generate the password, generate a new hashed password for the user
                 if(!is_null($changePassword)&&$changePassword){
                     $newPass=self::generatePassword();
                     $hashedPass=User::hashPassword($newPass);
@@ -79,7 +90,9 @@ class AccountManager
         }
     }
 
+    //Given the id of the User that needs to be deleted, delete the user from the database
     public static function deleteAccount(int $id): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -87,6 +100,7 @@ class AccountManager
         } catch(PDOException $e){
             return "Could not connect. ".$e->getMessage();
         }
+        //Check if the data that was given to the function is not null
         if(!is_null($id)){
             try {
                 $query=$conn->prepare("DELETE FROM users WHERE id=:id");
@@ -100,6 +114,8 @@ class AccountManager
             return "The inserted data is wrong";
         }
     }
+
+    //Generate a 12 characters password with at least one character that is lowercase, one uppercase, one number and one symbol
     public static function generatePassword(): string{
         $lowercase="abcdefghijklmnopqrstuvwxyz";
         $uppercase="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -112,6 +128,8 @@ class AccountManager
         }
         return str_shuffle($pass);
     }
+
+    //Check if a given password has at least 12 character, one character that is lowercase, one uppercase, one number and one symbol. There is a max value of 128 characters. The check is done through a regular expression
     public static function checkPassword(string $password): bool{
         if(preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{12,128}$/',$password))
             return true;
@@ -119,9 +137,12 @@ class AccountManager
             return false;
     }
 
+    //Given a new password and a user, check if the password is correct, then update the user password
     public static function updateUserPassword(int $id, string $newPass, string $newPassBis): string{
+        //Check if the data that was given to the function is not null and the newPass and newPassBis are the same
         if(isset($newPass)&&!is_null($newPass)&&isset($newPassBis)&&!is_null($newPassBis)&&$newPass==$newPassBis){
             if(AccountManager::checkPassword($newPass)){
+                //Import required files
                 require 'DatabaseInfo.php';
                 require_once 'Classes/User.php';
                 try {

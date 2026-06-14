@@ -180,7 +180,7 @@ class TrafficControlSystem
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             //Mark the flight as finished and keep the validation as CONFIRMED
-            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 5 WHERE id = :flightId");
+            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 7 WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             $conn->commit();

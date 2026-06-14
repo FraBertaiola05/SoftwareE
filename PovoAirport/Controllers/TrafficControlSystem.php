@@ -82,6 +82,12 @@ class TrafficControlSystem
         }
         try {
             $conn->beginTransaction();
+            //Get the plane number for this flight
+            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            $plane = $query->fetch(PDO::FETCH_ASSOC);
+            $planeId = $plane ? $plane["plane_id"] : null;
             $query = $conn->prepare("UPDATE runways SET flight_id = :flightId WHERE id = :runwayId AND flight_id IS NULL");
             $query->bindParam(':flightId', $flightId);
             $query->bindParam(':runwayId', $runwayId);
@@ -95,9 +101,12 @@ class TrafficControlSystem
             $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-            $query = $conn->prepare("UPDATE parking_spots SET flight_id = NULL WHERE flight_id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
+            //Clear the parking spot for this plane
+            if($planeId){
+                $query = $conn->prepare("UPDATE parking_spots SET plane_id = NULL WHERE plane_id = :planeId");
+                $query->bindParam(':planeId', $planeId);
+                $query->execute();
+            }
             $conn->commit();
             return "Runway assigned for take off successfully";
         } catch(PDOException $e){

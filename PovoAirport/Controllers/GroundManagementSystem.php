@@ -17,7 +17,7 @@ class GroundManagementSystem
                 FROM planes p
                 INNER JOIN flights f ON p.plane_number = f.plane_id AND f.validation IN ('ACCEPTED','CONFIRMED') AND ((f.departure_airport_id = 1 AND f.status_id NOT IN (6, 7)) OR (f.arrival_airport_id = 1 AND f.status_id = 5))
                 INNER JOIN flight_status fs ON f.status_id = fs.id
-                LEFT JOIN parking_spots s ON f.id = s.flight_id
+                LEFT JOIN parking_spots s ON p.plane_number = s.plane_id
                 LEFT JOIN runways r ON f.id = r.flight_id
                 LEFT JOIN gates g ON f.id = g.flight_id
                 LEFT JOIN taxiway_flight tf ON f.id = tf.flight_id
@@ -38,7 +38,7 @@ class GroundManagementSystem
             return [];
         }
         try {
-            $query = $conn->query("SELECT * FROM parking_spots WHERE flight_id IS NULL");
+            $query = $conn->query("SELECT * FROM parking_spots WHERE plane_id IS NULL");
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $e){
             return [];
@@ -87,8 +87,19 @@ class GroundManagementSystem
         }
         try {
             $conn->beginTransaction();
-            $query = $conn->prepare("UPDATE parking_spots SET flight_id = :flightId WHERE id = :spotId AND flight_id IS NULL");
+            //Get the plane number for this flight
+            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            $plane = $query->fetch(PDO::FETCH_ASSOC);
+            if(!$plane){
+                $conn->rollBack();
+                return "Flight not found";
+            }
+            $planeId = $plane["plane_id"];
+            //Assign the parking spot to the plane
+            $query = $conn->prepare("UPDATE parking_spots SET plane_id = :planeId WHERE id = :spotId AND plane_id IS NULL");
+            $query->bindParam(':planeId', $planeId);
             $query->bindParam(':spotId', $spotId);
             $query->execute();
             if($query->rowCount() == 0){
@@ -98,8 +109,9 @@ class GroundManagementSystem
             $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-            $query = $conn->prepare("UPDATE parking_spots SET flight_id = NULL WHERE flight_id = :flightId AND id != :spotId");
-            $query->bindParam(':flightId', $flightId);
+            //Clear any other parking spot assigned to this plane
+            $query = $conn->prepare("UPDATE parking_spots SET plane_id = NULL WHERE plane_id = :planeId AND id != :spotId");
+            $query->bindParam(':planeId', $planeId);
             $query->bindParam(':spotId', $spotId);
             $query->execute();
             //Mark the flight as finished once it reaches the parking spot
@@ -124,12 +136,21 @@ class GroundManagementSystem
         }
         try {
             $conn->beginTransaction();
+            //Get the plane number for this flight
+            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            $plane = $query->fetch(PDO::FETCH_ASSOC);
+            $planeId = $plane ? $plane["plane_id"] : null;
             $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-            $query = $conn->prepare("UPDATE parking_spots SET flight_id = NULL WHERE flight_id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
+            //Clear the parking spot for this plane
+            if($planeId){
+                $query = $conn->prepare("UPDATE parking_spots SET plane_id = NULL WHERE plane_id = :planeId");
+                $query->bindParam(':planeId', $planeId);
+                $query->execute();
+            }
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
@@ -163,10 +184,10 @@ class GroundManagementSystem
         try {
             $query = $conn->query("SELECT f.id AS id, f.scheduled_time AS time, da.code AS dAirport, aa.code AS aAirport, p.plane_number AS plane
             FROM flights AS f INNER JOIN planes AS p ON f.plane_id=p.plane_number
-            INNER JOIN parking_spots AS ps ON f.plane_id=ps.plane_id
+            LEFT JOIN parking_spots AS ps ON f.plane_id=ps.plane_id
             INNER JOIN airports AS da ON da.id=f.departure_airport_id
             INNER JOIN airports AS aa ON aa.id=f.arrival_airport_id
-            WHERE f.validation IN ('CONFIRMED','ACCEPTED') AND f.status_id=1 AND (SELECT COUNT(*) FROM gates WHERE f.id=flight_id)=0 AND (SELECT COUNT(*) FROM gates INNER JOIN flights ON gates.flight_id=flights.id WHERE flights.plane_id=p.plane_number)=0 AND da.id=1
+            WHERE f.validation IN ('CONFIRMED','ACCEPTED') AND f.status_id=1 AND (SELECT COUNT(*) FROM gates WHERE f.id=flight_id)=0 AND da.id=1
             ORDER BY f.scheduled_time");
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $e){

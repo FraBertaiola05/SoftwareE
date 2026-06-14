@@ -86,7 +86,8 @@ $taxiways = $gms->getAvailableTaxiways();
                 <input type="hidden" name="action" value="toParking">
                 <label>Plane:
                     <select name="flight_id" required>
-                        <?php foreach($planesOnGround as $p){ ?>
+                        <?php foreach($planesOnGround as $p){
+                            if($p["plane_status"] != "Landed") continue; ?>
                             <option value="<?php echo $p["flight_id"]; ?>"><?php echo $p["plane_number"]." - ".$p["plane_status"]; ?></option>
                         <?php } ?>
                     </select>

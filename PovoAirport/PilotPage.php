@@ -35,6 +35,7 @@ $pilotId = $user->getId();
 $tcs = new TrafficControlSystem();
 $landingResult = "";
 $takeOffResult = "";
+$assignResult = "";
 
 //Check if the pilot confirmed a landing or take-off action
 if(isset($_POST["action"])){
@@ -42,6 +43,8 @@ if(isset($_POST["action"])){
         $landingResult = $tcs->confirmLanding($_POST["flight_id"]);
     } elseif($_POST["action"] == "confirmTakeOff"){
         $takeOffResult = $tcs->confirmTakeOff($_POST["flight_id"]);
+    } elseif($_POST["action"] == "assignTaxiway"){
+        $assignResult = $tcs->assignTaxiwayAfterLanding($_POST["flight_id"], $_POST["taxiway_id"]);
     }
 }
 
@@ -84,6 +87,23 @@ $notificationQuery = $conn->prepare("SELECT f.id, f.plane_id, f.scheduled_time, 
 $notificationQuery->bindParam(':pilotId', $pilotId);
 $notificationQuery->execute();
 $notifications = $notificationQuery->fetchAll(PDO::FETCH_ASSOC);
+
+//Fetch landed flights that do not have a taxiway assigned yet
+$taxiwayQuery = $conn->prepare("SELECT f.id, f.plane_id, f.scheduled_time,
+    d.code AS dep_code, d.city AS dep_city,
+    a.code AS arr_code, a.city AS arr_city
+    FROM flights f
+    INNER JOIN airports d ON f.departure_airport_id = d.id
+    INNER JOIN airports a ON f.arrival_airport_id = a.id
+    WHERE f.pilot_id = :pilotId AND f.status_id = 5 AND f.validation IN ('CONFIRMED','ACCEPTED')
+    AND NOT EXISTS (SELECT 1 FROM taxiway_flight tf WHERE tf.flight_id = f.id)
+    ORDER BY f.scheduled_time ASC");
+$taxiwayQuery->bindParam(':pilotId', $pilotId);
+$taxiwayQuery->execute();
+$landedNoTaxiway = $taxiwayQuery->fetchAll(PDO::FETCH_ASSOC);
+
+//Fetch available taxiways
+$availableTaxiways = $tcs->getAvailableTaxiways();
 ?>
 <!DOCTYPE html>
 <html>
@@ -162,6 +182,43 @@ $notifications = $notificationQuery->fetchAll(PDO::FETCH_ASSOC);
         <?php } ?>
 
         <?php if($landingResult != "") echo "<p>$landingResult</p>"; ?>
+
+        <!--show flights that have landed and need a taxiway assigned-->
+        <h2>Assign Taxiway</h2>
+        <?php if(count($landedNoTaxiway) > 0 && count($availableTaxiways) > 0){ ?>
+            <table border=1>
+                <tr><th>Plane</th><th>Route</th><th>Scheduled Time</th></tr>
+                <?php foreach($landedNoTaxiway as $f){ ?>
+                    <tr>
+                        <td><?php echo $f["plane_id"]; ?></td>
+                        <td><?php echo $f["dep_code"]." (".$f["dep_city"].") -> ".$f["arr_code"]." (".$f["arr_city"].")"; ?></td>
+                        <td><?php echo $f["scheduled_time"]; ?></td>
+                    </tr>
+                <?php } ?>
+            </table>
+            <form method="POST">
+                <input type="hidden" name="action" value="assignTaxiway">
+                <label>Flight:
+                    <select name="flight_id" required>
+                        <?php foreach($landedNoTaxiway as $f){ ?>
+                            <option value="<?php echo $f["id"]; ?>"><?php echo $f["plane_id"]." - ".$f["scheduled_time"]; ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <label>Taxiway:
+                    <select name="taxiway_id" required>
+                        <?php foreach($availableTaxiways as $t){ ?>
+                            <option value="<?php echo $t["id"]; ?>"><?php echo $t["taxiway_number"]; ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <input type="submit" value="Assign Taxiway">
+            </form>
+        <?php }else{ ?>
+            <p>No landed flights waiting for taxiway assignment</p>
+        <?php } ?>
+
+        <?php if($assignResult != "") echo "<p>$assignResult</p>"; ?>
 
         <!--show flights ready for take-off so the pilot can confirm take-off-->
         <h2>Ready for Take Off</h2>

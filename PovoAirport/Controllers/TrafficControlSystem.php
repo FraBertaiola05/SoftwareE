@@ -135,7 +135,7 @@ class TrafficControlSystem
         }
     }
 
-    //Confirm a take-off: release the runway and mark the flight as deleted
+    //Confirm a take-off: release the runway and mark the flight as finished
     public function confirmTakeOff(int $flightId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -151,8 +151,8 @@ class TrafficControlSystem
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-            //Mark the flight as deleted
-            $query = $conn->prepare("UPDATE flights SET priority = NULL, validation = 'DELETED' WHERE id = :flightId");
+            //Mark the flight as finished and keep the validation as CONFIRMED
+            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 7, validation = 'CONFIRMED' WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             $conn->commit();
@@ -163,7 +163,7 @@ class TrafficControlSystem
         }
     }
 
-    //Confirm a landing: release the runway and mark the flight as landed and deleted
+    //Confirm a landing: release the runway and mark the flight as finished
     public function confirmLanding(int $flightId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -179,12 +179,59 @@ class TrafficControlSystem
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-            //Mark the flight as landed and deleted
-            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 5, validation = 'DELETED' WHERE id = :flightId");
+            //Mark the flight as finished and keep the validation as CONFIRMED
+            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 7 WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             $conn->commit();
             return "Landing confirmed successfully";
+        } catch(PDOException $e){
+            $conn->rollBack();
+            return "Query Error. ".$e->getMessage();
+        }
+    }
+
+    //Return all taxiways for the pilot to choose after landing
+    public function getAvailableTaxiways(): array{
+        //Import required file
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT * FROM taxiways");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
+
+    //Assign a taxiway to a flight after landing
+    public function assignTaxiwayAfterLanding(int $flightId, int $taxiwayId): string{
+        //Import required file
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return "Could not connect. ".$e->getMessage();
+        }
+        try {
+            $conn->beginTransaction();
+            //Clear any existing taxiway assignment for this flight
+            $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            //Assign the new taxiway
+            $query = $conn->prepare("INSERT INTO taxiway_flight (flight_id, taxiway_id) VALUES (:flightId, :taxiwayId)");
+            $query->bindParam(':flightId', $flightId);
+            $query->bindParam(':taxiwayId', $taxiwayId);
+            $query->execute();
+            $conn->commit();
+            return "Taxiway assigned successfully. The ground crew will guide you to the parking spot.";
         } catch(PDOException $e){
             $conn->rollBack();
             return "Query Error. ".$e->getMessage();

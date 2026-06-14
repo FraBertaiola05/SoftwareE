@@ -74,6 +74,15 @@ class FlightScheduleSystem
         }
         if(!is_null($id)){
             try {
+                $query=$conn->prepare("UPDATE gates SET flight_id=NULL WHERE flight_id=:id");
+                $query->bindParam(':id',$id);
+                $query->execute();
+                $query=$conn->prepare("UPDATE runways SET flight_id=NULL WHERE flight_id=:id");
+                $query->bindParam(':id',$id);
+                $query->execute();
+                $query=$conn->prepare("DELETE FROM taxiway_flight WHERE flight_id=:id");
+                $query->bindParam(':id',$id);
+                $query->execute();
                 $query=$conn->prepare("UPDATE flights SET validation='DELETED', status_id=6 WHERE id=:id");
                 $query->bindParam(':id',$id);
                 $query->execute();

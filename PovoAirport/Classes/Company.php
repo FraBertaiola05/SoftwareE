@@ -5,6 +5,11 @@ class Company
     private int $companyId;
     private string $name;
 
+    public function __construct(int $companyId, string $name){
+        $this->companyId = $companyId;
+        $this->name = $name;
+    }
+
     public function getCompanyId(): int{
         return $this->companyId;
     }

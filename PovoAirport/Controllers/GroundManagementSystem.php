@@ -102,6 +102,10 @@ class GroundManagementSystem
             $query->bindParam(':flightId', $flightId);
             $query->bindParam(':spotId', $spotId);
             $query->execute();
+            //Mark the flight as finished once it reaches the parking spot
+            $query = $conn->prepare("UPDATE flights SET status_id = 7 WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
             $conn->commit();
             return "Plane moved to parking spot successfully";
         } catch(PDOException $e){

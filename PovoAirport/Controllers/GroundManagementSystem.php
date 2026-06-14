@@ -154,7 +154,7 @@ class GroundManagementSystem
         try {
             $query = $conn->query("SELECT f.id AS id, f.scheduled_time AS time, da.code AS dAirport, aa.code AS aAirport, p.plane_number AS plane
             FROM flights AS f INNER JOIN planes AS p ON f.plane_id=p.plane_number
-            INNER JOIN parking_spots AS ps ON f.id=ps.flight_id
+            INNER JOIN parking_spots AS ps ON f.plane_id=ps.plane_id
             INNER JOIN airports AS da ON da.id=f.departure_airport_id
             INNER JOIN airports AS aa ON aa.id=f.arrival_airport_id
             WHERE f.validation IN ('CONFIRMED','ACCEPTED') AND f.status_id=1 AND (SELECT COUNT(*) FROM gates WHERE f.id=flight_id)=0 AND (SELECT COUNT(*) FROM gates INNER JOIN flights ON gates.flight_id=flights.id WHERE flights.plane_id=p.plane_number)=0 AND da.id=1

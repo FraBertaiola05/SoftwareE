@@ -15,7 +15,7 @@ class GroundManagementSystem
                 f.id AS flight_id, f.scheduled_time,
                 s.spot_number AS parking_spot, r.runway_number, g.gate_number, t.taxiway_number
                 FROM planes p
-                INNER JOIN flights f ON p.plane_number = f.plane_id AND f.validation IN ('ACCEPTED','CONFIRMED') AND ((f.departure_airport_id = 1 AND f.status_id NOT IN (6, 7)) OR (f.arrival_airport_id = 1 AND f.status_id = 7))
+                INNER JOIN flights f ON p.plane_number = f.plane_id AND f.validation IN ('ACCEPTED','CONFIRMED') AND ((f.departure_airport_id = 1 AND f.status_id NOT IN (6, 7)) OR (f.arrival_airport_id = 1 AND f.status_id = 5))
                 INNER JOIN flight_status fs ON f.status_id = fs.id
                 LEFT JOIN parking_spots s ON f.id = s.flight_id
                 LEFT JOIN runways r ON f.id = r.flight_id

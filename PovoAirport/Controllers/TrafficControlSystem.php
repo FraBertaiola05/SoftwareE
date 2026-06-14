@@ -179,8 +179,8 @@ class TrafficControlSystem
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
-            //Mark the flight as finished and keep the validation as CONFIRMED
-            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 7 WHERE id = :flightId");
+            //Mark the flight as landed and keep the validation as CONFIRMED
+            $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 5 WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             $conn->commit();

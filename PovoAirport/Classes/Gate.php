@@ -1,5 +1,6 @@
 <?php
 require "Flight.php";
+//Class that represents an airport gate assigned to a flight
 class Gate
 {
     public int $id;
@@ -31,4 +32,3 @@ class Gate
         $this->flight = $flight;
     }
 }
-?>

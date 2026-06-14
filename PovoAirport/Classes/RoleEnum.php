@@ -1,5 +1,6 @@
 <?php
 
+//Enum representing the possible user roles in the system
 enum RoleEnum: string
 {
     case TowerController = 'tower_controller';

@@ -22,16 +22,12 @@ if(isset($_POST["action"])){
         case "toTaxiway":
             $result=$gms->movePlaneToTaxiway($_POST["flight_id"], $_POST["taxiway_id"]);
             break;
-        case "toRunway":
-            $result=$gms->movePlaneToRunway($_POST["flight_id"], $_POST["runway_id"]);
-            break;
     }
 }
 
 $planesOnGround = $gms->getPlanesOnGround();
 $parkingSpots = $gms->getAvailableParkingSpots();
 $taxiways = $gms->getAvailableTaxiways();
-$runways = $gms->getAvailableRunways();
 ?>
 <!DOCTYPE html>
 <html>
@@ -115,30 +111,6 @@ $runways = $gms->getAvailableRunways();
             </form>
         <?php }else{ ?>
             <p>No available taxiways or no planes to move</p>
-        <?php } ?>
-
-        <h2>Move Plane to Runway</h2>
-        <?php if(count($planesOnGround)>0 && count($runways)>0){ ?>
-            <form method="POST">
-                <input type="hidden" name="action" value="toRunway">
-                <label>Plane:
-                    <select name="flight_id" required>
-                        <?php foreach($planesOnGround as $p){ ?>
-                            <option value="<?php echo $p["flight_id"]; ?>"><?php echo $p["plane_number"]." - ".$p["plane_status"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <label>Runway:
-                    <select name="runway_id" required>
-                        <?php foreach($runways as $r){ ?>
-                            <option value="<?php echo $r["id"]; ?>">Runway <?php echo $r["runway_number"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <input type="submit" value="Move to Runway">
-            </form>
-        <?php }else{ ?>
-            <p>No available runways or no planes to move</p>
         <?php } ?>
 
         <button onclick="window.location.href='Logout.php'">Logout</button>

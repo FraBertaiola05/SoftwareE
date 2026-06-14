@@ -1,5 +1,6 @@
 <?php
 
+//Class that represents a taxiway
 class Taxiway
 {
     public int $id;
@@ -23,4 +24,3 @@ class Taxiway
         $this->taxiwayNumber = $taxiwayNumber;
     }
 }
-?>

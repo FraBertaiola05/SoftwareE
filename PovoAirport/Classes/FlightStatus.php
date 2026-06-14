@@ -1,5 +1,6 @@
 <?php
 
+//Enum representing the possible statuses of a flight
 enum FlightStatus: string
 {
     case Scheduled = 'scheduled';

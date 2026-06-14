@@ -2,7 +2,9 @@
 
 class TrafficControlSystem
 {
+    //Fetch all flights waiting in the take-off queue (status_id=3)
     public function getTakeOffQueue(): array{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -25,7 +27,9 @@ class TrafficControlSystem
         }
     }
 
+    //Fetch all flights waiting in the landing queue (status_id=4)
     public function getLandingQueue(): array{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -48,7 +52,9 @@ class TrafficControlSystem
         }
     }
 
+    //Return runways that are not currently assigned to any flight
     public function getAvailableRunways(): array{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -64,7 +70,9 @@ class TrafficControlSystem
         }
     }
 
+    //Assign a free runway to a flight waiting for take-off and clean up the taxiway and parking spot
     public function assignRunwayForTakeOff(int $flightId, int $runwayId): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -78,10 +86,18 @@ class TrafficControlSystem
             $query->bindParam(':flightId', $flightId);
             $query->bindParam(':runwayId', $runwayId);
             $query->execute();
+            //Check if the runway was assigned successfully
             if($query->rowCount() == 0){
                 $conn->rollBack();
                 return "The runway is not available";
             }
+            //Clear the taxiway and parking spot assignments for this flight
+            $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            $query = $conn->prepare("UPDATE parking_spots SET flight_id = NULL WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
             $conn->commit();
             return "Runway assigned for take off successfully";
         } catch(PDOException $e){
@@ -90,7 +106,9 @@ class TrafficControlSystem
         }
     }
 
+    //Assign a free runway to a flight that is ready to land
     public function assignRunwayForLanding(int $flightId, int $runwayId): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -104,6 +122,7 @@ class TrafficControlSystem
             $query->bindParam(':flightId', $flightId);
             $query->bindParam(':runwayId', $runwayId);
             $query->execute();
+            //Check if the runway was assigned successfully
             if($query->rowCount() == 0){
                 $conn->rollBack();
                 return "The runway is not available";
@@ -116,7 +135,9 @@ class TrafficControlSystem
         }
     }
 
+    //Confirm a take-off: release the runway and mark the flight as deleted
     public function confirmTakeOff(int $flightId): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -126,16 +147,11 @@ class TrafficControlSystem
         }
         try {
             $conn->beginTransaction();
-            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
-            $flight = $query->fetch(PDO::FETCH_ASSOC);
-            $query = $conn->prepare("UPDATE planes SET status_id = 4 WHERE plane_number = :planeId");
-            $query->bindParam(':planeId', $flight['plane_id']);
-            $query->execute();
+            //Release the runway assigned to this flight
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
+            //Mark the flight as deleted
             $query = $conn->prepare("UPDATE flights SET priority = NULL, validation = 'DELETED' WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
@@ -147,7 +163,9 @@ class TrafficControlSystem
         }
     }
 
+    //Confirm a landing: release the runway and mark the flight as landed and deleted
     public function confirmLanding(int $flightId): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -157,16 +175,11 @@ class TrafficControlSystem
         }
         try {
             $conn->beginTransaction();
-            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
-            $flight = $query->fetch(PDO::FETCH_ASSOC);
-            $query = $conn->prepare("UPDATE planes SET status_id = 1 WHERE plane_number = :planeId");
-            $query->bindParam(':planeId', $flight['plane_id']);
-            $query->execute();
+            //Release the runway assigned to this flight
             $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
+            //Mark the flight as landed and deleted
             $query = $conn->prepare("UPDATE flights SET priority = NULL, status_id = 5, validation = 'DELETED' WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
@@ -178,7 +191,9 @@ class TrafficControlSystem
         }
     }
 
+    //Fetch flights that have not been accepted or rejected yet by the TC
     public function getPendingFlights(): array{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -201,7 +216,9 @@ class TrafficControlSystem
         }
     }
 
+    //Approve a pending flight by setting its validation to ACCEPTED
     public function confirmFlight(int $flightId): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -213,6 +230,7 @@ class TrafficControlSystem
             $query = $conn->prepare("UPDATE flights SET validation = 'ACCEPTED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
+            //Check if any row was actually updated
             if($query->rowCount() == 0){
                 return "Flight not found";
             }
@@ -222,7 +240,9 @@ class TrafficControlSystem
         }
     }
 
+    //Reject a pending flight by setting its validation to REJECTED
     public function rejectFlight(int $flightId): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -234,6 +254,7 @@ class TrafficControlSystem
             $query = $conn->prepare("UPDATE flights SET validation = 'REJECTED' WHERE id = :flightId AND validation = 'NOT_ACCEPTED'");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
+            //Check if any row was actually updated
             if($query->rowCount() == 0){
                 return "Flight not found";
             }
@@ -243,7 +264,9 @@ class TrafficControlSystem
         }
     }
 
+    //Change the priority of a flight in the take-off or landing queue
     public function updatePriority(int $flightId, int $priority): string{
+        //Import required file
         require 'DatabaseInfo.php';
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -251,6 +274,7 @@ class TrafficControlSystem
         } catch(PDOException $e){
             return "Could not connect. ".$e->getMessage();
         }
+        //Validate that priority is at least 1
         if($priority < 1){
             return "Priority must be at least 1";
         }

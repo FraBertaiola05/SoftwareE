@@ -1,5 +1,6 @@
 <?php
 require "Plane.php";
+//Class that represents a parking spot assigned to a plane
 class ParkingSpot
 {
     public int $id;
@@ -31,4 +32,3 @@ class ParkingSpot
         $this->plane = $plane;
     }
 }
-?>

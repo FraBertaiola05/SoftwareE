@@ -1,4 +1,5 @@
 <?php
+//Class that represents an airport with its identifying information
 class Airport
 {
     private int $airportId;
@@ -46,4 +47,3 @@ class Airport
         $this->city = $city;
     }
 }
-?>

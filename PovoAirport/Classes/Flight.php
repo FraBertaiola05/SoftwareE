@@ -3,6 +3,7 @@ require "FlightStatus.php";
 require "Plane.php";
 require "Airport.php";
 
+//Enum representing the possible validation states of a flight
 enum Validation: string
 {
     case NotAccepted = 'NOT_ACCEPTED';
@@ -12,7 +13,7 @@ enum Validation: string
     case Deleted = 'DELETED';
 }
 
-
+//Class that represents a flight with its schedule, route, plane and validation status
 class Flight
 {
     private int $flightId;

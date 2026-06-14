@@ -1,5 +1,6 @@
 <?php
 require "Flight.php";
+//Class that represents a runway assigned to a flight
 class Runway
 {
     public int $id;
@@ -31,4 +32,3 @@ class Runway
         $this->flight = $flight;
     }
 }
-?>

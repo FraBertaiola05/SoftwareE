@@ -24,14 +24,14 @@ class FinanceSystem
         }
         try {
             //Fetch the flight that have taken off in the timespan
-            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') AND modify_id IS NULL");
+            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') ");
             $query->bindParam(':t1',$t1);
             $query->bindParam(':t2',$t2);
             $query->execute();
             $result=$query->fetch();
             $tot=$result["n"]*self::TAKING_OFF_COST;
             //Fetch the flight that have landed in the timespan
-            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND arrival_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') AND modify_id IS NULL");
+            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND arrival_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') ");
             $query->bindParam(':t1',$t1);
             $query->bindParam(':t2',$t2);
             $query->execute();
@@ -56,7 +56,7 @@ class FinanceSystem
         }
         try {
             //Fetch the flight that have taken off in the timespan
-            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') AND modify_id IS NULL");
+            $query=$conn->prepare("SELECT COUNT(*) AS 'n' FROM flights WHERE scheduled_time BETWEEN :t1 AND :t2 AND departure_airport_id=1 AND validation IN ('ACCEPTED','CONFIRMED') ");
             $query->bindParam(':t1',$t1);
             $query->bindParam(':t2',$t2);
             $query->execute();

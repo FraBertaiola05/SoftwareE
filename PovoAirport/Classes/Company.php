@@ -1,5 +1,5 @@
 <?php
-
+//Class that represents an airline company
 class Company
 {
     private int $companyId;

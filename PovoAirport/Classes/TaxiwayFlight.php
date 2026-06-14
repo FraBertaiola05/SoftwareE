@@ -1,6 +1,7 @@
 <?php
 require "Flight.php";
 require "Taxiway.php";
+//Class that represents the assignment of a flight to a taxiway
 class TaxiwayFlight
 {
     private int $id;
@@ -32,4 +33,3 @@ class TaxiwayFlight
         $this->taxiway = $taxiway;
     }
 }
-?>

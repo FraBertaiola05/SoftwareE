@@ -1,5 +1,6 @@
 <?php
 require "Company.php";
+//Class that represents an airplane with its model and company
 class Plane
 {
     private string $planeNumber;

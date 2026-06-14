@@ -1,23 +1,33 @@
 <?php
-
+require "Company.php";
 class Plane
 {
-    private int $planeId;
-    private PlaneStatus $status;
+    private string $planeNumber;
+    private string $model;
+    private Company $company;
 
-    public function getPlaneId(): int{
-        return $this->planeId;
+    public function __construct(string $planeNumber, string $model, Company $company){
+        $this->planeNumber = $planeNumber;
+        $this->model = $model;
+        $this->company = $company;
     }
-    public function setPlaneId(int $planeId): void{
-        $this->planeId = $planeId;
+
+    public function getPlaneNumber(): string{
+        return $this->planeNumber;
     }
-    public function getStatus(): PlaneStatus{
-        return $this->status;
+    public function setPlaneNumber(string $planeNumber): void{
+        $this->planeNumber = $planeNumber;
     }
-    public function setStatus(PlaneStatus $status): void{
-        $this->status = $status;
+    public function getModel(): string{
+        return $this->model;
     }
-    public function updatePosition(Location $newLocation): void{
-        // Implementation for updating plane position
+    public function setModel(string $model): void{
+        $this->model = $model;
+    }
+    public function getCompany(): Company{
+        return $this->company;
+    }
+    public function setCompany(Company $company): void{
+        $this->company = $company;
     }
 }

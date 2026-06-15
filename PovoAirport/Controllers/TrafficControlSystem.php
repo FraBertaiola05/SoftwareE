@@ -14,11 +14,16 @@ class TrafficControlSystem
         }
         try {
             $query = $conn->prepare("SELECT f.id, f.priority, f.scheduled_time, f.plane_id, p.model,
-                u.name AS pilot_name, u.surname AS pilot_surname
+                u.name AS pilot_name, u.surname AS pilot_surname,
+                da.code AS dep_code, da.city AS dep_city,
+                aa.code AS arr_code, aa.city AS arr_city
                 FROM flights f
                 INNER JOIN planes p ON f.plane_id = p.plane_number
                 INNER JOIN users u ON f.pilot_id = u.id
-                WHERE f.status_id = 3 AND f.validation IN ('CONFIRMED','ACCEPTED')
+                INNER JOIN airports da ON f.departure_airport_id = da.id
+                INNER JOIN airports aa ON f.arrival_airport_id = aa.id
+                WHERE f.status_id IN (2, 3) AND f.validation IN ('CONFIRMED','ACCEPTED')
+                AND NOT EXISTS (SELECT 1 FROM runways WHERE flight_id = f.id)
                 ORDER BY f.priority ASC, f.scheduled_time ASC");
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -39,10 +44,14 @@ class TrafficControlSystem
         }
         try {
             $query = $conn->prepare("SELECT f.id, f.priority, f.scheduled_time, f.plane_id, p.model,
-                u.name AS pilot_name, u.surname AS pilot_surname
+                u.name AS pilot_name, u.surname AS pilot_surname,
+                da.code AS dep_code, da.city AS dep_city,
+                aa.code AS arr_code, aa.city AS arr_city
                 FROM flights f
                 INNER JOIN planes p ON f.plane_id = p.plane_number
                 INNER JOIN users u ON f.pilot_id = u.id
+                INNER JOIN airports da ON f.departure_airport_id = da.id
+                INNER JOIN airports aa ON f.arrival_airport_id = aa.id
                 WHERE f.status_id = 4 AND f.validation IN ('CONFIRMED','ACCEPTED')
                 ORDER BY f.priority ASC, f.scheduled_time ASC");
             $query->execute();
@@ -82,6 +91,14 @@ class TrafficControlSystem
         }
         try {
             $conn->beginTransaction();
+            //Check if this flight already has a runway assigned
+            $check = $conn->prepare("SELECT COUNT(*) FROM runways WHERE flight_id = :flightId");
+            $check->bindParam(':flightId', $flightId);
+            $check->execute();
+            if($check->fetchColumn() > 0){
+                $conn->rollBack();
+                return "Flight already has a runway assigned";
+            }
             //Get the plane number for this flight
             $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
@@ -107,6 +124,14 @@ class TrafficControlSystem
                 $query->bindParam(':planeId', $planeId);
                 $query->execute();
             }
+            //Clear the gate assignment for this flight
+            $query = $conn->prepare("UPDATE gates SET flight_id = NULL WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            //Set the flight status to InQueueTakeOff
+            $query = $conn->prepare("UPDATE flights SET status_id = 3 WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
             $conn->commit();
             return "Runway assigned for take off successfully";
         } catch(PDOException $e){
@@ -127,6 +152,14 @@ class TrafficControlSystem
         }
         try {
             $conn->beginTransaction();
+            //Check if this flight already has a runway assigned
+            $check = $conn->prepare("SELECT COUNT(*) FROM runways WHERE flight_id = :flightId");
+            $check->bindParam(':flightId', $flightId);
+            $check->execute();
+            if($check->fetchColumn() > 0){
+                $conn->rollBack();
+                return "Flight already has a runway assigned";
+            }
             $query = $conn->prepare("UPDATE runways SET flight_id = :flightId WHERE id = :runwayId AND flight_id IS NULL");
             $query->bindParam(':flightId', $flightId);
             $query->bindParam(':runwayId', $runwayId);
@@ -259,10 +292,14 @@ class TrafficControlSystem
         }
         try {
             $query = $conn->prepare("SELECT f.id, f.scheduled_time, f.plane_id, p.model,
-                u.name AS pilot_name, u.surname AS pilot_surname
+                u.name AS pilot_name, u.surname AS pilot_surname,
+                da.code AS dep_code, da.city AS dep_city,
+                aa.code AS arr_code, aa.city AS arr_city
                 FROM flights f
                 INNER JOIN planes p ON f.plane_id = p.plane_number
                 INNER JOIN users u ON f.pilot_id = u.id
+                INNER JOIN airports da ON f.departure_airport_id = da.id
+                INNER JOIN airports aa ON f.arrival_airport_id = aa.id
                 WHERE f.validation = 'NOT_ACCEPTED'
                 ORDER BY f.scheduled_time ASC");
             $query->execute();

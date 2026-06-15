@@ -71,12 +71,13 @@ $pendingFlights = $tcs->getPendingFlights();
         <h2>Take Off Queue</h2>
         <?php if(count($takeOffQueue)>0){ ?>
             <table border=1>
-                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Priority</th><th>Scheduled Time</th><th>Pilot</th></tr>
+                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Route</th><th>Priority</th><th>Scheduled Time</th><th>Pilot</th></tr>
                 <?php foreach($takeOffQueue as $f){ ?>
                     <tr>
                         <td><?php echo $f["id"]; ?></td>
                         <td><?php echo $f["plane_id"]; ?></td>
                         <td><?php echo $f["model"]; ?></td>
+                        <td><?php echo $f["dep_code"]." (".$f["dep_city"].") -> ".$f["arr_code"]." (".$f["arr_city"].")"; ?></td>
                         <td><?php echo $f["priority"]; ?></td>
                         <td><?php echo $f["scheduled_time"]; ?></td>
                         <td><?php echo $f["pilot_name"]." ".$f["pilot_surname"]; ?></td>
@@ -110,12 +111,13 @@ $pendingFlights = $tcs->getPendingFlights();
         <h2>Landing Queue</h2>
         <?php if(count($landingQueue)>0){ ?>
             <table border=1>
-                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Priority</th><th>Scheduled Time</th><th>Pilot</th></tr>
+                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Route</th><th>Priority</th><th>Scheduled Time</th><th>Pilot</th></tr>
                 <?php foreach($landingQueue as $f){ ?>
                     <tr>
                         <td><?php echo $f["id"]; ?></td>
                         <td><?php echo $f["plane_id"]; ?></td>
                         <td><?php echo $f["model"]; ?></td>
+                        <td><?php echo $f["dep_code"]." (".$f["dep_city"].") -> ".$f["arr_code"]." (".$f["arr_city"].")"; ?></td>
                         <td><?php echo $f["priority"]; ?></td>
                         <td><?php echo $f["scheduled_time"]; ?></td>
                         <td><?php echo $f["pilot_name"]." ".$f["pilot_surname"]; ?></td>
@@ -149,12 +151,13 @@ $pendingFlights = $tcs->getPendingFlights();
         <h2>Pending Flights</h2>
         <?php if(count($pendingFlights)>0){ ?>
             <table border=1>
-                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Scheduled Time</th><th>Pilot</th></tr>
+                <tr><th>ID</th><th>Plane</th><th>Model</th><th>Route</th><th>Scheduled Time</th><th>Pilot</th></tr>
                 <?php foreach($pendingFlights as $f){ ?>
                     <tr>
                         <td><?php echo $f["id"]; ?></td>
                         <td><?php echo $f["plane_id"]; ?></td>
                         <td><?php echo $f["model"]; ?></td>
+                        <td><?php echo $f["dep_code"]." (".$f["dep_city"].") -> ".$f["arr_code"]." (".$f["arr_city"].")"; ?></td>
                         <td><?php echo $f["scheduled_time"]; ?></td>
                         <td><?php echo $f["pilot_name"]." ".$f["pilot_surname"]; ?></td>
                     </tr>

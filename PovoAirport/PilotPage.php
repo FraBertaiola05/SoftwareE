@@ -57,7 +57,7 @@ $upcomingQuery = $conn->prepare("SELECT f.id, f.plane_id, f.scheduled_time, f.pr
     INNER JOIN airports a ON f.arrival_airport_id = a.id
     INNER JOIN flight_status fs ON f.status_id = fs.id
     LEFT JOIN gates g ON f.id = g.flight_id
-    WHERE f.pilot_id = :pilotId AND f.scheduled_time > NOW() AND f.validation = 'CONFIRMED'
+    WHERE f.pilot_id = :pilotId AND f.scheduled_time > NOW() AND f.validation = 'CONFIRMED' AND f.status_id NOT IN (6, 7)
     ORDER BY f.scheduled_time ASC");
 $upcomingQuery->bindParam(':pilotId', $pilotId);
 $upcomingQuery->execute();

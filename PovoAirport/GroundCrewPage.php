@@ -28,6 +28,10 @@ if(isset($_POST["action"])){
         case "toParking":
             $result=$gms->movePlaneToParking($_POST["flight_id"], $_POST["spot_id"]);
             break;
+        //Move a plane to the gate area for boarding
+        case "toGate":
+            $result=$gms->movePlaneToGate($_POST["flight_id"], $_POST["spot_id"]);
+            break;
         //Move a plane from parking to a taxiway for take-off preparation
         case "toTaxiway":
             $result=$gms->movePlaneToTaxiway($_POST["flight_id"], $_POST["taxiway_id"]);
@@ -39,6 +43,28 @@ if(isset($_POST["action"])){
 $planesOnGround = $gms->getPlanesOnGround();
 $parkingSpots = $gms->getAvailableParkingSpots();
 $taxiways = $gms->getAvailableTaxiways();
+
+//Fetch flights eligible for gate movement (Scheduled, departure from airport 1, has a gate assigned)
+require 'DatabaseInfo.php';
+try {
+    $conn2 = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $gateQuery = $conn2->prepare("SELECT f.id, f.plane_id, f.scheduled_time, p.model,
+        da.code AS dep_code, da.city AS dep_city,
+        aa.code AS arr_code, aa.city AS arr_city,
+        g.gate_number
+        FROM flights f
+        INNER JOIN planes p ON f.plane_id = p.plane_number
+        INNER JOIN airports da ON f.departure_airport_id = da.id
+        INNER JOIN airports aa ON f.arrival_airport_id = aa.id
+        INNER JOIN gates g ON f.id = g.flight_id
+        WHERE f.status_id = 1 AND f.validation IN ('CONFIRMED','ACCEPTED') AND da.id = 1
+        ORDER BY f.scheduled_time ASC");
+    $gateQuery->execute();
+    $gateFlights = $gateQuery->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e){
+    $gateFlights = [];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -105,6 +131,31 @@ $taxiways = $gms->getAvailableTaxiways();
             <p>No available parking spots or no planes to move</p>
         <?php } ?>
 
+        <!--form to move a plane that has a gate assigned to the gate area for boarding-->
+        <h2>Move Plane to Gate</h2>
+        <?php if(count($gateFlights)>0 && count($parkingSpots)>0){ ?>
+            <form method="POST">
+                <input type="hidden" name="action" value="toGate">
+                <label>Flight:
+                    <select name="flight_id" required>
+                        <?php foreach($gateFlights as $f){ ?>
+                            <option value="<?php echo $f["id"]; ?>"><?php echo $f["plane_id"]." - Gate ".$f["gate_number"]." - ".$f["scheduled_time"]; ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <label>Parking Spot:
+                    <select name="spot_id" required>
+                        <?php foreach($parkingSpots as $s){ ?>
+                            <option value="<?php echo $s["id"]; ?>"><?php echo $s["spot_number"]; ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <input type="submit" value="Move to Gate">
+            </form>
+        <?php }else{ ?>
+            <p>No flights ready for gate movement or no available parking spots</p>
+        <?php } ?>
+
         <!--form to move a plane from parking to an available taxiway for take-off preparation-->
         <h2>Move Plane to Taxiway</h2>
         <?php if(count($planesOnGround)>0 && count($taxiways)>0){ ?>
@@ -112,7 +163,8 @@ $taxiways = $gms->getAvailableTaxiways();
                 <input type="hidden" name="action" value="toTaxiway">
                 <label>Plane:
                     <select name="flight_id" required>
-                        <?php foreach($planesOnGround as $p){ ?>
+                        <?php foreach($planesOnGround as $p){
+                            if($p["taxiway_number"] || $p["runway_number"]) continue; ?>
                             <option value="<?php echo $p["flight_id"]; ?>"><?php echo $p["plane_number"]." - ".$p["plane_status"]; ?></option>
                         <?php } ?>
                     </select>

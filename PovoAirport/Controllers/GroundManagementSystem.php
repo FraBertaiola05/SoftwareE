@@ -155,7 +155,7 @@ class GroundManagementSystem
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             //Set the flight status to InQueueTakeOff so it appears in the TC queue
-            $query = $conn->prepare("UPDATE flights SET status_id = 3 WHERE id = :flightId");
+            $query = $conn->prepare("UPDATE flights SET status_id = 2 WHERE id = :flightId");
             $query->bindParam(':flightId', $flightId);
             $query->execute();
             //Assign the taxiway

@@ -1,188 +1,241 @@
 <?php
-//Import required files
-require "Classes/User.php";
-require "Controllers/GroundManagementSystem.php";
 
-//Start the session to handle user login status
-session_start();
-$user=null;
+class GroundManagementSystem
+{
+    public function getPlanesOnGround(): array{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT p.plane_number, p.model, fs.status AS plane_status,
+                f.id AS flight_id, f.scheduled_time,
+                s.spot_number AS parking_spot, r.runway_number, g.gate_number, t.taxiway_number
+                FROM planes p
+                INNER JOIN flights f ON p.plane_number = f.plane_id AND f.validation IN ('ACCEPTED','CONFIRMED') AND ((f.departure_airport_id = 1 AND f.status_id NOT IN (6, 7)) OR (f.arrival_airport_id = 1 AND f.status_id = 5))
+                INNER JOIN flight_status fs ON f.status_id = fs.id
+                LEFT JOIN parking_spots s ON p.plane_number = s.plane_id
+                LEFT JOIN runways r ON f.id = r.flight_id
+                LEFT JOIN gates g ON f.id = g.flight_id
+                LEFT JOIN taxiway_flight tf ON f.id = tf.flight_id
+                LEFT JOIN taxiways t ON tf.taxiway_id = t.id
+                ORDER BY p.plane_number");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
 
-//Check if the user is logged with the correct role for this page. If not, redirect it to the login page
-if(isset($_SESSION["user"])&&unserialize($_SESSION["user"])->getRole()==RoleEnum::GroundCrew){
-    $user=unserialize($_SESSION["user"]);
-    //If the user is logged but it still has the same password as when the account was created, redirect it to the page to change the password
-    if($user->getChangePass())
-        header('Location: ChangePassword.php');
-}else{
-    header('Location: index.php');
-}
+    public function getAvailableParkingSpots(): array{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT * FROM parking_spots WHERE plane_id IS NULL");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
 
-//Create an instance of the GroundManagementSystem to interact with plane movements and resources
-$gms = new GroundManagementSystem();
-$result="";
+    public function getAvailableRunways(): array{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT * FROM runways WHERE flight_id IS NULL");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
 
-//Check if an action was submitted through a form
-if(isset($_POST["action"])){
-    switch($_POST["action"]){
-        //Move a plane from the taxiway to a parking spot
-        case "toParking":
-            $result=$gms->movePlaneToParking($_POST["flight_id"], $_POST["spot_id"]);
-            break;
-        //Move a plane to the gate area for boarding
-        case "toGate":
-            $result=$gms->movePlaneToGate($_POST["flight_id"], $_POST["spot_id"]);
-            break;
-        //Move a plane from parking to a taxiway for take-off preparation
-        case "toTaxiway":
-            $result=$gms->movePlaneToTaxiway($_POST["flight_id"], $_POST["taxiway_id"]);
-            break;
+    public function getAvailableTaxiways(): array{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT * FROM taxiways");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
+
+    public function movePlaneToParking(int $flightId, int $spotId): string{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return "Could not connect. ".$e->getMessage();
+        }
+        try {
+            $conn->beginTransaction();
+            //Get the plane number for this flight
+            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            $plane = $query->fetch(PDO::FETCH_ASSOC);
+            if(!$plane){
+                $conn->rollBack();
+                return "Flight not found";
+            }
+            $planeId = $plane["plane_id"];
+            //Assign the parking spot to the plane
+            $query = $conn->prepare("UPDATE parking_spots SET plane_id = :planeId WHERE id = :spotId AND plane_id IS NULL");
+            $query->bindParam(':planeId', $planeId);
+            $query->bindParam(':spotId', $spotId);
+            $query->execute();
+            if($query->rowCount() == 0){
+                $conn->rollBack();
+                return "The parking spot is not available";
+            }
+            $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            //Clear any other parking spot assigned to this plane
+            $query = $conn->prepare("UPDATE parking_spots SET plane_id = NULL WHERE plane_id = :planeId AND id != :spotId");
+            $query->bindParam(':planeId', $planeId);
+            $query->bindParam(':spotId', $spotId);
+            $query->execute();
+            //Mark the flight as finished once it reaches the parking spot
+            $query = $conn->prepare("UPDATE flights SET status_id = 7 WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            $conn->commit();
+            return "Plane moved to parking spot successfully";
+        } catch(PDOException $e){
+            $conn->rollBack();
+            return "Query Error. ".$e->getMessage();
+        }
+    }
+
+    public function movePlaneToTaxiway(int $flightId, int $taxiwayId): string{
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return "Could not connect. ".$e->getMessage();
+        }
+        try {
+            $conn->beginTransaction();
+            //Get the plane number for this flight
+            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            $plane = $query->fetch(PDO::FETCH_ASSOC);
+            $planeId = $plane ? $plane["plane_id"] : null;
+            $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            //Clear the parking spot for this plane
+            if($planeId){
+                $query = $conn->prepare("UPDATE parking_spots SET plane_id = NULL WHERE plane_id = :planeId");
+                $query->bindParam(':planeId', $planeId);
+                $query->execute();
+            }
+            $query = $conn->prepare("UPDATE runways SET flight_id = NULL WHERE flight_id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            //Set the flight status to Boarding so it appears in the TC queue
+            $query = $conn->prepare("UPDATE flights SET status_id = 2 WHERE id = :flightId");
+            $query->bindParam(':flightId', $flightId);
+            $query->execute();
+            //Assign the taxiway
+            $query = $conn->prepare("INSERT INTO taxiway_flight (flight_id, taxiway_id) VALUES (:flightId, :taxiwayId)");
+            $query->bindParam(':flightId', $flightId);
+            $query->bindParam(':taxiwayId', $taxiwayId);
+            $query->execute();
+            $conn->commit();
+            return "Plane moved to taxiway successfully";
+        } catch(PDOException $e){
+            $conn->rollBack();
+            return "Query Error. ".$e->getMessage();
+        }
+    }
+
+    //Get flights that are elegible to be assigned to a gates
+    public function getFlightsForGates(): array{
+        //Import required file
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT f.id AS id, f.scheduled_time AS time, da.code AS dAirport, aa.code AS aAirport, p.plane_number AS plane
+            FROM flights AS f INNER JOIN planes AS p ON f.plane_id=p.plane_number
+            INNER JOIN parking_spots AS ps ON f.plane_id=ps.plane_id
+            INNER JOIN airports AS da ON da.id=f.departure_airport_id
+            INNER JOIN airports AS aa ON aa.id=f.arrival_airport_id
+            WHERE f.validation IN ('CONFIRMED','ACCEPTED') AND f.status_id=1 AND (SELECT COUNT(*) FROM gates WHERE f.id=flight_id)=0 AND da.id=1
+            ORDER BY f.scheduled_time");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
+
+    //Get free gates
+    public function getAvailableGates(): array{
+        //Import required file
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return [];
+        }
+        try {
+            $query = $conn->query("SELECT * FROM gates WHERE flight_id IS NULL");
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return [];
+        }
+    }
+
+    //Assign a free gate to one flight that is elegible to be assigned to a gate
+    public static function updateGate(int $flight, int $gate): string{
+        //Import required file
+        require 'DatabaseInfo.php';
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e){
+            return "Could not connect. ".$e->getMessage();
+        }
+        //Check if inserted data is not null and of the right type
+        if(!is_null($flight)&&is_numeric($flight)&&!is_null($gate)&&is_numeric($gate)){
+            try {
+                $query=$conn->prepare("UPDATE gates SET flight_id=:flight WHERE id=:gate");
+                $query->bindParam(':flight',$flight);
+                $query->bindParam(':gate',$gate);
+                $query->execute();
+                return "The gate was assigned with success";
+            } catch(PDOException $e){
+                return "Query Error. ".$e->getMessage();
+            }
+        }else{
+            return "The inserted data is wrong";
+        }
     }
 }
-
-//Fetch the data needed to display the current state of planes and available resources
-$planesOnGround = $gms->getPlanesOnGround();
-$parkingSpots = $gms->getAvailableParkingSpots();
-$taxiways = $gms->getAvailableTaxiways();
-
-//Fetch flights eligible for gate movement (Scheduled, departure from airport 1, has a gate assigned)
-require 'DatabaseInfo.php';
-try {
-    $conn2 = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $gateQuery = $conn2->prepare("SELECT f.id, f.plane_id, f.scheduled_time, p.model,
-        da.code AS dep_code, da.city AS dep_city,
-        aa.code AS arr_code, aa.city AS arr_city,
-        g.gate_number
-        FROM flights f
-        INNER JOIN planes p ON f.plane_id = p.plane_number
-        INNER JOIN airports da ON f.departure_airport_id = da.id
-        INNER JOIN airports aa ON f.arrival_airport_id = aa.id
-        INNER JOIN gates g ON f.id = g.flight_id
-        WHERE f.status_id = 1 AND f.validation IN ('CONFIRMED','ACCEPTED') AND da.id = 1
-        ORDER BY f.scheduled_time ASC");
-    $gateQuery->execute();
-    $gateFlights = $gateQuery->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e){
-    $gateFlights = [];
-}
-?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Ground Crew Panel</title>
-    </head>
-    <body>
-        <h1>Ground Crew Panel</h1>
-        <?php
-            //Show the result of an operation (move to parking, move to taxiway)
-            if($result!="")
-                echo "<p>$result</p>";
-        ?>
-
-        <!--show the current location of every plane at the airport-->
-        <h2>Planes on Ground</h2>
-        <?php if(count($planesOnGround)>0){ ?>
-            <table border=1>
-                <tr><th>Plane</th><th>Model</th><th>Status</th><th>Location</th><th>Scheduled Time</th></tr>
-                <?php foreach($planesOnGround as $p){
-                    //Determine which resource the plane is currently occupying, prefering most specific (parking → gate → taxiway → runway)
-                    $location = "-";
-                    if($p["parking_spot"]) $location = "Parking ".$p["parking_spot"];
-                    else if($p["gate_number"]) $location = "Gate ".$p["gate_number"];
-                    else if($p["taxiway_number"]) $location = "Taxiway ".$p["taxiway_number"];
-                    else if($p["runway_number"]) $location = "Runway ".$p["runway_number"];
-                ?>
-                    <tr>
-                        <td><?php echo $p["plane_number"]; ?></td>
-                        <td><?php echo $p["model"]; ?></td>
-                        <td><?php echo $p["plane_status"]; ?></td>
-                        <td><?php echo $location; ?></td>
-                        <td><?php echo $p["scheduled_time"] ?: "-"; ?></td>
-                    </tr>
-                <?php } ?>
-            </table>
-        <?php }else{ ?>
-            <p>No planes on the ground</p>
-        <?php } ?>
-
-        <!--form to move a plane from the taxiway to an available parking spot-->
-        <h2>Move Plane to Parking</h2>
-        <?php if(count($planesOnGround)>0 && count($parkingSpots)>0){ ?>
-            <form method="POST">
-                <input type="hidden" name="action" value="toParking">
-                <label>Plane:
-                    <select name="flight_id" required>
-                        <?php foreach($planesOnGround as $p){
-                            if($p["plane_status"] != "Landed") continue; ?>
-                            <option value="<?php echo $p["flight_id"]; ?>"><?php echo $p["plane_number"]." - ".$p["plane_status"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <label>Parking Spot:
-                    <select name="spot_id" required>
-                        <?php foreach($parkingSpots as $s){ ?>
-                            <option value="<?php echo $s["id"]; ?>"><?php echo $s["spot_number"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <input type="submit" value="Move to Parking">
-            </form>
-        <?php }else{ ?>
-            <p>No available parking spots or no planes to move</p>
-        <?php } ?>
-
-        <!--form to move a plane that has a gate assigned to the gate area for boarding-->
-        <h2>Move Plane to Gate</h2>
-        <?php if(count($gateFlights)>0 && count($parkingSpots)>0){ ?>
-            <form method="POST">
-                <input type="hidden" name="action" value="toGate">
-                <label>Flight:
-                    <select name="flight_id" required>
-                        <?php foreach($gateFlights as $f){ ?>
-                            <option value="<?php echo $f["id"]; ?>"><?php echo $f["plane_id"]." - Gate ".$f["gate_number"]." - ".$f["scheduled_time"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <label>Parking Spot:
-                    <select name="spot_id" required>
-                        <?php foreach($parkingSpots as $s){ ?>
-                            <option value="<?php echo $s["id"]; ?>"><?php echo $s["spot_number"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <input type="submit" value="Move to Gate">
-            </form>
-        <?php }else{ ?>
-            <p>No flights ready for gate movement or no available parking spots</p>
-        <?php } ?>
-
-        <!--form to move a plane from parking to an available taxiway for take-off preparation-->
-        <h2>Move Plane to Taxiway</h2>
-        <?php if(count($planesOnGround)>0 && count($taxiways)>0){ ?>
-            <form method="POST">
-                <input type="hidden" name="action" value="toTaxiway">
-                <label>Plane:
-                    <select name="flight_id" required>
-                        <?php foreach($planesOnGround as $p){
-                            if($p["taxiway_number"] || $p["runway_number"]) continue; ?>
-                            <option value="<?php echo $p["flight_id"]; ?>"><?php echo $p["plane_number"]." - ".$p["plane_status"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <label>Taxiway:
-                    <select name="taxiway_id" required>
-                        <?php foreach($taxiways as $t){ ?>
-                            <option value="<?php echo $t["id"]; ?>"><?php echo $t["taxiway_number"]; ?></option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <input type="submit" value="Move to Taxiway">
-            </form>
-        <?php }else{ ?>
-            <p>No available taxiways or no planes to move</p>
-        <?php } ?>
-
-        <!--Button to redirect to the logout page-->
-        <button onclick="window.location.href='Logout.php'">Logout</button>
-    </body>
-</html>

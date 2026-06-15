@@ -126,56 +126,6 @@ class GroundManagementSystem
         }
     }
 
-    //Move a plane to the gate area and set status to Boarding
-    public function movePlaneToGate(int $flightId, int $spotId): string{
-        require 'DatabaseInfo.php';
-        try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $e){
-            return "Could not connect. ".$e->getMessage();
-        }
-        try {
-            $conn->beginTransaction();
-            //Get the plane number for this flight
-            $query = $conn->prepare("SELECT plane_id FROM flights WHERE id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
-            $plane = $query->fetch(PDO::FETCH_ASSOC);
-            if(!$plane){
-                $conn->rollBack();
-                return "Flight not found";
-            }
-            $planeId = $plane["plane_id"];
-            //Assign the parking spot to the plane
-            $query = $conn->prepare("UPDATE parking_spots SET plane_id = :planeId WHERE id = :spotId AND plane_id IS NULL");
-            $query->bindParam(':planeId', $planeId);
-            $query->bindParam(':spotId', $spotId);
-            $query->execute();
-            if($query->rowCount() == 0){
-                $conn->rollBack();
-                return "The parking spot is not available";
-            }
-            $query = $conn->prepare("DELETE FROM taxiway_flight WHERE flight_id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
-            //Clear any other parking spot assigned to this plane
-            $query = $conn->prepare("UPDATE parking_spots SET plane_id = NULL WHERE plane_id = :planeId AND id != :spotId");
-            $query->bindParam(':planeId', $planeId);
-            $query->bindParam(':spotId', $spotId);
-            $query->execute();
-            //Set the flight status to Boarding
-            $query = $conn->prepare("UPDATE flights SET status_id = 2 WHERE id = :flightId");
-            $query->bindParam(':flightId', $flightId);
-            $query->execute();
-            $conn->commit();
-            return "Plane moved to gate successfully";
-        } catch(PDOException $e){
-            $conn->rollBack();
-            return "Query Error. ".$e->getMessage();
-        }
-    }
-
     public function movePlaneToTaxiway(int $flightId, int $taxiwayId): string{
         require 'DatabaseInfo.php';
         try {

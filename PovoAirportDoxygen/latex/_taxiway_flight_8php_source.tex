@@ -1,0 +1,41 @@
+\doxysection{Taxiway\+Flight.\+php}
+\hypertarget{_taxiway_flight_8php_source}{}\label{_taxiway_flight_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Classes/TaxiwayFlight.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Classes/TaxiwayFlight.php}}
+\doxymbox{\hyperlink{_taxiway_flight_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00002}00002\ require\ \textcolor{stringliteral}{"{}Flight.php"{}};}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}Taxiway.php"{}};}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00004}00004\ \textcolor{comment}{//Class\ that\ represents\ the\ assignment\ of\ a\ flight\ to\ a\ taxiway}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00005}\doxymbox{\hyperlink{class_taxiway_flight}{00005}}\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_taxiway_flight}{TaxiwayFlight}}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00006}00006\ \{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00007}00007\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{int}\ \$id;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00008}00008\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{class_flight}{Flight}}\ \$flight;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00009}00009\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{class_taxiway}{Taxiway}}\ \$taxiway;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00011}\doxymbox{\hyperlink{class_taxiway_flight_a9d0bc14c6b474e059687dbff1032a829}{00011}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_taxiway_flight_a9d0bc14c6b474e059687dbff1032a829}{\_\_construct}}(\textcolor{keywordtype}{int}\ \$id,\ \doxymbox{\hyperlink{class_flight}{Flight}}\ \$flight,\ \doxymbox{\hyperlink{class_taxiway}{Taxiway}}\ \$taxiway)\{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00012}00012\ \ \ \ \ \ \ \ \ \$this-\/>\textcolor{keywordtype}{id}\ =\ \$id;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00013}00013\ \ \ \ \ \ \ \ \ \$this-\/>flight\ =\ \$flight;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00014}00014\ \ \ \ \ \ \ \ \ \$this-\/>taxiway\ =\ \$taxiway;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00015}00015\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00017}\doxymbox{\hyperlink{class_taxiway_flight_a12251d0c022e9e21c137a105ff683f13}{00017}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_taxiway_flight_a12251d0c022e9e21c137a105ff683f13}{getId}}():\ int\{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00018}00018\ \ \ \ \ \ \ \ \ return\ \$this-\/>id;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00019}00019\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00020}\doxymbox{\hyperlink{class_taxiway_flight_af8e956b8b0343ff7d1b955c26cb0c780}{00020}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_taxiway_flight_af8e956b8b0343ff7d1b955c26cb0c780}{setId}}(\textcolor{keywordtype}{int}\ \$id):\ void\{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00021}00021\ \ \ \ \ \ \ \ \ \$this-\/>id\ =\ \$id;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00022}00022\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00023}\doxymbox{\hyperlink{class_taxiway_flight_ace3d0d50847a8df37b3d5f5c9fe2ee92}{00023}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_taxiway_flight_ace3d0d50847a8df37b3d5f5c9fe2ee92}{getFlight}}():\ \doxymbox{\hyperlink{class_flight}{Flight}}\{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00024}00024\ \ \ \ \ \ \ \ \ return\ \$this-\/>flight;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00025}00025\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00026}\doxymbox{\hyperlink{class_taxiway_flight_ac026d384b264d2a81af548e614a01014}{00026}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_taxiway_flight_ac026d384b264d2a81af548e614a01014}{setFlight}}(\doxymbox{\hyperlink{class_flight}{Flight}}\ \$flight):\ void\{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00027}00027\ \ \ \ \ \ \ \ \ \$this-\/>flight\ =\ \$flight;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00028}00028\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00029}\doxymbox{\hyperlink{class_taxiway_flight_a3d9ec91da44946aabde5dd1a7b9e3a2a}{00029}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_taxiway_flight_a3d9ec91da44946aabde5dd1a7b9e3a2a}{getTaxiway}}():\ \doxymbox{\hyperlink{class_taxiway}{Taxiway}}\{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00030}00030\ \ \ \ \ \ \ \ \ return\ \$this-\/>taxiway;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00031}00031\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00032}\doxymbox{\hyperlink{class_taxiway_flight_a7aed8008753d721c1a65635c5de4f943}{00032}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_taxiway_flight_a7aed8008753d721c1a65635c5de4f943}{setTaxiway}}(\doxymbox{\hyperlink{class_taxiway}{Taxiway}}\ \$taxiway):\ void\{}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00033}00033\ \ \ \ \ \ \ \ \ \$this-\/>taxiway\ =\ \$taxiway;}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00034}00034\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_taxiway_flight_8php_source_l00035}00035\ \}}
+
+\end{DoxyCode}

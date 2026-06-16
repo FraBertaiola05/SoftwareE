@@ -1,0 +1,56 @@
+\doxysection{Analyst\+Page.\+php}
+\hypertarget{_analyst_page_8php_source}{}\label{_analyst_page_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/AnalystPage.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/AnalystPage.php}}
+\doxymbox{\hyperlink{_analyst_page_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00002}00002\ \textcolor{comment}{//Import\ required\ files}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}Classes/User.php"{}};}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00004}00004\ require\ \textcolor{stringliteral}{"{}Controllers/FinanceSystem.php"{}};}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00006}00006\ \textcolor{comment}{//Start\ the\ session\ to\ handle\ user\ login\ status}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00007}00007\ session\_start();}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00008}\doxymbox{\hyperlink{_analyst_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{00008}}\ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=\textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00010}00010\ \textcolor{comment}{//Check\ if\ the\ user\ is\ logged\ with\ the\ correct\ role\ for\ this\ page.\ If\ not,\ redirect\ it\ to\ the\ login\ page}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00011}00011\ \textcolor{keywordflow}{if}(isset(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])\&\&unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])-\/>getRole()==RoleEnum::AirportAnalyst)\{}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00012}00012\ \ \ \ \ \textcolor{comment}{//Obtain\ the\ User\ object\ of\ the\ logged\ user}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00013}00013\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}]);}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00014}00014\ \ \ \ \ \textcolor{comment}{//If\ the\ user\ is\ logged\ but\ it\ still\ has\ the\ same\ password\ as\ when\ the\ account\ was\ created,\ redirrect\ it\ to\ the\ page\ to\ change\ the\ password}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00015}00015\ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}-\/>getChangePass())}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00016}00016\ \ \ \ \ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ ChangePassword.php'});}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00017}\doxymbox{\hyperlink{_analyst_page_8php_a1a95c13950d984e91092ed73789fda6c}{00017}}\ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00018}00018\ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ index.php'});}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00019}00019\ \}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00021}00021\ \textcolor{comment}{//Check\ if\ the\ user\ entered\ two\ dates\ and\ if\ the\ interval\ is\ valid.\ If\ it\ is,\ calculate\ cost\ and\ revenue\ of\ the\ timespan\ and\ print\ it\ to\ the\ user\ screen}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00022}00022\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}sDate"{}}])\&\&!is\_null(\$\_POST[\textcolor{stringliteral}{"{}sDate"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}fDate"{}}])\&\&!is\_null(\$\_POST[\textcolor{stringliteral}{"{}fDate"{}}])\&\&\$\_POST[\textcolor{stringliteral}{"{}fDate"{}}]>=\$\_POST[\textcolor{stringliteral}{"{}sDate"{}}])\{}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00023}00023\ \ \ \ \ [\$cost,\ \$revenue,\ \$total]=\doxymbox{\hyperlink{class_finance_system_a4a78b4f7abd7d746c964e318a364c977}{FinanceSystem::getFinancialOverview}}(\$\_POST[\textcolor{stringliteral}{"{}sDate"{}}],\$\_POST[\textcolor{stringliteral}{"{}fDate"{}}]);}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00024}00024\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\textcolor{stringliteral}{"{}<table\ border=1><tr><th>Start\ Date</th><th>End\ Date</th><th>Cost</th><th>Revenue</th><th>Total</th></tr>"{}}.}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00025}00025\ \ \ \ \ \textcolor{stringliteral}{"{}<tr><td>"{}}.\$\_POST[\textcolor{stringliteral}{"{}sDate"{}}].\textcolor{stringliteral}{"{}</td><td>"{}}.\$\_POST[\textcolor{stringliteral}{"{}fDate"{}}].\textcolor{stringliteral}{"{}</td><td>\$cost</td><td>\$revenue</td><td>\$total</td></tr></table>"{}};}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00026}00026\ \}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00027}00027\ ?>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00028}00028\ <!DOCTYPE\ html>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00029}00029\ <html>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00030}00030\ \ \ \ \ <head>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00031}00031\ \ \ \ \ \ \ \ \ <title></title>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00032}00032\ \ \ \ \ </head>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00033}00033\ \ \ \ \ <body>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00034}00034\ \ \ \ \ \ \ \ \ <!-\/-\/Form\ to\ select\ the\ starting\ and\ finishing\ date-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00035}00035\ \ \ \ \ \ \ \ \ <form\ action=\textcolor{stringliteral}{"{}AnalystPage.php"{}}\ method=\textcolor{stringliteral}{"{}POST"{}}>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ <label\ \textcolor{keywordflow}{for}=\textcolor{stringliteral}{"{}sDate"{}}>From:\ </label>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}date"{}}\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}sDate"{}}\ name=\textcolor{stringliteral}{"{}sDate"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ <label\ \textcolor{keywordflow}{for}=\textcolor{stringliteral}{"{}fDate"{}}\ required>to:\ </label>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}date"{}}\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}fDate"{}}\ name=\textcolor{stringliteral}{"{}fDate"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{'submit'}\ value=\textcolor{stringliteral}{'Calculate'}>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00041}00041\ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00042}00042\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Print\ the\ table\ with\ the\ cost\ and\ revenue\ of\ the\ selected\ timestamp}}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(isset(\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}))}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}};}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00046}00046\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00047}00047\ \ \ \ \ \ \ \ \ <!-\/-\/Button\ to\ redirect\ to\ the\ logout\ page-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00048}00048\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}window.location.href='Logout.php'"{}}>Logout</button>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00049}00049\ \ \ \ \ </body>}
+\DoxyCodeLine{\Hypertarget{_analyst_page_8php_source_l00050}00050\ </html>}
+
+\end{DoxyCode}

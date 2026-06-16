@@ -1,0 +1,157 @@
+\doxysection{C:\+/\+\+Users/\+\+LENOVO/\+\+Desktop/\+\+Software\+E/\+software\+E/\+\+Povo\+Airport/\+\+Ground\+Crew\+Page.php File Reference}
+\hypertarget{_ground_crew_page_8php}{}\label{_ground_crew_page_8php}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/GroundCrewPage.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/GroundCrewPage.php}}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}} =null
+\item 
+\doxymbox{\hyperlink{index_8php_ae2a30b4c00d62248ceb9b7b398a9560c}{if}}(isset(\$\+\_\+\+SESSION\+["{}user"{}]\+)\&\&unserialize(\$\+\_\+\+SESSION\+["{}user"{}]\+) -\/$>$get\+Role()==Role\+Enum::\+\+Ground\+Crew) \doxymbox{\hyperlink{_ground_crew_page_8php_a5e9e95060e3a8f19f85d2bddb02ba1ad}{else}}
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}} = new \doxymbox{\hyperlink{class_ground_management_system}{Ground\+Management\+System}}()
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}} ="{}"{}
+\item 
+\doxymbox{\hyperlink{index_8php_ae2a30b4c00d62248ceb9b7b398a9560c}{if}}(isset(\$\+\_\+\+POST\+["{}action"{}]\+)) \doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planes\+On\+Ground}} = \$gms-\/$>$get\+Planes\+On\+Ground()
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_a05e87333684a942f274c88dea62c45f9}{\$parking\+Spots}} = \$gms-\/$>$get\+Available\+Parking\+Spots()
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_a5f27620f4fd9cdaf9f4a7a863e108831}{\$taxiways}} = \$gms-\/$>$get\+Available\+Taxiways()
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_abe4cc9788f52e49485473dc699537388}{try}}
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_a4377c5cae311e41a3928a61bc7edf7ec}{\$gate\+Query}}
+\item 
+\doxymbox{\hyperlink{_ground_crew_page_8php_a39e771a6b7d3e2696fcd265e9237b028}{\$gate\+Flights}} = \$gate\+Query-\/$>$fetch\+All(PDO::\+\+FETCH\+\_\+\+ASSOC)
+\end{DoxyCompactItemize}
+
+
+\label{_ground_crew_page_8php_doc-var-members}
+\Hypertarget{_ground_crew_page_8php_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{_ground_crew_page_8php_a39e771a6b7d3e2696fcd265e9237b028}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$gateFlights@{\$gateFlights}}
+\index{\$gateFlights@{\$gateFlights}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$gateFlights}{\$gateFlights}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a39e771a6b7d3e2696fcd265e9237b028} 
+\$gate\+Flights = \$gate\+Query-\/$>$fetch\+All(PDO::\+\+FETCH\+\_\+\+ASSOC)}
+
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00060}{60}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_a4377c5cae311e41a3928a61bc7edf7ec}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$gateQuery@{\$gateQuery}}
+\index{\$gateQuery@{\$gateQuery}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$gateQuery}{\$gateQuery}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a4377c5cae311e41a3928a61bc7edf7ec} 
+\$gate\+Query}
+
+{\bfseries Initial value:\+}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \ \ \ =\ \$conn2-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ f.id,\ f.plane\_id,\ f.scheduled\_time,\ p.model,}}
+\DoxyCodeLine{\textcolor{stringliteral}{da.code\ AS\ dep\_code,\ da.city\ AS\ dep\_city,}}
+\DoxyCodeLine{\textcolor{stringliteral}{aa.code\ AS\ arr\_code,\ aa.city\ AS\ arr\_city,}}
+\DoxyCodeLine{\textcolor{stringliteral}{g.gate\_number}}
+\DoxyCodeLine{\textcolor{stringliteral}{FROM\ flights\ f}}
+\DoxyCodeLine{\textcolor{stringliteral}{INNER\ JOIN\ planes\ p\ ON\ f.plane\_id\ =\ p.plane\_number}}
+\DoxyCodeLine{\textcolor{stringliteral}{INNER\ JOIN\ airports\ da\ ON\ f.departure\_airport\_id\ =\ da.id}}
+\DoxyCodeLine{\textcolor{stringliteral}{INNER\ JOIN\ airports\ aa\ ON\ f.arrival\_airport\_id\ =\ aa.id}}
+\DoxyCodeLine{\textcolor{stringliteral}{INNER\ JOIN\ gates\ g\ ON\ f.id\ =\ g.flight\_id}}
+\DoxyCodeLine{\textcolor{stringliteral}{WHERE\ f.status\_id\ =\ 1\ AND\ f.validation\ IN\ ('CONFIRMED','ACCEPTED')\ AND\ da.id\ =\ 1}}
+\DoxyCodeLine{\textcolor{stringliteral}{ORDER\ BY\ f.scheduled\_time\ ASC"{}})}
+
+\end{DoxyCode}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00048}{48}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_a444f77fe9b647d2772e4ceebc9f45210}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$gms@{\$gms}}
+\index{\$gms@{\$gms}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$gms}{\$gms}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a444f77fe9b647d2772e4ceebc9f45210} 
+\$gms = new \doxymbox{\hyperlink{class_ground_management_system}{Ground\+Management\+System}}()}
+
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00021}{21}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_a05e87333684a942f274c88dea62c45f9}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$parkingSpots@{\$parkingSpots}}
+\index{\$parkingSpots@{\$parkingSpots}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$parkingSpots}{\$parkingSpots}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a05e87333684a942f274c88dea62c45f9} 
+\$parking\+Spots = \$gms-\/$>$get\+Available\+Parking\+Spots()}
+
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00040}{40}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$planesOnGround@{\$planesOnGround}}
+\index{\$planesOnGround@{\$planesOnGround}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$planesOnGround}{\$planesOnGround}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c} 
+\doxymbox{\hyperlink{index_8php_ae2a30b4c00d62248ceb9b7b398a9560c}{if}} (isset( \$\+\_\+\+POST\+["{}action"{}]\+)) \$planes\+On\+Ground = \$gms-\/$>$get\+Planes\+On\+Ground()}
+
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00039}{39}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$result@{\$result}}
+\index{\$result@{\$result}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$result}{\$result}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a112ef069ddc0454086e3d1e6d8d55d07} 
+\$result ="{}"{}}
+
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00022}{22}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_a5f27620f4fd9cdaf9f4a7a863e108831}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$taxiways@{\$taxiways}}
+\index{\$taxiways@{\$taxiways}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$taxiways}{\$taxiways}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a5f27620f4fd9cdaf9f4a7a863e108831} 
+\$taxiways = \$gms-\/$>$get\+Available\+Taxiways()}
+
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00041}{41}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}\index{GroundCrewPage.php@{GroundCrewPage.php}!\$user@{\$user}}
+\index{\$user@{\$user}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{\$user}{\$user}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a598ca4e71b15a1313ec95f0df1027ca5} 
+\$user =null}
+
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00008}{8}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_a5e9e95060e3a8f19f85d2bddb02ba1ad}\index{GroundCrewPage.php@{GroundCrewPage.php}!else@{else}}
+\index{else@{else}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{else}{else}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_a5e9e95060e3a8f19f85d2bddb02ba1ad} 
+\doxymbox{\hyperlink{index_8php_ae2a30b4c00d62248ceb9b7b398a9560c}{if}} (isset( \$\+\_\+\+SESSION\+["{}user"{}]\+)\&\&unserialize( \$\+\_\+\+SESSION\+["{}user"{}]\+) -\/$>$get\+Role()==Role\+Enum::\+\+Ground\+Crew) else}
+
+{\bfseries Initial value:\+}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ header(\textcolor{stringliteral}{'Location:\ index.php'})}
+
+\end{DoxyCode}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00016}{16}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+
+\Hypertarget{_ground_crew_page_8php_abe4cc9788f52e49485473dc699537388}\index{GroundCrewPage.php@{GroundCrewPage.php}!try@{try}}
+\index{try@{try}!GroundCrewPage.php@{GroundCrewPage.php}}
+\doxysubsubsection{\texorpdfstring{try}{try}}
+{\footnotesize\ttfamily \label{_ground_crew_page_8php_abe4cc9788f52e49485473dc699537388} 
+try}
+
+{\bfseries Initial value:\+}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \$conn2\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}})}
+
+\end{DoxyCode}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_crew_page_8php_source_l00045}{45}} of file \doxymbox{\hyperlink{_ground_crew_page_8php_source}{Ground\+Crew\+Page.\+php}}.
+

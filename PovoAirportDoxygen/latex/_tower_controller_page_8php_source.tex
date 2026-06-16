@@ -1,0 +1,223 @@
+\doxysection{Tower\+Controller\+Page.\+php}
+\hypertarget{_tower_controller_page_8php_source}{}\label{_tower_controller_page_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/TowerControllerPage.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/TowerControllerPage.php}}
+\doxymbox{\hyperlink{_tower_controller_page_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00002}00002\ \textcolor{comment}{//Import\ required\ files}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}Classes/User.php"{}};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00004}00004\ require\ \textcolor{stringliteral}{"{}Controllers/TrafficControlSystem.php"{}};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00006}00006\ \textcolor{comment}{//Start\ the\ session\ to\ handle\ user\ login\ status}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00007}00007\ session\_start();}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00008}\doxymbox{\hyperlink{_tower_controller_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{00008}}\ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=\textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00010}00010\ \textcolor{comment}{//Check\ if\ the\ user\ is\ logged\ with\ the\ correct\ role\ for\ this\ page.\ If\ not,\ redirect\ it\ to\ the\ login\ page}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00011}00011\ \textcolor{keywordflow}{if}(isset(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])\&\&unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])-\/>getRole()==RoleEnum::TowerController)\{}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00012}00012\ \ \ \ \ \textcolor{comment}{//Obtain\ the\ User\ object\ of\ the\ logged\ user}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00013}00013\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}]);}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00014}00014\ \ \ \ \ \textcolor{comment}{//If\ the\ user\ is\ logged\ but\ it\ still\ has\ the\ same\ password\ as\ when\ the\ account\ was\ created,\ redirect\ it\ to\ the\ page\ to\ change\ the\ password}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00015}00015\ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}-\/>getChangePass())}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00016}00016\ \ \ \ \ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ ChangePassword.php'});}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00017}\doxymbox{\hyperlink{_tower_controller_page_8php_ad98a86824cfebc443501284f01509bd9}{00017}}\ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00018}00018\ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ index.php'});}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00019}00019\ \}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00021}00021\ \textcolor{comment}{//Create\ an\ instance\ of\ the\ TrafficControlSystem\ to\ interact\ with\ the\ flight\ queues\ and\ runways}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00022}\doxymbox{\hyperlink{_tower_controller_page_8php_a880c49a1a3b17053963441d025d78b2a}{00022}}\ \doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}\ =\ \textcolor{keyword}{new}\ \doxymbox{\hyperlink{class_traffic_control_system}{TrafficControlSystem}}();}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00023}\doxymbox{\hyperlink{_tower_controller_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{00023}}\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00025}00025\ \textcolor{comment}{//Check\ if\ an\ action\ was\ submitted\ through\ a\ form}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00026}00026\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}action"{}}]))\{}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00027}00027\ \ \ \ \ \textcolor{keywordflow}{switch}(\$\_POST[\textcolor{stringliteral}{"{}action"{}}])\{}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Assign\ a\ runway\ to\ a\ flight\ that\ is\ waiting\ for\ take-\/off}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}assignTakeOff"{}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>assignRunwayForTakeOff(\$\_POST[\textcolor{stringliteral}{"{}flight\_id"{}}],\ \$\_POST[\textcolor{stringliteral}{"{}runway\_id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00032}00032\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Assign\ a\ runway\ to\ a\ flight\ that\ is\ waiting\ to\ land}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00033}00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}assignLanding"{}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>assignRunwayForLanding(\$\_POST[\textcolor{stringliteral}{"{}flight\_id"{}}],\ \$\_POST[\textcolor{stringliteral}{"{}runway\_id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00036}00036\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Approve\ a\ pending\ flight\ created\ by\ an\ airline\ manager}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}approveFlight"{}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>confirmFlight(\$\_POST[\textcolor{stringliteral}{"{}flight\_id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Reject\ a\ pending\ flight\ created\ by\ an\ airline\ manager}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00041}00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}rejectFlight"{}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>rejectFlight(\$\_POST[\textcolor{stringliteral}{"{}flight\_id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00044}00044\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Update\ the\ priority\ of\ a\ queued\ flight}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}updatePriority"{}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>updatePriority(\$\_POST[\textcolor{stringliteral}{"{}flight\_id"{}}],\ \$\_POST[\textcolor{stringliteral}{"{}priority"{}}]);}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00048}00048\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00049}00049\ \}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00051}00051\ \textcolor{comment}{//Fetch\ the\ data\ needed\ to\ display\ the\ queues\ and\ available\ runways}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00052}\doxymbox{\hyperlink{_tower_controller_page_8php_ae3f38663aedf1cb602f5b28843141b2f}{00052}}\ \doxymbox{\hyperlink{_tower_controller_page_8php_ae3f38663aedf1cb602f5b28843141b2f}{\$takeOffQueue}}\ =\ \doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>getTakeOffQueue();}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00053}\doxymbox{\hyperlink{_tower_controller_page_8php_aa33bd8e92fe8645060234fed6323384f}{00053}}\ \doxymbox{\hyperlink{_tower_controller_page_8php_aa33bd8e92fe8645060234fed6323384f}{\$landingQueue}}\ =\ \doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>getLandingQueue();}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00054}\doxymbox{\hyperlink{_tower_controller_page_8php_a6114d257f14ff7a0e68035b8a2a5c30b}{00054}}\ \doxymbox{\hyperlink{_tower_controller_page_8php_a6114d257f14ff7a0e68035b8a2a5c30b}{\$availableRunways}}\ =\ \doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>getAvailableRunways();}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00055}\doxymbox{\hyperlink{_tower_controller_page_8php_aeeddd9fb8ae24a9df18b41cd0eb9cfa0}{00055}}\ \doxymbox{\hyperlink{_tower_controller_page_8php_aeeddd9fb8ae24a9df18b41cd0eb9cfa0}{\$pendingFlights}}\ =\ \doxymbox{\hyperlink{_pilot_page_8php_a880c49a1a3b17053963441d025d78b2a}{\$tcs}}-\/>getPendingFlights();}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00056}00056\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00057}00057\ <!DOCTYPE\ html>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00058}00058\ <html>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00059}00059\ \ \ \ \ <head>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00060}00060\ \ \ \ \ \ \ \ \ <title>Tower\ Controller\ Panel</title>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00061}00061\ \ \ \ \ </head>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00062}00062\ \ \ \ \ <body>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00063}00063\ \ \ \ \ \ \ \ \ <h1>Tower\ Controller\ Panel</h1>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00064}00064\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Show\ the\ result\ of\ an\ operation\ (assign\ runway,\ approve/reject\ flight,\ update\ priority)}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}!=\textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<p>\$result</p>"{}};}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00068}00068\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00070}00070\ \ \ \ \ \ \ \ \ <!-\/-\/show\ flights\ waiting\ \textcolor{keywordflow}{for}\ take-\/off\ and\ allow\ runway\ assignment-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00071}00071\ \ \ \ \ \ \ \ \ <h2>Take\ Off\ Queue</h2>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00072}00072\ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{if}(count(\doxymbox{\hyperlink{_tower_controller_page_8php_ae3f38663aedf1cb602f5b28843141b2f}{\$takeOffQueue}})>0)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ <table\ border=1>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr><th>ID</th><th>\doxymbox{\hyperlink{class_plane}{Plane}}</th><th>Model</th><th>Route</th><th>Priority</th><th>Scheduled\ Time</th><th>Pilot</th></tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_ae3f38663aedf1cb602f5b28843141b2f}{\$takeOffQueue}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}id"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}model"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}dep\_code"{}}].\textcolor{stringliteral}{"{}\ ("{}}.\$f[\textcolor{stringliteral}{"{}dep\_city"{}}].\textcolor{stringliteral}{"{})\ -\/>\ "{}}.\$f[\textcolor{stringliteral}{"{}arr\_code"{}}].\textcolor{stringliteral}{"{}\ ("{}}.\$f[\textcolor{stringliteral}{"{}arr\_city"{}}].\textcolor{stringliteral}{"{})"{}};\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}priority"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}scheduled\_time"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}pilot\_name"{}}].\textcolor{stringliteral}{"{}\ "{}}.\$f[\textcolor{stringliteral}{"{}pilot\_surname"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ </table>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ <!-\/-\/Form\ to\ assign\ a\ runway\ to\ a\ flight\ in\ the\ take-\/off\ queue-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ <form\ method=\textcolor{stringliteral}{"{}POST"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}hidden"{}}\ name=\textcolor{stringliteral}{"{}action"{}}\ value=\textcolor{stringliteral}{"{}assignTakeOff"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_flight}{Flight}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}flight\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_ae3f38663aedf1cb602f5b28843141b2f}{\$takeOffQueue}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$f["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}].\textcolor{stringliteral}{"{}\ -\/\ Priority:\ "{}}.\$f[\textcolor{stringliteral}{"{}priority"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_runway}{Runway}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}runway\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_a6114d257f14ff7a0e68035b8a2a5c30b}{\$availableRunways}}\ as\ \$r)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$r["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}>\doxymbox{\hyperlink{class_runway}{Runway}}\ <?php\ echo\ \$r[\textcolor{stringliteral}{"{}runway\_number"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}submit"{}}\ value=\textcolor{stringliteral}{"{}Assign\ Runway"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00106}00106\ \ \ \ \ \ \ \ \ <?php\ \}\textcolor{keywordflow}{else}\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ <p>No\ planes\ in\ take\ off\ queue</p>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00108}00108\ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00110}00110\ \ \ \ \ \ \ \ \ <!-\/-\/show\ flights\ waiting\ to\ land\ and\ allow\ runway\ assignment-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00111}00111\ \ \ \ \ \ \ \ \ <h2>Landing\ Queue</h2>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00112}00112\ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{if}(count(\doxymbox{\hyperlink{_tower_controller_page_8php_aa33bd8e92fe8645060234fed6323384f}{\$landingQueue}})>0)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ <table\ border=1>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr><th>ID</th><th>\doxymbox{\hyperlink{class_plane}{Plane}}</th><th>Model</th><th>Route</th><th>Priority</th><th>Scheduled\ Time</th><th>Pilot</th></tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_aa33bd8e92fe8645060234fed6323384f}{\$landingQueue}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}id"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}model"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}dep\_code"{}}].\textcolor{stringliteral}{"{}\ ("{}}.\$f[\textcolor{stringliteral}{"{}dep\_city"{}}].\textcolor{stringliteral}{"{})\ -\/>\ "{}}.\$f[\textcolor{stringliteral}{"{}arr\_code"{}}].\textcolor{stringliteral}{"{}\ ("{}}.\$f[\textcolor{stringliteral}{"{}arr\_city"{}}].\textcolor{stringliteral}{"{})"{}};\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}priority"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}scheduled\_time"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}pilot\_name"{}}].\textcolor{stringliteral}{"{}\ "{}}.\$f[\textcolor{stringliteral}{"{}pilot\_surname"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ </table>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ <!-\/-\/Form\ to\ assign\ a\ runway\ to\ a\ flight\ in\ the\ landing\ queue-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ <form\ method=\textcolor{stringliteral}{"{}POST"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}hidden"{}}\ name=\textcolor{stringliteral}{"{}action"{}}\ value=\textcolor{stringliteral}{"{}assignLanding"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_flight}{Flight}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}flight\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_aa33bd8e92fe8645060234fed6323384f}{\$landingQueue}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$f["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}].\textcolor{stringliteral}{"{}\ -\/\ Priority:\ "{}}.\$f[\textcolor{stringliteral}{"{}priority"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_runway}{Runway}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}runway\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_a6114d257f14ff7a0e68035b8a2a5c30b}{\$availableRunways}}\ as\ \$r)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$r["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}>\doxymbox{\hyperlink{class_runway}{Runway}}\ <?php\ echo\ \$r[\textcolor{stringliteral}{"{}runway\_number"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}submit"{}}\ value=\textcolor{stringliteral}{"{}Assign\ Runway"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00146}00146\ \ \ \ \ \ \ \ \ <?php\ \}\textcolor{keywordflow}{else}\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ <p>No\ planes\ in\ landing\ queue</p>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00148}00148\ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00150}00150\ \ \ \ \ \ \ \ \ <!-\/-\/show\ flights\ created\ by\ airlines\ awaiting\ TC\ approval-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00151}00151\ \ \ \ \ \ \ \ \ <h2>Pending\ Flights</h2>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00152}00152\ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{if}(count(\doxymbox{\hyperlink{_tower_controller_page_8php_aeeddd9fb8ae24a9df18b41cd0eb9cfa0}{\$pendingFlights}})>0)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ <table\ border=1>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr><th>ID</th><th>\doxymbox{\hyperlink{class_plane}{Plane}}</th><th>Model</th><th>Route</th><th>Scheduled\ Time</th><th>Pilot</th></tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_aeeddd9fb8ae24a9df18b41cd0eb9cfa0}{\$pendingFlights}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}id"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}model"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}dep\_code"{}}].\textcolor{stringliteral}{"{}\ ("{}}.\$f[\textcolor{stringliteral}{"{}dep\_city"{}}].\textcolor{stringliteral}{"{})\ -\/>\ "{}}.\$f[\textcolor{stringliteral}{"{}arr\_code"{}}].\textcolor{stringliteral}{"{}\ ("{}}.\$f[\textcolor{stringliteral}{"{}arr\_city"{}}].\textcolor{stringliteral}{"{})"{}};\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}scheduled\_time"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$f[\textcolor{stringliteral}{"{}pilot\_name"{}}].\textcolor{stringliteral}{"{}\ "{}}.\$f[\textcolor{stringliteral}{"{}pilot\_surname"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </tr>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ </table>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ <!-\/-\/Form\ to\ approve\ a\ pending\ flight-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ <form\ method=\textcolor{stringliteral}{"{}POST"{}}\ style=\textcolor{stringliteral}{"{}display:inline;"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}hidden"{}}\ name=\textcolor{stringliteral}{"{}action"{}}\ value=\textcolor{stringliteral}{"{}approveFlight"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_flight}{Flight}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}flight\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_aeeddd9fb8ae24a9df18b41cd0eb9cfa0}{\$pendingFlights}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$f["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$f[\textcolor{stringliteral}{"{}scheduled\_time"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}submit"{}}\ value=\textcolor{stringliteral}{"{}Approve"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ <!-\/-\/Form\ to\ reject\ a\ pending\ flight-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ <form\ method=\textcolor{stringliteral}{"{}POST"{}}\ style=\textcolor{stringliteral}{"{}display:inline;"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}hidden"{}}\ name=\textcolor{stringliteral}{"{}action"{}}\ value=\textcolor{stringliteral}{"{}rejectFlight"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_flight}{Flight}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}flight\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_aeeddd9fb8ae24a9df18b41cd0eb9cfa0}{\$pendingFlights}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$f["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$f[\textcolor{stringliteral}{"{}scheduled\_time"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}submit"{}}\ value=\textcolor{stringliteral}{"{}Reject"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00190}00190\ \ \ \ \ \ \ \ \ <?php\ \}\textcolor{keywordflow}{else}\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ <p>No\ pending\ flights</p>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00192}00192\ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00193}00193\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00194}00194\ \ \ \ \ \ \ \ \ <!-\/-\/allows\ the\ TC\ to\ change\ the\ priority\ of\ queued\ flights-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00195}00195\ \ \ \ \ \ \ \ \ <h2>Manage\ Priority</h2>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00196}00196\ \ \ \ \ \ \ \ \ <form\ method=\textcolor{stringliteral}{"{}POST"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00197}00197\ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}hidden"{}}\ name=\textcolor{stringliteral}{"{}action"{}}\ value=\textcolor{stringliteral}{"{}updatePriority"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_flight}{Flight}}:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}flight\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Combine\ take-\/off\ and\ landing\ queues\ so\ the\ TC\ can\ update\ priority\ for\ any\ queued\ flight}}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00202}\doxymbox{\hyperlink{_tower_controller_page_8php_a4f2f0f3dc61ec02df60620bea93f4350}{00202}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_tower_controller_page_8php_a4f2f0f3dc61ec02df60620bea93f4350}{\$allFlights}}\ =\ array\_merge(\doxymbox{\hyperlink{_tower_controller_page_8php_ae3f38663aedf1cb602f5b28843141b2f}{\$takeOffQueue}},\ \doxymbox{\hyperlink{_tower_controller_page_8php_aa33bd8e92fe8645060234fed6323384f}{\$landingQueue}});}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_tower_controller_page_8php_a4f2f0f3dc61ec02df60620bea93f4350}{\$allFlights}}\ as\ \$f)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$f["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$f[\textcolor{stringliteral}{"{}plane\_id"{}}].\textcolor{stringliteral}{"{}\ -\/\ Current\ Priority:\ "{}}.\$f[\textcolor{stringliteral}{"{}priority"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ <label>New\ Priority:}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}number"{}}\ name=\textcolor{stringliteral}{"{}priority"{}}\ min=\textcolor{stringliteral}{"{}1"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}submit"{}}\ value=\textcolor{stringliteral}{"{}Update\ Priority"{}}>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00212}00212\ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00213}00213\ }
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00214}00214\ \ \ \ \ \ \ \ \ <!-\/-\/Button\ to\ redirect\ to\ the\ logout\ page-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00215}00215\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}window.location.href='Logout.php'"{}}>Logout</button>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00216}00216\ \ \ \ \ </body>}
+\DoxyCodeLine{\Hypertarget{_tower_controller_page_8php_source_l00217}00217\ </html>}
+
+\end{DoxyCode}

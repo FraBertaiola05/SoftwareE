@@ -1,0 +1,144 @@
+\doxysection{Airline\+Page.\+php}
+\hypertarget{_airline_page_8php_source}{}\label{_airline_page_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/AirlinePage.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/AirlinePage.php}}
+\doxymbox{\hyperlink{_airline_page_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00002}00002\ \textcolor{comment}{//Import\ required\ files}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}Classes/User.php"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00004}00004\ require\ \textcolor{stringliteral}{"{}Controllers/FlightScheduleSystem.php"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00005}00005\ require\ \textcolor{stringliteral}{"{}DatabaseInfo.php"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00007}00007\ \textcolor{comment}{//Start\ the\ session\ to\ handle\ user\ login\ status}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00008}00008\ session\_start();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00009}\doxymbox{\hyperlink{_airline_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{00009}}\ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=\textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00011}00011\ \textcolor{comment}{//Check\ if\ the\ user\ is\ logged\ with\ the\ correct\ role\ for\ this\ page.\ If\ not,\ redirect\ it\ to\ the\ login\ page}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00012}00012\ \textcolor{keywordflow}{if}(isset(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])\&\&unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])-\/>getRole()==RoleEnum::AirlineCompanyManager)\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00013}00013\ \ \ \ \ \textcolor{comment}{//Obtain\ the\ User\ object\ of\ the\ logged\ user}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00014}00014\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}]);}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00015}00015\ \ \ \ \ \textcolor{comment}{//If\ the\ user\ is\ logged\ but\ it\ still\ has\ the\ same\ password\ as\ when\ the\ account\ was\ created,\ redirrect\ it\ to\ the\ page\ to\ change\ the\ password}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00016}00016\ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}-\/>getChangePass())}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00017}00017\ \ \ \ \ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ ChangePassword.php'});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00018}\doxymbox{\hyperlink{_airline_page_8php_ada6e4b735e3df2d5d3153d8675168645}{00018}}\ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00019}00019\ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ index.php'});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00020}00020\ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00022}\doxymbox{\hyperlink{_airline_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{00022}}\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00023}00023\ \textcolor{comment}{//When\ the\ user\ confirms\ a\ notification\ about\ a\ confirmed\ added/modified\ flight\ by\ the\ tower\ controller,\ call\ the\ function\ to\ set\ the\ status\ of\ the\ flight\ to\ "{}Confirmed"{}}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00024}00024\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}id"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}type"{}}])\&\&\$\_POST[\textcolor{stringliteral}{"{}type"{}}]==\textcolor{stringliteral}{"{}Confirm"{}})}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00025}00025\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{class_flight_schedule_system_aab4aed2dd0a59f0ebe7b0ef76cee14d6}{FlightScheduleSystem::updateAccepted}}(\$\_POST[\textcolor{stringliteral}{"{}id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00027}00027\ \textcolor{comment}{//When\ the\ user\ confirms\ a\ notification\ about\ a\ rejected\ added/modified\ flight\ by\ the\ tower\ controller,\ call\ the\ function\ that\ remove\ the\ rejected\ added/modified\ flight}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00028}00028\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}id"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}type"{}}])\&\&\$\_POST[\textcolor{stringliteral}{"{}type"{}}]==\textcolor{stringliteral}{"{}Delete"{}})}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00029}00029\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{class_flight_schedule_system_a6ac68413278162b7752db64656bc51c4}{FlightScheduleSystem::deleteRejected}}(\$\_POST[\textcolor{stringliteral}{"{}id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00031}00031\ \textcolor{comment}{//Check\ if\ there\ is\ data\ entered\ in\ the\ form\ to\ modify\ a\ flight.\ If\ this\ is\ the\ case,\ send\ the\ data\ to\ the\ function\ to\ modify\ the\ flight}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00032}00032\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}id"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}datetime"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}plane"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}pilot"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}dAirport"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}aAirport"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}status"{}}]))}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00033}00033\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{class_flight_schedule_system_ad0f2ea29b6743d08755fc9a19bc8e230}{FlightScheduleSystem::requestModifyFlight}}(\$\_POST[\textcolor{stringliteral}{"{}datetime"{}}],\$\_POST[\textcolor{stringliteral}{"{}plane"{}}],\$\_POST[\textcolor{stringliteral}{"{}pilot"{}}],\$\_POST[\textcolor{stringliteral}{"{}dAirport"{}}],\$\_POST[\textcolor{stringliteral}{"{}aAirport"{}}],\$\_POST[\textcolor{stringliteral}{"{}status"{}}],\$\_POST[\textcolor{stringliteral}{"{}id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00035}00035\ \textcolor{comment}{//Check\ if\ there\ is\ data\ entered\ in\ the\ form\ to\ delete\ a\ flight.\ If\ this\ is\ the\ case,\ send\ the\ data\ to\ the\ function\ to\ delete\ the\ flight}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00036}00036\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}flight"{}}]))}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00037}00037\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{class_flight_schedule_system_a351c843b22bddc409df8c33b60aa8b7b}{FlightScheduleSystem::deleteFlight}}(\$\_POST[\textcolor{stringliteral}{"{}flight"{}}]);}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00039}00039\ \textcolor{comment}{//Check\ if\ there\ is\ data\ entered\ in\ the\ form\ to\ add\ a\ flight.\ If\ this\ is\ the\ case,\ send\ the\ data\ to\ the\ function\ to\ add\ the\ flight}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00040}00040\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}datetime"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}plane"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}pilot"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}dAirport"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}aAirport"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}status"{}}]))}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00041}00041\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{class_flight_schedule_system_ad561f5f68078949ec240a9da422b79da}{FlightScheduleSystem::requestAddFlight}}(\$\_POST[\textcolor{stringliteral}{"{}datetime"{}}],\$\_POST[\textcolor{stringliteral}{"{}plane"{}}],\$\_POST[\textcolor{stringliteral}{"{}pilot"{}}],\$\_POST[\textcolor{stringliteral}{"{}dAirport"{}}],\$\_POST[\textcolor{stringliteral}{"{}aAirport"{}}],\$\_POST[\textcolor{stringliteral}{"{}status"{}}]);}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00043}00043\ ?>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00044}00044\ <!DOCTYPE\ html>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00045}00045\ <html>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00046}00046\ \ \ \ \ <head>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00047}00047\ \ \ \ \ \ \ \ \ <title>Airline\ Page</title>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00048}00048\ \ \ \ \ \ \ \ \ <script>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Load\ from\ the\ AJAX\ page\ the\ form\ to\ enter\ the\ data}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{function}\ loadForm(str)\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ var\ xmlhttp\ =\ \textcolor{keyword}{new}\ XMLHttpRequest();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xmlhttp.onreadystatechange\ =\ \textcolor{keyword}{function}()\ \{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this.readyState\ ==\ 4\ \&\&\ this.status\ ==\ 200)\ \{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ document.getElementById(\textcolor{stringliteral}{"{}container"{}}).innerHTML\ =\ this.responseText;}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xmlhttp.open(\textcolor{stringliteral}{"{}GET"{}},\ \textcolor{stringliteral}{"{}AJAX/AirlinePageAJAX.php?type="{}}\ +\ str,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xmlhttp.send();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Load\ from\ the\ AJAX\ page\ the\ form\ to\ modify\ a\ user\ with\ its\ data}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{function}\ loadModify()\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ var\ flightId\ =\ document.getElementById(\textcolor{stringliteral}{"{}flight"{}}).value;}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!flightId)}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ document.getElementById(\textcolor{stringliteral}{"{}container2"{}}).innerHTML\ =\textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ var\ xmlhttp\ =\ \textcolor{keyword}{new}\ XMLHttpRequest();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xmlhttp.onreadystatechange\ =\ \textcolor{keyword}{function}()\ \{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this.readyState\ ==\ 4\ \&\&\ this.status\ ==\ 200)\ \{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ document.getElementById(\textcolor{stringliteral}{"{}container2"{}}).innerHTML\ =\ this.responseText;}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xmlhttp.open(\textcolor{stringliteral}{"{}GET"{}},\ \textcolor{stringliteral}{"{}AJAX/AirlinePageAJAX.php?type=MODIFY2\&id="{}}+flightId,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xmlhttp.send();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00076}00076\ \ \ \ \ \ \ \ \ </script>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00077}00077\ \ \ \ \ </head>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00078}00078\ \ \ \ \ <body>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00079}00079\ \ \ \ \ \ \ \ \ <!-\/-\/Buttons\ to\ call\ the\ AJAX\ functionalities\ to\ load\ the\ forms\ \textcolor{keywordflow}{for}\ the\ various\ operations-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00080}00080\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}loadForm('ADD')"{}}>Add\ a\ \doxymbox{\hyperlink{class_flight}{Flight}}</button>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00081}00081\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}loadForm('MODIFY')"{}}>Modify\ a\ \doxymbox{\hyperlink{class_flight}{Flight}}</button>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00082}00082\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}loadForm('DELETE')"{}}>Delete\ a\ \doxymbox{\hyperlink{class_flight}{Flight}}</button>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00083}00083\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Show\ the\ result\ of\ an\ operation\ (Add/Modify/Delete)}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}!=\textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<p>\$result</p>"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00087}00087\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00088}00088\ \ \ \ \ \ \ \ \ <!-\/-\/Container\ where\ the\ JavaScrip\ puts\ the\ form-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00089}00089\ \ \ \ \ \ \ \ \ <div\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}container"{}}></div>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00090}00090\ \ \ \ \ \ \ \ \ <!-\/-\/Button\ to\ redirrect\ to\ the\ logout\ page-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00091}00091\ \ \ \ \ \ \ \ \ <p>Notifications</p>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00092}00092\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Connect\ to\ the\ database\ and\ fetch\ the\ notifcations}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00094}\doxymbox{\hyperlink{_airline_page_8php_a3d12b343d049cdea93240f06b0e8467c}{00094}}\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ f.id\ AS\ id,\ f.plane\_id\ AS\ plane,\ d.code\ AS\ dAirport,\ a.code\ AS\ aAirport,\ f.scheduled\_time\ AS\ time,\ f.validation\ AS\ validation}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00102}00102\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FROM\ flights\ AS\ f\ INNER\ JOIN\ airports\ AS\ d\ ON\ f.departure\_airport\_id=d.id}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00103}00103\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ INNER\ JOIN\ airports\ AS\ a\ ON\ f.arrival\_airport\_id=a.id}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00104}00104\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ INNER\ JOIN\ planes\ AS\ p\ ON\ f.plane\_id=p.plane\_number}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00105}00105\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WHERE\ p.company\_id=:company\ AND\ f.validation\ IN\ ('ACCEPTED','REJECTED')\ AND\ f.scheduled\_time>=CURDATE()"{}});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00106}\doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{00106}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}}=\doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}-\/>getCompany();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':company'},\doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Format\ the\ fetched\ data\ into\ HTML}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00113}\doxymbox{\hyperlink{_airline_page_8php_a43fc17af1cba245db5c1518185f529c5}{00113}}\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\$row\ =\ \$query-\/>fetch())\{}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<form\ action=AirlinePage.php\ method=POST>"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$row[\textcolor{stringliteral}{"{}validation"{}}]==\textcolor{stringliteral}{"{}ACCEPTED"{}})}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<label\ for='id'>The\ following\ flight\ was\ accepted:\ "{}}.\$row[\textcolor{stringliteral}{"{}plane"{}}].\textcolor{stringliteral}{"{}:\ "{}}.\$row[\textcolor{stringliteral}{"{}dAirport"{}}].\textcolor{stringliteral}{"{}\ -\/>\ "{}}.\$row[\textcolor{stringliteral}{"{}aAirport"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$row[\textcolor{stringliteral}{"{}time"{}}].\textcolor{stringliteral}{"{}</label>}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00117}00117\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type='hidden'\ name='id'\ id='id'\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00118}00118\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type='submit'\ name='type'\ id='type'\ value='Confirm'></form>"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<label\ for='id'>The\ following\ flight\ was\ rejected:\ "{}}.\$row[\textcolor{stringliteral}{"{}plane"{}}].\textcolor{stringliteral}{"{}:\ "{}}.\$row[\textcolor{stringliteral}{"{}dAirport"{}}].\textcolor{stringliteral}{"{}\ -\/>\ "{}}.\$row[\textcolor{stringliteral}{"{}aAirport"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$row[\textcolor{stringliteral}{"{}time"{}}].\textcolor{stringliteral}{"{}</label>}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00121}00121\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type='hidden'\ name='id'\ id='id'\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00122}00122\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type='submit'\ name='type'\ id='type'\ value='Delete'></form>"{}};}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00124}00124\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00125}00125\ \ \ \ \ \ \ \ \ <p>Departures</p>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00126}00126\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Print\ the\ table\ with\ the\ upcoming\ departures}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \doxymbox{\hyperlink{class_flight_schedule_system_a84942adbc03e723012050f1864d38885}{FlightScheduleSystem::getFlightHistoryTable}}(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00129}00129\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00130}00130\ \ \ \ \ \ \ \ \ <p>Arrivals</p>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00131}00131\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Print\ the\ table\ with\ the\ upcoming\ arrivals}}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \doxymbox{\hyperlink{class_flight_schedule_system_a84942adbc03e723012050f1864d38885}{FlightScheduleSystem::getFlightHistoryTable}}(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00134}00134\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00135}00135\ \ \ \ \ \ \ \ \ <!-\/-\/Button\ to\ redirect\ to\ the\ logout\ page-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00136}00136\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}window.location.href='Logout.php'"{}}>Logout</button>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00137}00137\ \ \ \ \ </body>}
+\DoxyCodeLine{\Hypertarget{_airline_page_8php_source_l00138}00138\ </html>}
+
+\end{DoxyCode}

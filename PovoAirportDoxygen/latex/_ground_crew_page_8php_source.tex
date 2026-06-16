@@ -1,0 +1,165 @@
+\doxysection{Ground\+Crew\+Page.\+php}
+\hypertarget{_ground_crew_page_8php_source}{}\label{_ground_crew_page_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/GroundCrewPage.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/GroundCrewPage.php}}
+\doxymbox{\hyperlink{_ground_crew_page_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00002}00002\ \textcolor{comment}{//Import\ required\ files}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}Classes/User.php"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00004}00004\ require\ \textcolor{stringliteral}{"{}Controllers/GroundManagementSystem.php"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00006}00006\ \textcolor{comment}{//Start\ the\ session\ to\ handle\ user\ login\ status}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00007}00007\ session\_start();}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00008}\doxymbox{\hyperlink{_ground_crew_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{00008}}\ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=\textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00010}00010\ \textcolor{comment}{//Check\ if\ the\ user\ is\ logged\ with\ the\ correct\ role\ for\ this\ page.\ If\ not,\ redirect\ it\ to\ the\ login\ page}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00011}00011\ \textcolor{keywordflow}{if}(isset(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])\&\&unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])-\/>getRole()==RoleEnum::GroundCrew)\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00012}00012\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}]);}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00013}00013\ \ \ \ \ \textcolor{comment}{//If\ the\ user\ is\ logged\ but\ it\ still\ has\ the\ same\ password\ as\ when\ the\ account\ was\ created,\ redirect\ it\ to\ the\ page\ to\ change\ the\ password}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00014}00014\ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}-\/>getChangePass())}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00015}00015\ \ \ \ \ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ ChangePassword.php'});}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00016}\doxymbox{\hyperlink{_ground_crew_page_8php_a5e9e95060e3a8f19f85d2bddb02ba1ad}{00016}}\ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00017}00017\ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ index.php'});}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00018}00018\ \}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00020}00020\ \textcolor{comment}{//Create\ an\ instance\ of\ the\ GroundManagementSystem\ to\ interact\ with\ plane\ movements\ and\ resources}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00021}\doxymbox{\hyperlink{_ground_crew_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{00021}}\ \doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}\ =\ \textcolor{keyword}{new}\ \doxymbox{\hyperlink{class_ground_management_system}{GroundManagementSystem}}();}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00022}\doxymbox{\hyperlink{_ground_crew_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{00022}}\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00024}00024\ \textcolor{comment}{//Check\ if\ an\ action\ was\ submitted\ through\ a\ form}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00025}00025\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}action"{}}]))\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00026}00026\ \ \ \ \ \textcolor{keywordflow}{switch}(\$\_POST[\textcolor{stringliteral}{"{}action"{}}])\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Move\ a\ plane\ from\ the\ taxiway\ to\ a\ parking\ spot}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}toParking"{}}:}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>movePlaneToParking(\$\_POST[\textcolor{stringliteral}{"{}flight\_id"{}}],\ \$\_POST[\textcolor{stringliteral}{"{}spot\_id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Move\ a\ plane\ from\ parking\ to\ a\ taxiway\ for\ take-\/off\ preparation}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00032}00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}toTaxiway"{}}:}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>movePlaneToTaxiway(\$\_POST[\textcolor{stringliteral}{"{}flight\_id"{}}],\ \$\_POST[\textcolor{stringliteral}{"{}taxiway\_id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00035}00035\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00036}00036\ \}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00038}00038\ \textcolor{comment}{//Fetch\ the\ data\ needed\ to\ display\ the\ current\ state\ of\ planes\ and\ available\ resources}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00039}\doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{00039}}\ \doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planesOnGround}}\ =\ \doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>getPlanesOnGround();}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00040}\doxymbox{\hyperlink{_ground_crew_page_8php_a05e87333684a942f274c88dea62c45f9}{00040}}\ \doxymbox{\hyperlink{_ground_crew_page_8php_a05e87333684a942f274c88dea62c45f9}{\$parkingSpots}}\ =\ \doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>getAvailableParkingSpots();}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00041}\doxymbox{\hyperlink{_ground_crew_page_8php_a5f27620f4fd9cdaf9f4a7a863e108831}{00041}}\ \doxymbox{\hyperlink{_ground_crew_page_8php_a5f27620f4fd9cdaf9f4a7a863e108831}{\$taxiways}}\ =\ \doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>getAvailableTaxiways();}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00043}00043\ \textcolor{comment}{//Fetch\ flights\ eligible\ for\ gate\ movement\ (Scheduled,\ departure\ from\ airport\ 1,\ has\ a\ gate\ assigned)}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00044}00044\ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00045}\doxymbox{\hyperlink{_ground_crew_page_8php_abe4cc9788f52e49485473dc699537388}{00045}}\ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00046}00046\ \ \ \ \ \$conn2\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00047}00047\ \ \ \ \ \$conn2-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00048}\doxymbox{\hyperlink{_ground_crew_page_8php_a4377c5cae311e41a3928a61bc7edf7ec}{00048}}\ \ \ \ \ \doxymbox{\hyperlink{_ground_crew_page_8php_a4377c5cae311e41a3928a61bc7edf7ec}{\$gateQuery}}\ =\ \$conn2-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ f.id,\ f.plane\_id,\ f.scheduled\_time,\ p.model,}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00049}00049\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ da.code\ AS\ dep\_code,\ da.city\ AS\ dep\_city,}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00050}00050\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ aa.code\ AS\ arr\_code,\ aa.city\ AS\ arr\_city,}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00051}00051\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ g.gate\_number}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00052}00052\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ FROM\ flights\ f}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00053}00053\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ INNER\ JOIN\ planes\ p\ ON\ f.plane\_id\ =\ p.plane\_number}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00054}00054\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ INNER\ JOIN\ airports\ da\ ON\ f.departure\_airport\_id\ =\ da.id}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00055}00055\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ INNER\ JOIN\ airports\ aa\ ON\ f.arrival\_airport\_id\ =\ aa.id}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00056}00056\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ INNER\ JOIN\ gates\ g\ ON\ f.id\ =\ g.flight\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00057}00057\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ WHERE\ f.status\_id\ =\ 1\ AND\ f.validation\ IN\ ('CONFIRMED','ACCEPTED')\ AND\ da.id\ =\ 1}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00058}00058\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ ORDER\ BY\ f.scheduled\_time\ ASC"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00059}00059\ \ \ \ \ \doxymbox{\hyperlink{_ground_crew_page_8php_a4377c5cae311e41a3928a61bc7edf7ec}{\$gateQuery}}-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00060}\doxymbox{\hyperlink{_ground_crew_page_8php_a39e771a6b7d3e2696fcd265e9237b028}{00060}}\ \ \ \ \ \doxymbox{\hyperlink{_ground_crew_page_8php_a39e771a6b7d3e2696fcd265e9237b028}{\$gateFlights}}\ =\ \doxymbox{\hyperlink{_ground_crew_page_8php_a4377c5cae311e41a3928a61bc7edf7ec}{\$gateQuery}}-\/>fetchAll(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00061}00061\ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00062}00062\ \ \ \ \ \doxymbox{\hyperlink{_ground_crew_page_8php_a39e771a6b7d3e2696fcd265e9237b028}{\$gateFlights}}\ =\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00063}00063\ \}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00064}00064\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00065}00065\ <!DOCTYPE\ html>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00066}00066\ <html>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00067}00067\ \ \ \ \ <head>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00068}00068\ \ \ \ \ \ \ \ \ <title>Ground\ Crew\ Panel</title>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00069}00069\ \ \ \ \ </head>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00070}00070\ \ \ \ \ <body>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00071}00071\ \ \ \ \ \ \ \ \ <h1>Ground\ Crew\ Panel</h1>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00072}00072\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Show\ the\ result\ of\ an\ operation\ (move\ to\ parking,\ move\ to\ taxiway)}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}!=\textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<p>\$result</p>"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00076}00076\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00078}00078\ \ \ \ \ \ \ \ \ <!-\/-\/show\ the\ current\ location\ of\ every\ plane\ at\ the\ airport-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00079}00079\ \ \ \ \ \ \ \ \ <h2>Planes\ on\ Ground</h2>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00080}00080\ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{if}(count(\doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planesOnGround}})>0)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ <table\ border=1>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr><th>\doxymbox{\hyperlink{class_plane}{Plane}}</th><th>Model</th><th>Status</th><th>Location</th><th>Scheduled\ Time</th></tr>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planesOnGround}}\ as\ \$p)\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Determine\ which\ resource\ the\ plane\ is\ currently\ occupying,\ prefering\ most\ specific\ (parking\ →\ gate\ →\ taxiway\ →\ runway)}}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$location\ =\ \textcolor{stringliteral}{"{}-\/"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$p[\textcolor{stringliteral}{"{}parking\_spot"{}}])\ \$location\ =\ \textcolor{stringliteral}{"{}Parking\ "{}}.\$p[\textcolor{stringliteral}{"{}parking\_spot"{}}];}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\$p[\textcolor{stringliteral}{"{}gate\_number"{}}])\ \$location\ =\ \textcolor{stringliteral}{"{}Gate\ "{}}.\$p[\textcolor{stringliteral}{"{}gate\_number"{}}];}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\$p[\textcolor{stringliteral}{"{}taxiway\_number"{}}])\ \$location\ =\ \textcolor{stringliteral}{"{}Taxiway\ "{}}.\$p[\textcolor{stringliteral}{"{}taxiway\_number"{}}];}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\$p[\textcolor{stringliteral}{"{}runway\_number"{}}])\ \$location\ =\ \textcolor{stringliteral}{"{}Runway\ "{}}.\$p[\textcolor{stringliteral}{"{}runway\_number"{}}];}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <tr>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$p[\textcolor{stringliteral}{"{}plane\_number"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$p[\textcolor{stringliteral}{"{}model"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$p[\textcolor{stringliteral}{"{}plane\_status"{}}];\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$location;\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <td><?php\ echo\ \$p[\textcolor{stringliteral}{"{}scheduled\_time"{}}]\ ?:\ \textcolor{stringliteral}{"{}-\/"{}};\ ?></td>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </tr>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ </table>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00100}00100\ \ \ \ \ \ \ \ \ <?php\ \}\textcolor{keywordflow}{else}\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ <p>No\ planes\ on\ the\ ground</p>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00102}00102\ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00104}00104\ \ \ \ \ \ \ \ \ <!-\/-\/form\ to\ move\ a\ plane\ from\ the\ taxiway\ to\ an\ available\ parking\ spot-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00105}00105\ \ \ \ \ \ \ \ \ <h2>Move\ \doxymbox{\hyperlink{class_plane}{Plane}}\ to\ Parking</h2>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00106}00106\ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{if}(count(\doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planesOnGround}})>0\ \&\&\ count(\doxymbox{\hyperlink{_ground_crew_page_8php_a05e87333684a942f274c88dea62c45f9}{\$parkingSpots}})>0)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ <form\ method=\textcolor{stringliteral}{"{}POST"{}}>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}hidden"{}}\ name=\textcolor{stringliteral}{"{}action"{}}\ value=\textcolor{stringliteral}{"{}toParking"{}}>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_plane}{Plane}}:}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}flight\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planesOnGround}}\ as\ \$p)\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$p[\textcolor{stringliteral}{"{}plane\_status"{}}]\ !=\ \textcolor{stringliteral}{"{}Landed"{}})\ \textcolor{keywordflow}{continue};\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$p["{}}flight\_id\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$p[\textcolor{stringliteral}{"{}plane\_number"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$p[\textcolor{stringliteral}{"{}plane\_status"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>Parking\ Spot:}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}spot\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_ground_crew_page_8php_a05e87333684a942f274c88dea62c45f9}{\$parkingSpots}}\ as\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}})\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$s["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}[\textcolor{stringliteral}{"{}spot\_number"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}submit"{}}\ value=\textcolor{stringliteral}{"{}Move\ to\ Parking"{}}>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00126}00126\ \ \ \ \ \ \ \ \ <?php\ \}\textcolor{keywordflow}{else}\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ <p>No\ available\ parking\ spots\ or\ no\ planes\ to\ move</p>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00128}00128\ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00130}00130\ \ \ \ \ \ \ \ \ <!-\/-\/form\ to\ move\ a\ plane\ from\ parking\ to\ an\ available\ taxiway\ \textcolor{keywordflow}{for}\ take-\/off\ preparation-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00131}00131\ \ \ \ \ \ \ \ \ <h2>Move\ \doxymbox{\hyperlink{class_plane}{Plane}}\ to\ \doxymbox{\hyperlink{class_taxiway}{Taxiway}}</h2>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00132}00132\ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{if}(count(\doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planesOnGround}})>0\ \&\&\ count(\doxymbox{\hyperlink{_ground_crew_page_8php_a5f27620f4fd9cdaf9f4a7a863e108831}{\$taxiways}})>0)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ <form\ method=\textcolor{stringliteral}{"{}POST"{}}>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}hidden"{}}\ name=\textcolor{stringliteral}{"{}action"{}}\ value=\textcolor{stringliteral}{"{}toTaxiway"{}}>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_plane}{Plane}}:}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}flight\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_ground_crew_page_8php_ab738602f873771367b28bc37793f033c}{\$planesOnGround}}\ as\ \$p)\{}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$p[\textcolor{stringliteral}{"{}taxiway\_number"{}}]\ ||\ \$p[\textcolor{stringliteral}{"{}runway\_number"{}}])\ \textcolor{keywordflow}{continue};\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$p["{}}flight\_id\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$p[\textcolor{stringliteral}{"{}plane\_number"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$p[\textcolor{stringliteral}{"{}plane\_status"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <label>\doxymbox{\hyperlink{class_taxiway}{Taxiway}}:}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <select\ name=\textcolor{stringliteral}{"{}taxiway\_id"{}}\ required>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_ground_crew_page_8php_a5f27620f4fd9cdaf9f4a7a863e108831}{\$taxiways}}\ as\ \$t)\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <option\ value=\textcolor{stringliteral}{"{}<?php\ echo\ \$t["{}}\textcolor{keywordtype}{id}\textcolor{stringliteral}{"{}];\ ?>"{}}><?php\ echo\ \$t[\textcolor{stringliteral}{"{}taxiway\_number"{}}];\ ?></option>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </select>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ </label>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <input\ type=\textcolor{stringliteral}{"{}submit"{}}\ value=\textcolor{stringliteral}{"{}Move\ to\ Taxiway"{}}>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ </form>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00152}00152\ \ \ \ \ \ \ \ \ <?php\ \}\textcolor{keywordflow}{else}\{\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ <p>No\ available\ taxiways\ or\ no\ planes\ to\ move</p>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00154}00154\ \ \ \ \ \ \ \ \ <?php\ \}\ ?>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00156}00156\ \ \ \ \ \ \ \ \ <!-\/-\/Button\ to\ redirect\ to\ the\ logout\ page-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00157}00157\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}window.location.href='Logout.php'"{}}>Logout</button>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00158}00158\ \ \ \ \ </body>}
+\DoxyCodeLine{\Hypertarget{_ground_crew_page_8php_source_l00159}00159\ </html>}
+
+\end{DoxyCode}

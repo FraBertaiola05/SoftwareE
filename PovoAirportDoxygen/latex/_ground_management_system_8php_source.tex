@@ -1,0 +1,244 @@
+\doxysection{Ground\+Management\+System.\+php}
+\hypertarget{_ground_management_system_8php_source}{}\label{_ground_management_system_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Controllers/GroundManagementSystem.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Controllers/GroundManagementSystem.php}}
+\doxymbox{\hyperlink{_ground_management_system_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00003}\doxymbox{\hyperlink{class_ground_management_system}{00003}}\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_ground_management_system}{GroundManagementSystem}}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00004}00004\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00014}\doxymbox{\hyperlink{class_ground_management_system_a5160fb22cbfd654ac4e02807667f692a}{00014}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a5160fb22cbfd654ac4e02807667f692a}{getPlanesOnGround}}():\ array\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00015}00015\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00017}00017\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00018}00018\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00019}00019\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00020}00020\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00021}00021\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00022}00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00023}00023\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>query(\textcolor{stringliteral}{"{}SELECT\ p.plane\_number,\ p.model,\ fs.status\ AS\ plane\_status,}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00024}00024\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f.id\ AS\ flight\_id,\ f.scheduled\_time,}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00025}00025\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s.spot\_number\ AS\ parking\_spot,\ r.runway\_number,\ g.gate\_number,\ t.taxiway\_number}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00026}00026\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FROM\ planes\ p}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00027}00027\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ INNER\ JOIN\ flights\ f\ ON\ p.plane\_number\ =\ f.plane\_id\ AND\ f.validation\ IN\ ('ACCEPTED','CONFIRMED')\ AND\ ((f.departure\_airport\_id\ =\ 1\ AND\ f.status\_id\ NOT\ IN\ (6,\ 7))\ OR\ (f.arrival\_airport\_id\ =\ 1\ AND\ f.status\_id\ =\ 5))}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00028}00028\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ INNER\ JOIN\ flight\_status\ fs\ ON\ f.status\_id\ =\ fs.id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00029}00029\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LEFT\ JOIN\ parking\_spots\ s\ ON\ p.plane\_number\ =\ s.plane\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00030}00030\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LEFT\ JOIN\ runways\ r\ ON\ f.id\ =\ r.flight\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00031}00031\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LEFT\ JOIN\ gates\ g\ ON\ f.id\ =\ g.flight\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00032}00032\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LEFT\ JOIN\ taxiway\_flight\ tf\ ON\ f.id\ =\ tf.flight\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00033}00033\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LEFT\ JOIN\ taxiways\ t\ ON\ tf.taxiway\_id\ =\ t.id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00034}00034\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ORDER\ BY\ p.plane\_number"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$query-\/>fetchAll(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00036}00036\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00038}00038\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00039}00039\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00048}\doxymbox{\hyperlink{class_ground_management_system_a28f5764f10b50c274bd217f8f6f19327}{00048}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a28f5764f10b50c274bd217f8f6f19327}{getAvailableParkingSpots}}():\ array\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00049}00049\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00053}00053\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00055}00055\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>query(\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ parking\_spots\ WHERE\ plane\_id\ IS\ NULL"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$query-\/>fetchAll(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00059}00059\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00061}00061\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00062}00062\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00071}\doxymbox{\hyperlink{class_ground_management_system_a28a3ea795ea7ae8fd153a641a970e834}{00071}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a28a3ea795ea7ae8fd153a641a970e834}{getAvailableRunways}}():\ array\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00072}00072\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00076}00076\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00078}00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>query(\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ runways\ WHERE\ flight\_id\ IS\ NULL"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$query-\/>fetchAll(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00082}00082\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00084}00084\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00085}00085\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00094}\doxymbox{\hyperlink{class_ground_management_system_a4b58fa231d7953e0942a3e3f1dedf7eb}{00094}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a4b58fa231d7953e0942a3e3f1dedf7eb}{getAvailableTaxiways}}():\ array\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00095}00095\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00099}00099\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00101}00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>query(\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ taxiways"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$query-\/>fetchAll(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00105}00105\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00107}00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00108}00108\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00121}\doxymbox{\hyperlink{class_ground_management_system_afeeddc6350b6e2e0f36483ddbd40f20a}{00121}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_afeeddc6350b6e2e0f36483ddbd40f20a}{movePlaneToParking}}(\textcolor{keywordtype}{int}\ \$flightId,\ \textcolor{keywordtype}{int}\ \$spotId):\ string\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00122}00122\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00123}00123\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00126}00126\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00128}00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00129}00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>beginTransaction();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Get\ the\ plane\ number\ for\ this\ flight}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ plane\_id\ FROM\ flights\ WHERE\ id\ =\ :flightId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ \$plane\ =\ \$query-\/>fetch(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!\$plane)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>rollBack();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Flight\ not\ found"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \$planeId\ =\ \$plane[\textcolor{stringliteral}{"{}plane\_id"{}}];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Assign\ the\ parking\ spot\ to\ the\ plane}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ parking\_spots\ SET\ plane\_id\ =\ :planeId\ WHERE\ id\ =\ :spotId\ AND\ plane\_id\ IS\ NULL"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':planeId'},\ \$planeId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':spotId'},\ \$spotId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$query-\/>rowCount()\ ==\ 0)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>rollBack();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ parking\ spot\ is\ not\ available"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}DELETE\ FROM\ taxiway\_flight\ WHERE\ flight\_id\ =\ :flightId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Clear\ any\ other\ parking\ spot\ assigned\ to\ this\ plane}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ parking\_spots\ SET\ plane\_id\ =\ NULL\ WHERE\ plane\_id\ =\ :planeId\ AND\ id\ !=\ :spotId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':planeId'},\ \$planeId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':spotId'},\ \$spotId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Mark\ the\ flight\ as\ finished\ once\ it\ reaches\ the\ parking\ spot}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ flights\ SET\ status\_id\ =\ 7\ WHERE\ id\ =\ :flightId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>commit();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Plane\ moved\ to\ parking\ spot\ successfully"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00164}00164\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>rollBack();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00167}00167\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00168}00168\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00182}\doxymbox{\hyperlink{class_ground_management_system_a8ea040e50c0415579c1e8c08cb3fc3d5}{00182}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a8ea040e50c0415579c1e8c08cb3fc3d5}{movePlaneToTaxiway}}(\textcolor{keywordtype}{int}\ \$flightId,\ \textcolor{keywordtype}{int}\ \$taxiwayId):\ string\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00183}00183\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00184}00184\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00187}00187\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00189}00189\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00190}00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>beginTransaction();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Get\ the\ plane\ number\ for\ this\ flight}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ plane\_id\ FROM\ flights\ WHERE\ id\ =\ :flightId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ \$plane\ =\ \$query-\/>fetch(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00197}00197\ \ \ \ \ \ \ \ \ \ \ \ \ \$planeId\ =\ \$plane\ ?\ \$plane[\textcolor{stringliteral}{"{}plane\_id"{}}]\ :\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}DELETE\ FROM\ taxiway\_flight\ WHERE\ flight\_id\ =\ :flightId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Clear\ the\ parking\ spot\ for\ this\ plane}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$planeId)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ parking\_spots\ SET\ plane\_id\ =\ NULL\ WHERE\ plane\_id\ =\ :planeId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':planeId'},\ \$planeId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ runways\ SET\ flight\_id\ =\ NULL\ WHERE\ flight\_id\ =\ :flightId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Set\ the\ flight\ status\ to\ Boarding\ so\ it\ appears\ in\ the\ TC\ queue}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ flights\ SET\ status\_id\ =\ 2\ WHERE\ id\ =\ :flightId"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Assign\ the\ taxiway}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>prepare(\textcolor{stringliteral}{"{}INSERT\ INTO\ taxiway\_flight\ (flight\_id,\ taxiway\_id)\ VALUES\ (:flightId,\ :taxiwayId)"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flightId'},\ \$flightId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':taxiwayId'},\ \$taxiwayId);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>commit();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Plane\ moved\ to\ taxiway\ successfully"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00221}00221\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00222}00222\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>rollBack();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00223}00223\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00224}00224\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00225}00225\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00226}00226\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00235}\doxymbox{\hyperlink{class_ground_management_system_a706227e9f240f8da602034e32f1a9f12}{00235}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a706227e9f240f8da602034e32f1a9f12}{getFlightsForGates}}():\ array\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00236}00236\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Import\ required\ file}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00237}00237\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00238}00238\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00241}00241\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00243}00243\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00244}00244\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>query(\textcolor{stringliteral}{"{}SELECT\ f.id\ AS\ id,\ f.scheduled\_time\ AS\ time,\ da.code\ AS\ dAirport,\ aa.code\ AS\ aAirport,\ p.plane\_number\ AS\ plane}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00246}00246\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ FROM\ flights\ AS\ f\ INNER\ JOIN\ planes\ AS\ p\ ON\ f.plane\_id=p.plane\_number}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00247}00247\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ INNER\ JOIN\ parking\_spots\ AS\ ps\ ON\ f.plane\_id=ps.plane\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00248}00248\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ INNER\ JOIN\ airports\ AS\ da\ ON\ da.id=f.departure\_airport\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00249}00249\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ INNER\ JOIN\ airports\ AS\ aa\ ON\ aa.id=f.arrival\_airport\_id}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00250}00250\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ WHERE\ f.validation\ IN\ ('CONFIRMED','ACCEPTED')\ AND\ f.status\_id=1\ AND\ (SELECT\ COUNT(*)\ FROM\ gates\ WHERE\ f.id=flight\_id)=0\ AND\ da.id=1}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00251}00251\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ ORDER\ BY\ f.scheduled\_time"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$query-\/>fetchAll(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00253}00253\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00255}00255\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00256}00256\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00257}00257\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00265}\doxymbox{\hyperlink{class_ground_management_system_a7610f326bfb73f53b452e7b386aee282}{00265}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a7610f326bfb73f53b452e7b386aee282}{getAvailableGates}}():\ array\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00266}00266\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Import\ required\ file}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00267}00267\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00268}00268\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00271}00271\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00273}00273\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00274}00274\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \$query\ =\ \$conn-\/>query(\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ gates\ WHERE\ flight\_id\ IS\ NULL"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$query-\/>fetchAll(PDO::FETCH\_ASSOC);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00277}00277\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00279}00279\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00280}00280\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00281}00281\ }
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00293}\doxymbox{\hyperlink{class_ground_management_system_a4da1ef9631fc4852ae4a8f252c1fd917}{00293}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_ground_management_system_a4da1ef9631fc4852ae4a8f252c1fd917}{updateGate}}(\textcolor{keywordtype}{int}\ \$flight,\ \textcolor{keywordtype}{int}\ \$gate):\ string\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00294}00294\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Import\ required\ file}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00295}00295\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00296}00296\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00299}00299\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00301}00301\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00302}00302\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Check\ if\ inserted\ data\ is\ not\ null\ and\ of\ the\ right\ type}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00303}00303\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!is\_null(\$flight)\&\&is\_numeric(\$flight)\&\&!is\_null(\$gate)\&\&is\_numeric(\$gate))\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00304}00304\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00305}00305\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ gates\ SET\ flight\_id=:flight\ WHERE\ id=:gate"{}});}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00306}00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':flight'},\$flight);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':gate'},\$gate);}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ gate\ was\ assigned\ with\ success"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00313}00313\ \ \ \ \ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ inserted\ data\ is\ wrong"{}};}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00315}00315\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00316}00316\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_ground_management_system_8php_source_l00317}00317\ \}}
+
+\end{DoxyCode}

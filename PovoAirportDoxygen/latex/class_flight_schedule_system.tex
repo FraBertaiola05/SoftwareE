@@ -1,0 +1,211 @@
+\doxysection{Flight\+Schedule\+System Class Reference}
+\hypertarget{class_flight_schedule_system}{}\label{class_flight_schedule_system}\index{FlightScheduleSystem@{FlightScheduleSystem}}
+
+
+Manages flight scheduling operations.  
+
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \doxymbox{\hyperlink{class_flight_schedule_system_ad561f5f68078949ec240a9da422b79da}{request\+Add\+Flight}} (string \$datetime, string \$plane, int \$pilot, int \$d\+Airport, int \$a\+Airport, int \$status)
+\begin{DoxyCompactList}\small\item\em Requests the creation of a new flight. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_flight_schedule_system_ad0f2ea29b6743d08755fc9a19bc8e230}{request\+Modify\+Flight}} (string \$datetime, string \$plane, int \$pilot, int \$d\+Airport, int \$a\+Airport, int \$status, int \$id)
+\begin{DoxyCompactList}\small\item\em Requests modifications to an existing flight. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_flight_schedule_system_a351c843b22bddc409df8c33b60aa8b7b}{delete\+Flight}} (int \$id)
+\begin{DoxyCompactList}\small\item\em Deletes a flight from the schedule. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_flight_schedule_system_aab4aed2dd0a59f0ebe7b0ef76cee14d6}{update\+Accepted}} (int \$id)
+\begin{DoxyCompactList}\small\item\em Confirms a flight that has been accepted. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_flight_schedule_system_a6ac68413278162b7752db64656bc51c4}{delete\+Rejected}} (int \$id)
+\begin{DoxyCompactList}\small\item\em Removes a rejected flight request. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_flight_schedule_system_a84942adbc03e723012050f1864d38885}{get\+Flight\+History\+Table}} (\$b=true, string \$t1="{}"{}, string \$t2="{}9999-\/12-\/31 23:\+59:\+59.\+999"{})
+\begin{DoxyCompactList}\small\item\em Generates a flight history table. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages flight scheduling operations. 
+
+This class provides methods for creating, modifying, deleting, validating, and retrieving flight information used by the airport system. 
+
+Definition at line \doxymbox{\hyperlink{_flight_schedule_system_8php_source_l00009}{9}} of file \doxymbox{\hyperlink{_flight_schedule_system_8php_source}{Flight\+Schedule\+System.\+php}}.
+
+
+
+\label{class_flight_schedule_system_doc-func-members}
+\Hypertarget{class_flight_schedule_system_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_flight_schedule_system_a351c843b22bddc409df8c33b60aa8b7b}\index{FlightScheduleSystem@{FlightScheduleSystem}!deleteFlight@{deleteFlight}}
+\index{deleteFlight@{deleteFlight}!FlightScheduleSystem@{FlightScheduleSystem}}
+\doxysubsubsection{\texorpdfstring{deleteFlight()}{deleteFlight()}}
+{\footnotesize\ttfamily \label{class_flight_schedule_system_a351c843b22bddc409df8c33b60aa8b7b} 
+delete\+Flight (\begin{DoxyParamCaption}\item[{int}]{\$id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Deletes a flight from the schedule. 
+
+Removes any gate, runway, and taxiway associations before marking the flight as deleted.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & id of the flight to delete.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Result message describing the outcome of the operation. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_flight_schedule_system_8php_source_l00109}{109}} of file \doxymbox{\hyperlink{_flight_schedule_system_8php_source}{Flight\+Schedule\+System.\+php}}.
+
+\Hypertarget{class_flight_schedule_system_a6ac68413278162b7752db64656bc51c4}\index{FlightScheduleSystem@{FlightScheduleSystem}!deleteRejected@{deleteRejected}}
+\index{deleteRejected@{deleteRejected}!FlightScheduleSystem@{FlightScheduleSystem}}
+\doxysubsubsection{\texorpdfstring{deleteRejected()}{deleteRejected()}}
+{\footnotesize\ttfamily \label{class_flight_schedule_system_a6ac68413278162b7752db64656bc51c4} 
+delete\+Rejected (\begin{DoxyParamCaption}\item[{int}]{\$id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Removes a rejected flight request. 
+
+Deletes a flight entry that was rejected during the validation process.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & id of the rejected flight.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Empty string on success or an error message on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_flight_schedule_system_8php_source_l00180}{180}} of file \doxymbox{\hyperlink{_flight_schedule_system_8php_source}{Flight\+Schedule\+System.\+php}}.
+
+\Hypertarget{class_flight_schedule_system_a84942adbc03e723012050f1864d38885}\index{FlightScheduleSystem@{FlightScheduleSystem}!getFlightHistoryTable@{getFlightHistoryTable}}
+\index{getFlightHistoryTable@{getFlightHistoryTable}!FlightScheduleSystem@{FlightScheduleSystem}}
+\doxysubsubsection{\texorpdfstring{getFlightHistoryTable()}{getFlightHistoryTable()}}
+{\footnotesize\ttfamily \label{class_flight_schedule_system_a84942adbc03e723012050f1864d38885} 
+get\+Flight\+History\+Table (\begin{DoxyParamCaption}\item[{}]{\$b}{ = {\ttfamily true}, }\item[{string}]{\$t1}{ = {\ttfamily "{}"{}}, }\item[{string}]{\$t2}{ = {\ttfamily "{}9999-\/12-\/31~23:\+59:\+59.999"{}}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Generates a flight history table. 
+
+Retrieves arrival or departure information within the specified time range and returns it as an HTML table.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & When true, returns departures. When false, returns arrivals. \\
+\hline
+{\em t1} & Start date and time of the search interval. \\
+\hline
+{\em t2} & End date and time of the search interval.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string HTML table containing the requested flight history. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_flight_schedule_system_8php_source_l00214}{214}} of file \doxymbox{\hyperlink{_flight_schedule_system_8php_source}{Flight\+Schedule\+System.\+php}}.
+
+\Hypertarget{class_flight_schedule_system_ad561f5f68078949ec240a9da422b79da}\index{FlightScheduleSystem@{FlightScheduleSystem}!requestAddFlight@{requestAddFlight}}
+\index{requestAddFlight@{requestAddFlight}!FlightScheduleSystem@{FlightScheduleSystem}}
+\doxysubsubsection{\texorpdfstring{requestAddFlight()}{requestAddFlight()}}
+{\footnotesize\ttfamily \label{class_flight_schedule_system_ad561f5f68078949ec240a9da422b79da} 
+request\+Add\+Flight (\begin{DoxyParamCaption}\item[{string}]{\$datetime}{, }\item[{string}]{\$plane}{, }\item[{int}]{\$pilot}{, }\item[{int}]{\$d\+Airport}{, }\item[{int}]{\$a\+Airport}{, }\item[{int}]{\$status}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Requests the creation of a new flight. 
+
+Creates a new flight entry that must be reviewed and accepted by a Tower Controller before becoming active.
+
+
+\begin{DoxyParams}{Parameters}
+{\em datetime} & Scheduled date and time of the flight. \\
+\hline
+{\em plane} & id of the assigned aircraft. \\
+\hline
+{\em pilot} & id of the assigned pilot. \\
+\hline
+{\em d\+Airport} & Departure airport id. \\
+\hline
+{\em a\+Airport} & Arrival airport id. \\
+\hline
+{\em status} & Initial flight status id.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Result message describing the outcome of the request. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_flight_schedule_system_8php_source_l00026}{26}} of file \doxymbox{\hyperlink{_flight_schedule_system_8php_source}{Flight\+Schedule\+System.\+php}}.
+
+\Hypertarget{class_flight_schedule_system_ad0f2ea29b6743d08755fc9a19bc8e230}\index{FlightScheduleSystem@{FlightScheduleSystem}!requestModifyFlight@{requestModifyFlight}}
+\index{requestModifyFlight@{requestModifyFlight}!FlightScheduleSystem@{FlightScheduleSystem}}
+\doxysubsubsection{\texorpdfstring{requestModifyFlight()}{requestModifyFlight()}}
+{\footnotesize\ttfamily \label{class_flight_schedule_system_ad0f2ea29b6743d08755fc9a19bc8e230} 
+request\+Modify\+Flight (\begin{DoxyParamCaption}\item[{string}]{\$datetime}{, }\item[{string}]{\$plane}{, }\item[{int}]{\$pilot}{, }\item[{int}]{\$d\+Airport}{, }\item[{int}]{\$a\+Airport}{, }\item[{int}]{\$status}{, }\item[{int}]{\$id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Requests modifications to an existing flight. 
+
+Updates the selected flight and marks the changes for review by a Tower Controller before they become effective.
+
+
+\begin{DoxyParams}{Parameters}
+{\em datetime} & Updated scheduled date and time. \\
+\hline
+{\em plane} & Updated aircraft id. \\
+\hline
+{\em pilot} & Updated pilot id. \\
+\hline
+{\em d\+Airport} & Updated departure airport id. \\
+\hline
+{\em a\+Airport} & Updated arrival airport id. \\
+\hline
+{\em status} & Updated flight status id. \\
+\hline
+{\em id} & id of the flight to modify.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Result message describing the outcome of the request. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_flight_schedule_system_8php_source_l00070}{70}} of file \doxymbox{\hyperlink{_flight_schedule_system_8php_source}{Flight\+Schedule\+System.\+php}}.
+
+\Hypertarget{class_flight_schedule_system_aab4aed2dd0a59f0ebe7b0ef76cee14d6}\index{FlightScheduleSystem@{FlightScheduleSystem}!updateAccepted@{updateAccepted}}
+\index{updateAccepted@{updateAccepted}!FlightScheduleSystem@{FlightScheduleSystem}}
+\doxysubsubsection{\texorpdfstring{updateAccepted()}{updateAccepted()}}
+{\footnotesize\ttfamily \label{class_flight_schedule_system_aab4aed2dd0a59f0ebe7b0ef76cee14d6} 
+update\+Accepted (\begin{DoxyParamCaption}\item[{int}]{\$id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Confirms a flight that has been accepted. 
+
+Changes the validation state from ACCEPTED to CONFIRMED.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & id of the accepted flight.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Empty string on success or an error message on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_flight_schedule_system_8php_source_l00149}{149}} of file \doxymbox{\hyperlink{_flight_schedule_system_8php_source}{Flight\+Schedule\+System.\+php}}.
+
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+C:\+/\+\+Users/\+\+LENOVO/\+\+Desktop/\+\+Software\+E/\+software\+E/\+\+Povo\+Airport/\+\+Controllers/\+\doxymbox{\hyperlink{_flight_schedule_system_8php}{Flight\+Schedule\+System.\+php}}\end{DoxyCompactItemize}

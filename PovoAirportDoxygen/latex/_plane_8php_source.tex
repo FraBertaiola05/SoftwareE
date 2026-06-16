@@ -1,0 +1,40 @@
+\doxysection{Plane.\+php}
+\hypertarget{_plane_8php_source}{}\label{_plane_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Classes/Plane.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Classes/Plane.php}}
+\doxymbox{\hyperlink{_plane_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00002}00002\ require\ \textcolor{stringliteral}{"{}Company.php"{}};}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00003}00003\ \textcolor{comment}{//Class\ that\ represents\ an\ airplane\ with\ its\ model\ and\ company}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00004}\doxymbox{\hyperlink{class_plane}{00004}}\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_plane}{Plane}}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00005}00005\ \{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00006}00006\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \$planeNumber;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00007}00007\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \$model;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00008}00008\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{class_company}{Company}}\ \$company;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00010}\doxymbox{\hyperlink{class_plane_a341a9be291044ef8bf5b218b700c3168}{00010}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_plane_a341a9be291044ef8bf5b218b700c3168}{\_\_construct}}(\textcolor{keywordtype}{string}\ \$planeNumber,\ \textcolor{keywordtype}{string}\ \$model,\ \doxymbox{\hyperlink{class_company}{Company}}\ \$company)\{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00011}00011\ \ \ \ \ \ \ \ \ \$this-\/>planeNumber\ =\ \$planeNumber;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00012}00012\ \ \ \ \ \ \ \ \ \$this-\/>model\ =\ \$model;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00013}00013\ \ \ \ \ \ \ \ \ \$this-\/>company\ =\ \$company;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00014}00014\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00016}\doxymbox{\hyperlink{class_plane_ad107bd6faee90d2c04a92abb715b4c90}{00016}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_plane_ad107bd6faee90d2c04a92abb715b4c90}{getPlaneNumber}}():\ string\{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00017}00017\ \ \ \ \ \ \ \ \ return\ \$this-\/>planeNumber;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00018}00018\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00019}\doxymbox{\hyperlink{class_plane_af034bd0dc421ced596b3e34585c27add}{00019}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_plane_af034bd0dc421ced596b3e34585c27add}{setPlaneNumber}}(\textcolor{keywordtype}{string}\ \$planeNumber):\ void\{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00020}00020\ \ \ \ \ \ \ \ \ \$this-\/>planeNumber\ =\ \$planeNumber;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00021}00021\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00022}\doxymbox{\hyperlink{class_plane_a0a086ca877b41192556a2de7e4a97b98}{00022}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_plane_a0a086ca877b41192556a2de7e4a97b98}{getModel}}():\ string\{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00023}00023\ \ \ \ \ \ \ \ \ return\ \$this-\/>model;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00024}00024\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00025}\doxymbox{\hyperlink{class_plane_a28df73537401d0da55bff64c6971fd23}{00025}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_plane_a28df73537401d0da55bff64c6971fd23}{setModel}}(\textcolor{keywordtype}{string}\ \$model):\ void\{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00026}00026\ \ \ \ \ \ \ \ \ \$this-\/>model\ =\ \$model;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00027}00027\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00028}\doxymbox{\hyperlink{class_plane_ab4a97b8568cf0a73b7486d945d8cfa9c}{00028}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_plane_ab4a97b8568cf0a73b7486d945d8cfa9c}{getCompany}}():\ \doxymbox{\hyperlink{class_company}{Company}}\{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00029}00029\ \ \ \ \ \ \ \ \ return\ \$this-\/>company;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00030}00030\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00031}\doxymbox{\hyperlink{class_plane_ac9c2a6fe0e4e5d4f808ea41b509daf6e}{00031}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_plane_ac9c2a6fe0e4e5d4f808ea41b509daf6e}{setCompany}}(\doxymbox{\hyperlink{class_company}{Company}}\ \$company):\ void\{}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00032}00032\ \ \ \ \ \ \ \ \ \$this-\/>company\ =\ \$company;}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00033}00033\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_plane_8php_source_l00034}00034\ \}}
+
+\end{DoxyCode}

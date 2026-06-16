@@ -1,0 +1,174 @@
+\doxysection{Account\+Manager.\+php}
+\hypertarget{_account_manager_8php_source}{}\label{_account_manager_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Controllers/AccountManager.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Controllers/AccountManager.php}}
+\doxymbox{\hyperlink{_account_manager_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00009}\doxymbox{\hyperlink{class_account_manager}{00009}}\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_account_manager}{AccountManager}}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00010}00010\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00026}\doxymbox{\hyperlink{class_account_manager_a905c2f4fd4a52f6257f9a62f4da34790}{00026}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_account_manager_a905c2f4fd4a52f6257f9a62f4da34790}{createAccount}}(\textcolor{keywordtype}{string}\ \$email,\ \textcolor{keywordtype}{string}\ \$name,\ \textcolor{keywordtype}{string}\ \$surname,\ \textcolor{keywordtype}{int}\ \$role,\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}}=NULL):\ string\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00027}00027\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00031}00031\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00033}00033\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00035}00035\ \ \ \ \ \ \ \ \ \$pattern\ =\ \textcolor{stringliteral}{"{}/\string^[\_a-\/z0-\/9-\/]+(\(\backslash\).[\_a-\/z0-\/9-\/]+)*@[a-\/z0-\/9-\/]+(\(\backslash\).[a-\/z0-\/9-\/]+)*(\(\backslash\).[a-\/z]\{2,\})\$/i"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!is\_null(\$email)\&\&\$email!=\textcolor{stringliteral}{"{}"{}}\&\&preg\_match(\$pattern,\$email)\&\&!is\_null(\$name)\&\&\$name!=\textcolor{stringliteral}{"{}"{}}\&\&!is\_null(\$surname)\&\&\$surname!=\textcolor{stringliteral}{"{}"{}}\&\&!is\_null(\$role))\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}((\$role==2||\$role==6)\&\&!is\_null(\doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}}))\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}INSERT\ INTO\ users\ (email,\ password,\ name,\ surname,\ role\_id,\ company\_id)\ VALUES(:email,:password,:name,:surname,:role,:company)"{}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':company'},\doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}INSERT\ INTO\ users\ (email,\ password,\ name,\ surname,\ role\_id)\ VALUES(:email,:password,:name,:surname,:role)"{}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':email'},\$email);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':name'},\$name);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':surname'},\$surname);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':role'},\$role);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$pass=\doxymbox{\hyperlink{class_account_manager_aa139f769dda511615f97c4dd0ca5aa5e}{self::generatePassword}}();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$hashedPass=\doxymbox{\hyperlink{class_user_a67b294089fc7ab213655f1bf42704adb}{User::hashPassword}}(\$pass);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':password'},\$hashedPass);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ user\ was\ created\ with\ success.\ Password:\ "{}}.\$pass;}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00059}00059\ \ \ \ \ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ inserted\ data\ is\ wrong"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00061}00061\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00062}00062\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00081}\doxymbox{\hyperlink{class_account_manager_ae0640e35b498486f125114997a6757cf}{00081}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_account_manager_ae0640e35b498486f125114997a6757cf}{modifyAccount}}(\textcolor{keywordtype}{int}\ \$id,\ \textcolor{keywordtype}{string}\ \$email,\ \textcolor{keywordtype}{string}\ \$name,\ \textcolor{keywordtype}{string}\ \$surname,\ \textcolor{keywordtype}{int}\ \$role,\ \textcolor{keywordtype}{bool}\ \$changePassword,\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}}=NULL):\ string\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00082}00082\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00086}00086\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00088}00088\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00090}00090\ \ \ \ \ \ \ \ \ \$pattern\ =\ \textcolor{stringliteral}{"{}/\string^[\_a-\/z0-\/9-\/]+(\(\backslash\).[\_a-\/z0-\/9-\/]+)*@[a-\/z0-\/9-\/]+(\(\backslash\).[a-\/z0-\/9-\/]+)*(\(\backslash\).[a-\/z]\{2,\})\$/i"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00092}00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!is\_null(\$email)\&\&\$email!=\textcolor{stringliteral}{"{}"{}}\&\&preg\_match(\$pattern,\$email)\&\&!is\_null(\$name)\&\&\$name!=\textcolor{stringliteral}{"{}"{}}\&\&!is\_null(\$surname)\&\&\$surname!=\textcolor{stringliteral}{"{}"{}}\&\&!is\_null(\$role))\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\textcolor{stringliteral}{"{}UPDATE\ users\ SET\ email=:email,\ name=:name,\ surname=:surname,\ role\_id=:role,\ company\_id=:company"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!is\_null(\$changePassword)\&\&\$changePassword)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$newPass=self::generatePassword();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$hashedPass=\doxymbox{\hyperlink{class_user_a67b294089fc7ab213655f1bf42704adb}{User::hashPassword}}(\$newPass);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{},\ password=:password,\ password\_reset=1"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}\ WHERE\ id=:id"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':email'},\$email);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':name'},\$name);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':surname'},\$surname);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':role'},\$role);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':id'},\$id);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$temp=NULL;}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}((\$role==2||\$role==6)\&\&!is\_null(\doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}}))}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':company'},\doxymbox{\hyperlink{_airline_page_8php_a3306bb3d7f99fc57bee9e96f928769d4}{\$company}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':company'},\$temp);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!is\_null(\$changePassword)\&\&\$changePassword)}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':password'},\$hashedPass);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!is\_null(\$changePassword)\&\&\$changePassword)}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ user\ was\ modified\ with\ success.\ New\ password:\ "{}}.\$newPass;}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ user\ was\ modified\ with\ success"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00128}00128\ \ \ \ \ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ inserted\ data\ is\ wrong"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00130}00130\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00131}00131\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00143}\doxymbox{\hyperlink{class_account_manager_a1c57d553878a36d507ca9d8294c1fa25}{00143}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_account_manager_a1c57d553878a36d507ca9d8294c1fa25}{deleteAccount}}(\textcolor{keywordtype}{int}\ \$id):\ string\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00144}00144\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00145}00145\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00148}00148\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00150}00150\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!is\_null(\$id))\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}DELETE\ FROM\ users\ WHERE\ id=:id"{}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':id'},\$id);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ user\ was\ deleted\ with\ success"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00161}00161\ \ \ \ \ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ inserted\ data\ is\ wrong"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00163}00163\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00164}00164\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00174}\doxymbox{\hyperlink{class_account_manager_aa139f769dda511615f97c4dd0ca5aa5e}{00174}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_account_manager_aa139f769dda511615f97c4dd0ca5aa5e}{generatePassword}}():\ string\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00175}00175\ \ \ \ \ \ \ \ \ \$lowercase=\textcolor{stringliteral}{"{}abcdefghijklmnopqrstuvwxyz"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00176}00176\ \ \ \ \ \ \ \ \ \$uppercase=\textcolor{stringliteral}{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZ"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00177}00177\ \ \ \ \ \ \ \ \ \$numbers=\textcolor{stringliteral}{"{}0123456789"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00178}00178\ \ \ \ \ \ \ \ \ \$symbols=\textcolor{stringliteral}{"{}\#?!@\$\%\string^\&*-\/"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00179}00179\ \ \ \ \ \ \ \ \ \$all=\$lowercase.\$uppercase.\$numbers.\$symbols;}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00180}00180\ \ \ \ \ \ \ \ \ \$pass=\$lowercase[rand(0,\ strlen(\$lowercase)-\/1)].\$uppercase[rand(0,\ strlen(\$uppercase)-\/1)].\$numbers[rand(0,\ strlen(\$numbers)-\/1)].\$symbols[rand(0,\ strlen(\$symbols)-\/1)];}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00181}00181\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\$i=0;\$i<8;\$i++)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \$pass=\$pass.\$all[rand(0,\ strlen(\$all)-\/1)];}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00183}00183\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00184}00184\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ str\_shuffle(\$pass);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00185}00185\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00198}\doxymbox{\hyperlink{class_account_manager_adad6e09055789146f5bc494134aea5d8}{00198}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_account_manager_adad6e09055789146f5bc494134aea5d8}{checkPassword}}(\textcolor{keywordtype}{string}\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}}):\ bool\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00199}00199\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{index_8php_ae2a30b4c00d62248ceb9b7b398a9560c}{if}}(preg\_match(\textcolor{stringliteral}{'/\string^(?=.*\(\backslash\)d)(?=.*[a-\/z])(?=.*[A-\/Z])(?!.*\ )(?=.*[\string^a-\/zA-\/Z0-\/9]).\{12,128\}\$/'},\doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}}))}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ return\ true;}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00201}00201\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00203}00203\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00217}\doxymbox{\hyperlink{class_account_manager_a9ba7d5070d94475d96be078639259d9c}{00217}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_account_manager_a9ba7d5070d94475d96be078639259d9c}{updateUserPassword}}(\textcolor{keywordtype}{int}\ \$id,\ \textcolor{keywordtype}{string}\ \$newPass,\ \textcolor{keywordtype}{string}\ \$newPassBis):\ string\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00218}00218\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{index_8php_ae2a30b4c00d62248ceb9b7b398a9560c}{if}}(isset(\$newPass)\&\&!is\_null(\$newPass)\&\&isset(\$newPassBis)\&\&!is\_null(\$newPassBis)\&\&\$newPass==\$newPassBis)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{class_account_manager_adad6e09055789146f5bc494134aea5d8}{AccountManager::checkPassword}}(\$newPass))\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ require\_once\ \textcolor{stringliteral}{'Classes/User.php'};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00222}00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00223}00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}UPDATE\ users\ SET\ password=:password,\ password\_reset=0\ WHERE\ id=:id"{}});}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00230}00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$hashedPass=\doxymbox{\hyperlink{class_user_a67b294089fc7ab213655f1bf42704adb}{User::hashPassword}}(\$newPass);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':password'},\$hashedPass);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':id'},\$id);}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Query\ Error.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ password\ format\ is\ wrong"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00241}00241\ \ \ \ \ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ two\ passwords\ inserted\ are\ different"{}};}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00243}00243\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00244}00244\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00245}00245\ \}}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00246}00246\ ?>}
+\DoxyCodeLine{\Hypertarget{_account_manager_8php_source_l00247}00247\ \`{}\`{}\`{}}
+
+\end{DoxyCode}

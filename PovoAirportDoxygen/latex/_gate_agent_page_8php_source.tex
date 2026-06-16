@@ -1,0 +1,67 @@
+\doxysection{Gate\+Agent\+Page.\+php}
+\hypertarget{_gate_agent_page_8php_source}{}\label{_gate_agent_page_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/GateAgentPage.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/GateAgentPage.php}}
+\doxymbox{\hyperlink{_gate_agent_page_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00002}00002\ \textcolor{comment}{//Import\ required\ files}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}Classes/User.php"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00004}00004\ require\ \textcolor{stringliteral}{"{}Controllers/GroundManagementSystem.php"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00006}00006\ \textcolor{comment}{//Start\ the\ session\ to\ handle\ user\ login\ status}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00007}00007\ session\_start();}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00008}\doxymbox{\hyperlink{_gate_agent_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{00008}}\ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=\textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00009}00009\ \textcolor{comment}{//Check\ if\ the\ user\ is\ logged\ with\ the\ correct\ role\ for\ this\ page.\ If\ not,\ redirrect\ it\ to\ the\ login\ page}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00010}00010\ \textcolor{keywordflow}{if}(isset(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])\&\&unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}])-\/>getRole()==RoleEnum::GateAgent)\{}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00011}00011\ \ \ \ \ \textcolor{comment}{//Obtain\ the\ User\ object\ of\ the\ logged\ user}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00012}00012\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}=unserialize(\$\_SESSION[\textcolor{stringliteral}{"{}user"{}}]);}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00013}00013\ \ \ \ \ \textcolor{comment}{//If\ the\ user\ is\ logged\ but\ it\ still\ has\ the\ same\ password\ as\ when\ the\ account\ was\ created,\ redirect\ it\ to\ the\ page\ to\ change\ the\ password}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00014}00014\ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a598ca4e71b15a1313ec95f0df1027ca5}{\$user}}-\/>getChangePass())}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00015}00015\ \ \ \ \ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ ChangePassword.php'});}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00016}\doxymbox{\hyperlink{_gate_agent_page_8php_aed8528e490b4c71865c8057662ed2c49}{00016}}\ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00017}00017\ \ \ \ \ header(\textcolor{stringliteral}{'Location:\ index.php'});}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00018}00018\ \}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00019}\doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{00019}}\ \doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}=\textcolor{keyword}{new}\ \doxymbox{\hyperlink{class_ground_management_system}{GroundManagementSystem}}();}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00020}\doxymbox{\hyperlink{_gate_agent_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{00020}}\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00022}00022\ \textcolor{comment}{//Check\ if\ there\ is\ data\ entered\ in\ the\ form\ to\ assign\ a\ gate\ to\ a\ flight.\ If\ this\ is\ the\ case,\ send\ the\ data\ to\ the\ function\ to\ update\ the\ gate\ status}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00023}00023\ \textcolor{keywordflow}{if}(isset(\$\_POST[\textcolor{stringliteral}{"{}flight"{}}])\&\&is\_numeric(\$\_POST[\textcolor{stringliteral}{"{}flight"{}}])\&\&isset(\$\_POST[\textcolor{stringliteral}{"{}gate"{}}])\&\&is\_numeric(\$\_POST[\textcolor{stringliteral}{"{}gate"{}}]))}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00024}00024\ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>updateGate(\$\_POST[\textcolor{stringliteral}{"{}flight"{}}],\$\_POST[\textcolor{stringliteral}{"{}gate"{}}]);}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00025}00025\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00027}00027\ ?>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00028}00028\ <!DOCTYPE\ html>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00029}00029\ <html>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00030}00030\ \ \ \ \ <head>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00031}00031\ \ \ \ \ \ \ \ \ <title>\doxymbox{\hyperlink{class_gate}{Gate}}\ Agent\ Page</title>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00032}00032\ \ \ \ \ </head>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00033}00033\ \ \ \ \ <body>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00034}00034\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Print\ the\ form\ to\ assign\ a\ gate\ to\ a\ flight}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<form\ action='GateAgentPage.php'\ method='POST'>}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00037}00037\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ <label\ for='flight'>Choose\ a\ flight:\ </label>}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00038}00038\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ <select\ id='flight'\ name='flight'>}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00039}00039\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ <option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ the\ flights\ that\ can\ be\ linked\ to\ a\ gate}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00041}\doxymbox{\hyperlink{_gate_agent_page_8php_a6efc15b5a2314dd4b5aaa556a375c6d6}{00041}}\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_gate_agent_page_8php_a6efc15b5a2314dd4b5aaa556a375c6d6}{\$data}}=\doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>getFlightsForGates();}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_gate_agent_page_8php_a6efc15b5a2314dd4b5aaa556a375c6d6}{\$data}}\ as\ \$d)}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<option\ value="{}}.\$d[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$d[\textcolor{stringliteral}{"{}plane"{}}].\textcolor{stringliteral}{"{}:\ "{}}.\$d[\textcolor{stringliteral}{"{}dAirport"{}}].\textcolor{stringliteral}{"{}\ -\/>\ "{}}.\$d[\textcolor{stringliteral}{"{}aAirport"{}}].\textcolor{stringliteral}{"{},\ "{}}.\$d[\textcolor{stringliteral}{"{}time"{}}].\textcolor{stringliteral}{"{}</option>"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}</select><label\ for='gate'>Choose\ a\ gate:\ </label>}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00045}00045\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ <select\ id='gate'\ name='gate'>}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00046}00046\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ <option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ the\ empty\ gates}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_gate_agent_page_8php_a6efc15b5a2314dd4b5aaa556a375c6d6}{\$data}}=\doxymbox{\hyperlink{_gate_agent_page_8php_a444f77fe9b647d2772e4ceebc9f45210}{\$gms}}-\/>getAvailableGates();}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}(\doxymbox{\hyperlink{_gate_agent_page_8php_a6efc15b5a2314dd4b5aaa556a375c6d6}{\$data}}\ as\ \$d)}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<option\ value="{}}.\$d[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$d[\textcolor{stringliteral}{"{}gate\_number"{}}].\textcolor{stringliteral}{"{}</option>"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}</select><input\ type='submit'\ value='Assign'></form>"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00052}00052\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00053}00053\ \ \ \ \ \ \ \ \ <?php}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Post\ the\ result\ of\ the\ gate\ assignemnt}}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}!=\textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}<p>\$result</p>"{}};}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00057}00057\ \ \ \ \ \ \ \ \ ?>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00058}00058\ \ \ \ \ \ \ \ \ <!-\/-\/Button\ to\ redirect\ to\ the\ logout\ page-\/-\/>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00059}00059\ \ \ \ \ \ \ \ \ <button\ onclick=\textcolor{stringliteral}{"{}window.location.href='Logout.php'"{}}>Logout</button>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00060}00060\ \ \ \ \ </body>}
+\DoxyCodeLine{\Hypertarget{_gate_agent_page_8php_source_l00061}00061\ </html>}
+
+\end{DoxyCode}

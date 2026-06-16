@@ -1,0 +1,93 @@
+\doxysection{Flight.\+php}
+\hypertarget{_flight_8php_source}{}\label{_flight_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Classes/Flight.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Classes/Flight.php}}
+\doxymbox{\hyperlink{_flight_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00002}00002\ require\ \textcolor{stringliteral}{"{}FlightStatus.php"{}};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}Plane.php"{}};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00004}00004\ require\ \textcolor{stringliteral}{"{}Airport.php"{}};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00006}00006\ \textcolor{comment}{//Enum\ representing\ the\ possible\ validation\ states\ of\ a\ flight}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00007}\doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044e}{00007}}\ \textcolor{keyword}{enum}\ \doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044e}{Validation}}:\ \textcolor{keywordtype}{string}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00008}00008\ \{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00009}00009\ \ \ \ \ \textcolor{keywordflow}{case}\ NotAccepted\ =\ \textcolor{stringliteral}{'NOT\_ACCEPTED'};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00010}00010\ \ \ \ \ \textcolor{keywordflow}{case}\ Accepted\ =\ \textcolor{stringliteral}{'ACCEPTED'};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00011}00011\ \ \ \ \ \textcolor{keywordflow}{case}\ Rejected\ =\ \textcolor{stringliteral}{'REJECTED'};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00012}00012\ \ \ \ \ \textcolor{keywordflow}{case}\ Confirmed\ =\ \textcolor{stringliteral}{'CONFIRMED'};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00013}\doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044ea04ba35ff69a05b2a16733a01fc003d88}{00013}}\ \ \ \ \ \textcolor{keywordflow}{case}\ \doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044ea04ba35ff69a05b2a16733a01fc003d88}{Deleted}}\ =\ \textcolor{stringliteral}{'DELETED'};}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00014}00014\ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00016}00016\ \textcolor{comment}{//Class\ that\ represents\ a\ flight\ with\ its\ schedule,\ route,\ plane\ and\ validation\ status}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00017}\doxymbox{\hyperlink{class_flight}{00017}}\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_flight}{Flight}}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00018}00018\ \{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00019}00019\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{int}\ \$flightId;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00020}00020\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{int}\ \$priority;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00021}00021\ \ \ \ \ \textcolor{keyword}{private}\ DateTime\ \$scheduledTime;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00022}00022\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{_flight_status_8php_a6dd64845c2cf33dfcd08610f0803c6ca}{FlightStatus}}\ \$status;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00023}00023\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044e}{Validation}}\ \$validation;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00024}00024\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{class_plane}{Plane}}\ \$plane;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00025}00025\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{class_airport}{Airport}}\ \$depAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00026}00026\ \ \ \ \ \textcolor{keyword}{private}\ \doxymbox{\hyperlink{class_airport}{Airport}}\ \$arrAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00028}\doxymbox{\hyperlink{class_flight_a3750c784a00c78c01e65ef957218ac98}{00028}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a3750c784a00c78c01e65ef957218ac98}{\_\_construct}}(\textcolor{keywordtype}{int}\ \$flightId,\ \textcolor{keywordtype}{int}\ \$priority,\ DateTime\ \$scheduledTime,\ \doxymbox{\hyperlink{_flight_status_8php_a6dd64845c2cf33dfcd08610f0803c6ca}{FlightStatus}}\ \$status,\ \doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044e}{Validation}}\ \$validation,\ \doxymbox{\hyperlink{class_plane}{Plane}}\ \$plane,\ \doxymbox{\hyperlink{class_airport}{Airport}}\ \$depAirport,\ \doxymbox{\hyperlink{class_airport}{Airport}}\ \$arrAirport)\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00029}00029\ \ \ \ \ \ \ \ \ \$this-\/>flightId\ =\ \$flightId;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00030}00030\ \ \ \ \ \ \ \ \ \$this-\/>priority\ =\ \$priority;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00031}00031\ \ \ \ \ \ \ \ \ \$this-\/>scheduledTime\ =\ \$scheduledTime;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00032}00032\ \ \ \ \ \ \ \ \ \$this-\/>status\ =\ \$status;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00033}00033\ \ \ \ \ \ \ \ \ \$this-\/>validation\ =\ \$validation;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00034}00034\ \ \ \ \ \ \ \ \ \$this-\/>plane\ =\ \$plane;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00035}00035\ \ \ \ \ \ \ \ \ \$this-\/>depAirport\ =\ \$depAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00036}00036\ \ \ \ \ \ \ \ \ \$this-\/>arrAirport\ =\ \$arrAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00037}00037\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00039}\doxymbox{\hyperlink{class_flight_a9c2263c20db8b6f06fed0c92d14cc3cc}{00039}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a9c2263c20db8b6f06fed0c92d14cc3cc}{getFlightId}}():\ int\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00040}00040\ \ \ \ \ \ \ \ \ return\ \$this-\/>flightId;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00041}00041\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00042}\doxymbox{\hyperlink{class_flight_a1a117e54589174cebbccc507c202ae2d}{00042}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a1a117e54589174cebbccc507c202ae2d}{setFlightId}}(\textcolor{keywordtype}{int}\ \$flightId):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00043}00043\ \ \ \ \ \ \ \ \ \$this-\/>flightId\ =\ \$flightId;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00044}00044\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00045}\doxymbox{\hyperlink{class_flight_a1e7a3c168dcd0901a0d2669c67575b55}{00045}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a1e7a3c168dcd0901a0d2669c67575b55}{getPriority}}():\ int\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00046}00046\ \ \ \ \ \ \ \ \ return\ \$this-\/>priority;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00047}00047\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00048}\doxymbox{\hyperlink{class_flight_afe6b1fcd3db12f7f05302ccd8144bc37}{00048}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_afe6b1fcd3db12f7f05302ccd8144bc37}{setPriority}}(\textcolor{keywordtype}{int}\ \$priority):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00049}00049\ \ \ \ \ \ \ \ \ \$this-\/>priority\ =\ \$priority;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00050}00050\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00051}\doxymbox{\hyperlink{class_flight_a27bca70d255d9a45f82a1a65c5e5feb1}{00051}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a27bca70d255d9a45f82a1a65c5e5feb1}{getScheduledTime}}():\ DateTime\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00052}00052\ \ \ \ \ \ \ \ \ return\ \$this-\/>scheduledTime;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00053}00053\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00054}\doxymbox{\hyperlink{class_flight_ac98d0e3fbf00876d4656168525a787cf}{00054}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_ac98d0e3fbf00876d4656168525a787cf}{setScheduledTime}}(DateTime\ \$scheduledTime):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00055}00055\ \ \ \ \ \ \ \ \ \$this-\/>scheduledTime\ =\ \$scheduledTime;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00056}00056\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00057}\doxymbox{\hyperlink{class_flight_a9d21636071f529e2154051d3ea6e5921}{00057}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a9d21636071f529e2154051d3ea6e5921}{getStatus}}():\ \doxymbox{\hyperlink{_flight_status_8php_a6dd64845c2cf33dfcd08610f0803c6ca}{FlightStatus}}\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00058}00058\ \ \ \ \ \ \ \ \ return\ \$this-\/>status;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00059}00059\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00060}\doxymbox{\hyperlink{class_flight_ab53100e1944762c13d0d00e2fd5a53a6}{00060}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_ab53100e1944762c13d0d00e2fd5a53a6}{setStatus}}(\doxymbox{\hyperlink{_flight_status_8php_a6dd64845c2cf33dfcd08610f0803c6ca}{FlightStatus}}\ \$status):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00061}00061\ \ \ \ \ \ \ \ \ \$this-\/>status\ =\ \$status;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00062}00062\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00063}\doxymbox{\hyperlink{class_flight_a84c2d98e0ac5da48883e2a239acde469}{00063}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a84c2d98e0ac5da48883e2a239acde469}{getValidation}}():\ \doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044e}{Validation}}\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00064}00064\ \ \ \ \ \ \ \ \ return\ \$this-\/>validation;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00065}00065\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00066}\doxymbox{\hyperlink{class_flight_a423a9bc521307920aa4357df8f1a2125}{00066}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a423a9bc521307920aa4357df8f1a2125}{setValidation}}(\doxymbox{\hyperlink{_flight_8php_ac45bc5e52bb2f9200d479b5aa1d6044e}{Validation}}\ \$validation):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00067}00067\ \ \ \ \ \ \ \ \ \$this-\/>validation\ =\ \$validation;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00068}00068\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00069}\doxymbox{\hyperlink{class_flight_ab121494cac929ffbd122098c1b2fc924}{00069}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_ab121494cac929ffbd122098c1b2fc924}{getPlane}}():\ \doxymbox{\hyperlink{class_plane}{Plane}}\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00070}00070\ \ \ \ \ \ \ \ \ return\ \$this-\/>plane;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00071}00071\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00072}\doxymbox{\hyperlink{class_flight_a77c17e1c8dc50f09812648e37aaf3d2a}{00072}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a77c17e1c8dc50f09812648e37aaf3d2a}{setPlane}}(\doxymbox{\hyperlink{class_plane}{Plane}}\ \$plane):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00073}00073\ \ \ \ \ \ \ \ \ \$this-\/>plane\ =\ \$plane;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00074}00074\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00075}\doxymbox{\hyperlink{class_flight_a2cb1d56fee998710584d4ccdb87733da}{00075}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a2cb1d56fee998710584d4ccdb87733da}{getDepAirport}}():\ \doxymbox{\hyperlink{class_airport}{Airport}}\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00076}00076\ \ \ \ \ \ \ \ \ return\ \$this-\/>depAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00077}00077\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00078}\doxymbox{\hyperlink{class_flight_ac7c65cd7fc41d5daf69d9ba2f2f9a41d}{00078}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_ac7c65cd7fc41d5daf69d9ba2f2f9a41d}{setDepAirport}}(\doxymbox{\hyperlink{class_airport}{Airport}}\ \$depAirport):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00079}00079\ \ \ \ \ \ \ \ \ \$this-\/>depAirport\ =\ \$depAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00080}00080\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00081}\doxymbox{\hyperlink{class_flight_aa607fa2c9654b8f56a2dc1b4e8745a25}{00081}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_aa607fa2c9654b8f56a2dc1b4e8745a25}{getArrAirport}}():\ \doxymbox{\hyperlink{class_airport}{Airport}}\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00082}00082\ \ \ \ \ \ \ \ \ return\ \$this-\/>arrAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00083}00083\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00084}\doxymbox{\hyperlink{class_flight_a90bef3f3c141ba5160a2809acca17200}{00084}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_flight_a90bef3f3c141ba5160a2809acca17200}{setArrAirport}}(\doxymbox{\hyperlink{class_airport}{Airport}}\ \$arrAirport):\ void\{}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00085}00085\ \ \ \ \ \ \ \ \ \$this-\/>arrAirport\ =\ \$arrAirport;}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00086}00086\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_flight_8php_source_l00087}00087\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,175 @@
+\doxysection{Admin\+Page\+AJAX.\+php}
+\hypertarget{_admin_page_a_j_a_x_8php_source}{}\label{_admin_page_a_j_a_x_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/AJAX/AdminPageAJAX.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/AJAX/AdminPageAJAX.php}}
+\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00002}00002\ \textcolor{comment}{//Import\ required\ file}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00003}00003\ require\ \textcolor{stringliteral}{"{}../DatabaseInfo.php"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00004}\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{00004}}\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00005}00005\ \textcolor{comment}{//Check\ if\ there\ is\ data\ that\ was\ sent\ in\ GET}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00006}00006\ \textcolor{keywordflow}{if}(\$\_SERVER[\textcolor{stringliteral}{"{}REQUEST\_METHOD"{}}]\ ==\ \textcolor{stringliteral}{"{}GET"{}}\ \&\&\ isset(\$\_GET[\textcolor{stringliteral}{"{}type"{}}]))\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00007}00007\ \ \ \ \ \textcolor{comment}{//Generate\ and\ return\ the\ form\ to\ add\ a\ user}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00008}00008\ \ \ \ \ \textcolor{keywordflow}{if}(\$\_GET[\textcolor{stringliteral}{"{}type"{}}]==\textcolor{stringliteral}{"{}ADD"{}})\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00010}00010\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\textcolor{stringliteral}{"{}<form\ action='AdminPage.php'\ method='POST'>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00011}00011\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='email'>Email:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00012}00012\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='email'\ id='email'\ name='email'\ required><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00013}00013\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='name'>Name:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00014}00014\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='text'\ id='name'\ name='name'\ required><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00015}00015\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='surname'>Surname:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='text'\ id='surname'\ name='surname'\ required><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00017}00017\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='role'>Role:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00018}00018\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<select\ id='role'\ name='role'\ onchange='updateCompany()'\ required>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00019}00019\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00020}00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ roles\ and\ create\ the\ select}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00022}00022\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00023}00023\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00024}00024\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00025}00025\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00026}00026\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ roles"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}\ =\ \$conn-\/>query(\$query);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\$row\ =\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}-\/>fetch())}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$row[\textcolor{stringliteral}{"{}role\_name"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00032}00032\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Error:\ "{}}\ .\ \$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00034}00034\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00035}00035\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}</select><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00036}00036\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<label\ for='company'>Company:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<select\ id='company'\ name='company'\ disabled>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00038}00038\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00039}00039\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ companies\ and\ create\ the\ select}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ companies"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}\ =\ \$conn-\/>query(\$query);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\$row\ =\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}-\/>fetch())}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$row[\textcolor{stringliteral}{"{}company\_name"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00045}00045\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Error:\ "{}}\ .\ \$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00047}00047\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00048}00048\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}</select><br><input\ type='submit'\ value='Add'></form>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00049}00049\ \ \ \ \ \ \ \ \ echo\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00050}00050\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00052}00052\ \ \ \ \ \textcolor{comment}{//Generate\ and\ return\ the\ select\ to\ select\ a\ user}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00053}00053\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\$\_GET[\textcolor{stringliteral}{"{}type"{}}]==\textcolor{stringliteral}{"{}MODIFY"{}})\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00055}00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00058}00058\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ die(\textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage());}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00060}00060\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00061}00061\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\textcolor{stringliteral}{"{}<form\ action='AdminPage.php'\ method='POST'>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<select\ id='user'\ name='user'\ onchange='loadModify()'\ required>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ users\ and\ create\ the\ select}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\textcolor{stringliteral}{"{}SELECT\ id,\ email,\ name,\ surname\ FROM\ users"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}\ =\ \$conn-\/>query(\$query);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\$row\ =\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}-\/>fetch())}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$row[\textcolor{stringliteral}{"{}name"{}}].\textcolor{stringliteral}{"{}\ "{}}.\$row[\textcolor{stringliteral}{"{}surname"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$row[\textcolor{stringliteral}{"{}email"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00070}00070\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Error:\ "{}}\ .\ \$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00072}00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00073}00073\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}</select></form><div\ id='container2'></div>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00074}00074\ \ \ \ \ \ \ \ \ echo\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00076}00076\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00077}00077\ \ \ \ \ \textcolor{comment}{//Generate\ and\ return\ the\ form\ to\ modify\ a\ user}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00078}00078\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\$\_GET[\textcolor{stringliteral}{"{}type"{}}]==\textcolor{stringliteral}{"{}MODIFY2"{}}\&\&isset(\$\_GET[\textcolor{stringliteral}{"{}id"{}}]))\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ the\ chosen\ user\ and\ insert\ it\ into\ the\ form}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00083}00083\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ die(\textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage());}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00085}00085\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ users\ WHERE\ id=:id"{}});}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':id'},\$\_GET[\textcolor{stringliteral}{"{}id"{}}]);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\$query-\/>fetch();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00091}00091\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Error:\ "{}}\ .\ \$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00093}00093\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00094}00094\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\textcolor{stringliteral}{"{}<form\ action='AdminPage.php'\ method='POST'>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='hidden'\ id='id'\ name='id'\ value='"{}}.\$\_GET[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}'>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='email'>Email:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00097}00097\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='email'\ id='email'\ name='email'\ value='"{}}.\$result[\textcolor{stringliteral}{"{}email"{}}].\textcolor{stringliteral}{"{}'\ required><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00098}00098\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='name'>Name:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='text'\ id='name'\ name='name'\ value='"{}}.\$result[\textcolor{stringliteral}{"{}name"{}}].\textcolor{stringliteral}{"{}'\ required><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='surname'>Surname:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00101}00101\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='text'\ id='surname'\ name='surname'\ value='"{}}.\$result[\textcolor{stringliteral}{"{}surname"{}}].\textcolor{stringliteral}{"{}'\ required><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='role'>Role:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00103}00103\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<select\ id='role'\ name='role'\ onchange='updateCompany()'\ required>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00104}00104\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ roles\ and\ create\ the\ select}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ roles"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \$res\ =\ \$conn-\/>query(\$query);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\$row\ =\ \$res-\/>fetch())\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$row[\textcolor{stringliteral}{"{}id"{}}]==\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}[\textcolor{stringliteral}{"{}role\_id"{}}])}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}\ selected='selected'>"{}}.\$row[\textcolor{stringliteral}{"{}role\_name"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$row[\textcolor{stringliteral}{"{}role\_name"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00115}00115\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Error:\ "{}}\ .\ \$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00117}00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00118}00118\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}</select><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00119}00119\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<label\ for='company'>Company:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<select\ id='company'\ name='company'"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}[\textcolor{stringliteral}{"{}role\_id"{}}]!=2\&\&\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}[\textcolor{stringliteral}{"{}role\_id"{}}]!=6)}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}\ disabled"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00123}00123\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00124}00124\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00125}00125\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ companies\ and\ create\ the\ select}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00126}00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\textcolor{stringliteral}{"{}SELECT\ *\ FROM\ companies"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \$res\ =\ \$conn-\/>query(\$query);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\$row\ =\ \$res-\/>fetch())}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\$row[\textcolor{stringliteral}{"{}id"{}}]==\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}[\textcolor{stringliteral}{"{}company\_id"{}}])}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}\ selected='selected'>"{}}.\$row[\textcolor{stringliteral}{"{}company\_name"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$row[\textcolor{stringliteral}{"{}company\_name"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00134}00134\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Error:\ "{}}\ .\ \$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00136}00136\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00137}00137\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}</select><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00138}00138\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<label\ for='password'>Reset\ password:\ </label>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='checkbox'\ id='password'\ name='password'\ value='true'><br>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00140}00140\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<input\ type='submit'\ value='Modify'></form>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00141}00141\ \ \ \ \ \ \ \ \ echo\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00143}00143\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00144}00144\ \ \ \ \ \textcolor{comment}{//Generate\ and\ return\ the\ form\ to\ choose\ a\ user\ to\ delete}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00145}00145\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\$\_GET[\textcolor{stringliteral}{"{}type"{}}]==\textcolor{stringliteral}{"{}DELETE"{}})\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00147}00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00150}00150\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ die(\textcolor{stringliteral}{"{}Could\ not\ connect.\ "{}}.\$e-\/>getMessage());}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00152}00152\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00153}00153\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\textcolor{stringliteral}{"{}<form\ action='AdminPage.php'\ method='POST'>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<select\ id='user'\ name='user'\ required>"{}}.}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00155}00155\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<option\ value=''></option>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00156}00156\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Fetch\ users\ and\ create\ the\ select}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\textcolor{stringliteral}{"{}SELECT\ id,\ email,\ name,\ surname\ FROM\ users"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}\ =\ \$conn-\/>query(\$query);}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\$row\ =\ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}-\/>fetch())}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}<option\ value="{}}.\$row[\textcolor{stringliteral}{"{}id"{}}].\textcolor{stringliteral}{"{}>"{}}.\$row[\textcolor{stringliteral}{"{}name"{}}].\textcolor{stringliteral}{"{}\ "{}}.\$row[\textcolor{stringliteral}{"{}surname"{}}].\textcolor{stringliteral}{"{}\ -\/\ "{}}.\$row[\textcolor{stringliteral}{"{}email"{}}].\textcolor{stringliteral}{"{}</option><br>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00162}00162\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ echo\ \textcolor{stringliteral}{"{}Error:\ "{}}\ .\ \$e-\/>getMessage();}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00164}00164\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00165}00165\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}=\doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}}.\textcolor{stringliteral}{"{}</select><br><input\ type='submit'\ value='Delete'></form>"{}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00166}00166\ \ \ \ \ \ \ \ \ echo\ \doxymbox{\hyperlink{_admin_page_a_j_a_x_8php_a50b05cf2e02ef0b67fcad97106dd7634}{\$s}};}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00167}00167\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00168}00168\ \}}
+\DoxyCodeLine{\Hypertarget{_admin_page_a_j_a_x_8php_source_l00169}00169\ ?>}
+
+\end{DoxyCode}

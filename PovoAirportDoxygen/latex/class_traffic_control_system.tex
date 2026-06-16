@@ -1,0 +1,343 @@
+\doxysection{Traffic\+Control\+System Class Reference}
+\hypertarget{class_traffic_control_system}{}\label{class_traffic_control_system}\index{TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a95a8a49d28ab45512bfb56ae81ef5347}{get\+Take\+Off\+Queue}} ()
+\begin{DoxyCompactList}\small\item\em Gets all flights currently waiting for take-\/off clearance. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a168026b75e99f830712769f4f9a6eb45}{get\+Landing\+Queue}} ()
+\begin{DoxyCompactList}\small\item\em Gets all flights currently waiting to land. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a28a3ea795ea7ae8fd153a641a970e834}{get\+Available\+Runways}} ()
+\begin{DoxyCompactList}\small\item\em Returns all runways that have no flight assigned. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_ac8486bccb84bce7ea174024b494b0ffc}{assign\+Runway\+For\+Take\+Off}} (int \$flight\+Id, int \$runway\+Id)
+\begin{DoxyCompactList}\small\item\em Assigns a runway to a flight and clears it for take-\/off. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a6784735b1d6055bbd0f590a9b83b4f8e}{assign\+Runway\+For\+Landing}} (int \$flight\+Id, int \$runway\+Id)
+\begin{DoxyCompactList}\small\item\em Assigns a runway to an incoming flight for landing. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_afe20afd218a8157f9313616848293e6f}{confirm\+Take\+Off}} (int \$flight\+Id)
+\begin{DoxyCompactList}\small\item\em Confirms that a flight has taken off. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a0b0cb0a4dabaa295c529c26b787aaeba}{confirm\+Landing}} (int \$flight\+Id)
+\begin{DoxyCompactList}\small\item\em Confirms that a flight has landed. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a4b58fa231d7953e0942a3e3f1dedf7eb}{get\+Available\+Taxiways}} ()
+\begin{DoxyCompactList}\small\item\em Returns all taxiways available for post-\/landing routing. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_aa178f9d68e45dd1b5ee9838881820d0c}{assign\+Taxiway\+After\+Landing}} (int \$flight\+Id, int \$taxiway\+Id)
+\begin{DoxyCompactList}\small\item\em Assigns a taxiway to a flight after it has landed. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a099251cf3caf8b4b34374bc6f4510c6f}{get\+Pending\+Flights}} ()
+\begin{DoxyCompactList}\small\item\em Fetches flights that are still waiting for TC approval. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_adb8fd4758ca5ceb0aa4f8230b398dea0}{confirm\+Flight}} (int \$flight\+Id)
+\begin{DoxyCompactList}\small\item\em Approves a pending flight request. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_a6aeb4fc25cfeaa2a9050a32ffe51e171}{reject\+Flight}} (int \$flight\+Id)
+\begin{DoxyCompactList}\small\item\em Rejects a pending flight request. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_traffic_control_system_aa1900018f93c55ffa54ed2423375c8d4}{update\+Priority}} (int \$flight\+Id, int \$priority)
+\begin{DoxyCompactList}\small\item\em Updates the priority of a flight in the queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00003}{3}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+
+
+\label{class_traffic_control_system_doc-func-members}
+\Hypertarget{class_traffic_control_system_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_traffic_control_system_a6784735b1d6055bbd0f590a9b83b4f8e}\index{TrafficControlSystem@{TrafficControlSystem}!assignRunwayForLanding@{assignRunwayForLanding}}
+\index{assignRunwayForLanding@{assignRunwayForLanding}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{assignRunwayForLanding()}{assignRunwayForLanding()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a6784735b1d6055bbd0f590a9b83b4f8e} 
+assign\+Runway\+For\+Landing (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{, }\item[{int}]{\$runway\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Assigns a runway to an incoming flight for landing. 
+
+Verifies the flight doesn\textquotesingle{}t already have a runway, then assigns the requested one if it\textquotesingle{}s free.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight being cleared to land. \\
+\hline
+{\em runway\+Id} & ID of the runway to assign.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00188}{188}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_ac8486bccb84bce7ea174024b494b0ffc}\index{TrafficControlSystem@{TrafficControlSystem}!assignRunwayForTakeOff@{assignRunwayForTakeOff}}
+\index{assignRunwayForTakeOff@{assignRunwayForTakeOff}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{assignRunwayForTakeOff()}{assignRunwayForTakeOff()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_ac8486bccb84bce7ea174024b494b0ffc} 
+assign\+Runway\+For\+Take\+Off (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{, }\item[{int}]{\$runway\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Assigns a runway to a flight and clears it for take-\/off. 
+
+Checks the flight doesn\textquotesingle{}t already have a runway, assigns the chosen one, removes taxiway/\+parking/\+gate assignments, and sets the status to In\+Queue\+Take\+Off.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight being cleared for take-\/off. \\
+\hline
+{\em runway\+Id} & ID of the runway to assign.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00117}{117}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_aa178f9d68e45dd1b5ee9838881820d0c}\index{TrafficControlSystem@{TrafficControlSystem}!assignTaxiwayAfterLanding@{assignTaxiwayAfterLanding}}
+\index{assignTaxiwayAfterLanding@{assignTaxiwayAfterLanding}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{assignTaxiwayAfterLanding()}{assignTaxiwayAfterLanding()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_aa178f9d68e45dd1b5ee9838881820d0c} 
+assign\+Taxiway\+After\+Landing (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{, }\item[{int}]{\$taxiway\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Assigns a taxiway to a flight after it has landed. 
+
+Replaces any existing taxiway assignment with the new one, so the ground crew knows where to direct the plane.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the landed flight. \\
+\hline
+{\em taxiway\+Id} & ID of the taxiway to assign.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00334}{334}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_adb8fd4758ca5ceb0aa4f8230b398dea0}\index{TrafficControlSystem@{TrafficControlSystem}!confirmFlight@{confirmFlight}}
+\index{confirmFlight@{confirmFlight}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{confirmFlight()}{confirmFlight()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_adb8fd4758ca5ceb0aa4f8230b398dea0} 
+confirm\+Flight (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Approves a pending flight request. 
+
+Sets the validation to ACCEPTED so the flight can proceed through the rest of the workflow.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight to approve.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message, "{}\+Flight not found"{} if already processed, or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00410}{410}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_a0b0cb0a4dabaa295c529c26b787aaeba}\index{TrafficControlSystem@{TrafficControlSystem}!confirmLanding@{confirmLanding}}
+\index{confirmLanding@{confirmLanding}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{confirmLanding()}{confirmLanding()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a0b0cb0a4dabaa295c529c26b787aaeba} 
+confirm\+Landing (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Confirms that a flight has landed. 
+
+Releases the runway and sets the flight status to Landed. Priority is cleared since it\textquotesingle{}s no longer needed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight that has landed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00271}{271}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_afe20afd218a8157f9313616848293e6f}\index{TrafficControlSystem@{TrafficControlSystem}!confirmTakeOff@{confirmTakeOff}}
+\index{confirmTakeOff@{confirmTakeOff}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{confirmTakeOff()}{confirmTakeOff()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_afe20afd218a8157f9313616848293e6f} 
+confirm\+Take\+Off (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Confirms that a flight has taken off. 
+
+Releases the runway and marks the flight as finished, keeping the validation status as CONFIRMED.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight that has taken off.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00234}{234}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_a28a3ea795ea7ae8fd153a641a970e834}\index{TrafficControlSystem@{TrafficControlSystem}!getAvailableRunways@{getAvailableRunways}}
+\index{getAvailableRunways@{getAvailableRunways}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{getAvailableRunways()}{getAvailableRunways()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a28a3ea795ea7ae8fd153a641a970e834} 
+get\+Available\+Runways (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Returns all runways that have no flight assigned. 
+
+Used to populate the runway selection when clearing a flight for take-\/off or landing.
+
+\begin{DoxyReturn}{Returns}
+array List of free runways, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00089}{89}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_a4b58fa231d7953e0942a3e3f1dedf7eb}\index{TrafficControlSystem@{TrafficControlSystem}!getAvailableTaxiways@{getAvailableTaxiways}}
+\index{getAvailableTaxiways@{getAvailableTaxiways}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{getAvailableTaxiways()}{getAvailableTaxiways()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a4b58fa231d7953e0942a3e3f1dedf7eb} 
+get\+Available\+Taxiways (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Returns all taxiways available for post-\/landing routing. 
+
+Fetches the full taxiway list so the TC can pick one to guide the plane from the runway toward parking.
+
+\begin{DoxyReturn}{Returns}
+array List of taxiways, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00306}{306}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_a168026b75e99f830712769f4f9a6eb45}\index{TrafficControlSystem@{TrafficControlSystem}!getLandingQueue@{getLandingQueue}}
+\index{getLandingQueue@{getLandingQueue}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{getLandingQueue()}{getLandingQueue()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a168026b75e99f830712769f4f9a6eb45} 
+get\+Landing\+Queue (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets all flights currently waiting to land. 
+
+Returns confirmed/\+accepted flights with status In\+Queue\+Landing, ordered by priority and then scheduled time.
+
+\begin{DoxyReturn}{Returns}
+array List of incoming flights with pilot and route info, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00053}{53}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_a099251cf3caf8b4b34374bc6f4510c6f}\index{TrafficControlSystem@{TrafficControlSystem}!getPendingFlights@{getPendingFlights}}
+\index{getPendingFlights@{getPendingFlights}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{getPendingFlights()}{getPendingFlights()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a099251cf3caf8b4b34374bc6f4510c6f} 
+get\+Pending\+Flights (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Fetches flights that are still waiting for TC approval. 
+
+Returns all flights with validation set to NOT\+\_\+\+ACCEPTED, ordered by scheduled time so the oldest requests appear first.
+
+\begin{DoxyReturn}{Returns}
+array List of pending flights with pilot and route info, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00371}{371}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_a95a8a49d28ab45512bfb56ae81ef5347}\index{TrafficControlSystem@{TrafficControlSystem}!getTakeOffQueue@{getTakeOffQueue}}
+\index{getTakeOffQueue@{getTakeOffQueue}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{getTakeOffQueue()}{getTakeOffQueue()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a95a8a49d28ab45512bfb56ae81ef5347} 
+get\+Take\+Off\+Queue (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets all flights currently waiting for take-\/off clearance. 
+
+Returns flights with status Boarding or In\+Queue\+Take\+Off that are confirmed/\+accepted and don\textquotesingle{}t have a runway assigned yet. Ordered by priority first, then scheduled time.
+
+\begin{DoxyReturn}{Returns}
+array List of queued flights with pilot and route info, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00015}{15}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_a6aeb4fc25cfeaa2a9050a32ffe51e171}\index{TrafficControlSystem@{TrafficControlSystem}!rejectFlight@{rejectFlight}}
+\index{rejectFlight@{rejectFlight}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{rejectFlight()}{rejectFlight()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_a6aeb4fc25cfeaa2a9050a32ffe51e171} 
+reject\+Flight (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Rejects a pending flight request. 
+
+Sets the validation to REJECTED. Only works if the flight is still in NOT\+\_\+\+ACCEPTED state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight to reject.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message, "{}\+Flight not found"{} if already processed, or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00444}{444}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+\Hypertarget{class_traffic_control_system_aa1900018f93c55ffa54ed2423375c8d4}\index{TrafficControlSystem@{TrafficControlSystem}!updatePriority@{updatePriority}}
+\index{updatePriority@{updatePriority}!TrafficControlSystem@{TrafficControlSystem}}
+\doxysubsubsection{\texorpdfstring{updatePriority()}{updatePriority()}}
+{\footnotesize\ttfamily \label{class_traffic_control_system_aa1900018f93c55ffa54ed2423375c8d4} 
+update\+Priority (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{, }\item[{int}]{\$priority}{}\end{DoxyParamCaption})}
+
+
+
+Updates the priority of a flight in the queue. 
+
+Lower numbers mean higher priority. Must be at least 1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight to update. \\
+\hline
+{\em priority} & New priority value, must be \texorpdfstring{$>$}{>}= 1.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_traffic_control_system_8php_source_l00477}{477}} of file \doxymbox{\hyperlink{_traffic_control_system_8php_source}{Traffic\+Control\+System.\+php}}.
+
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+C:\+/\+\+Users/\+\+LENOVO/\+\+Desktop/\+\+Software\+E/\+software\+E/\+\+Povo\+Airport/\+\+Controllers/\+\doxymbox{\hyperlink{_traffic_control_system_8php}{Traffic\+Control\+System.\+php}}\end{DoxyCompactItemize}

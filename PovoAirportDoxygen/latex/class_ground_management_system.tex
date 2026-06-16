@@ -1,0 +1,235 @@
+\doxysection{Ground\+Management\+System Class Reference}
+\hypertarget{class_ground_management_system}{}\label{class_ground_management_system}\index{GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_ground_management_system_a5160fb22cbfd654ac4e02807667f692a}{get\+Planes\+On\+Ground}} ()
+\begin{DoxyCompactList}\small\item\em Gets all planes currently on the ground. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ground_management_system_a28f5764f10b50c274bd217f8f6f19327}{get\+Available\+Parking\+Spots}} ()
+\begin{DoxyCompactList}\small\item\em Returns all parking spots that are currently free. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ground_management_system_a28a3ea795ea7ae8fd153a641a970e834}{get\+Available\+Runways}} ()
+\begin{DoxyCompactList}\small\item\em Returns all runways that are currently free. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ground_management_system_a4b58fa231d7953e0942a3e3f1dedf7eb}{get\+Available\+Taxiways}} ()
+\begin{DoxyCompactList}\small\item\em Returns all taxiways. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ground_management_system_afeeddc6350b6e2e0f36483ddbd40f20a}{move\+Plane\+To\+Parking}} (int \$flight\+Id, int \$spot\+Id)
+\begin{DoxyCompactList}\small\item\em Moves a plane to a parking spot after landing. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ground_management_system_a8ea040e50c0415579c1e8c08cb3fc3d5}{move\+Plane\+To\+Taxiway}} (int \$flight\+Id, int \$taxiway\+Id)
+\begin{DoxyCompactList}\small\item\em Moves a plane to a taxiway to prepare for departure. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ground_management_system_a706227e9f240f8da602034e32f1a9f12}{get\+Flights\+For\+Gates}} ()
+\begin{DoxyCompactList}\small\item\em Gets flights that are ready to be assigned a gate. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ground_management_system_a7610f326bfb73f53b452e7b386aee282}{get\+Available\+Gates}} ()
+\begin{DoxyCompactList}\small\item\em Returns all gates that have no flight assigned. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \doxymbox{\hyperlink{class_ground_management_system_a4da1ef9631fc4852ae4a8f252c1fd917}{update\+Gate}} (int \$flight, int \$gate)
+\begin{DoxyCompactList}\small\item\em Assigns a gate to a flight. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00003}{3}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+
+
+\label{class_ground_management_system_doc-func-members}
+\Hypertarget{class_ground_management_system_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_ground_management_system_a7610f326bfb73f53b452e7b386aee282}\index{GroundManagementSystem@{GroundManagementSystem}!getAvailableGates@{getAvailableGates}}
+\index{getAvailableGates@{getAvailableGates}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{getAvailableGates()}{getAvailableGates()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a7610f326bfb73f53b452e7b386aee282} 
+get\+Available\+Gates (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Returns all gates that have no flight assigned. 
+
+Simple query to find free gates available for assignment.
+
+\begin{DoxyReturn}{Returns}
+array List of free gates, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00265}{265}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_a28f5764f10b50c274bd217f8f6f19327}\index{GroundManagementSystem@{GroundManagementSystem}!getAvailableParkingSpots@{getAvailableParkingSpots}}
+\index{getAvailableParkingSpots@{getAvailableParkingSpots}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{getAvailableParkingSpots()}{getAvailableParkingSpots()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a28f5764f10b50c274bd217f8f6f19327} 
+get\+Available\+Parking\+Spots (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Returns all parking spots that are currently free. 
+
+Queries the database for spots with no plane assigned.
+
+\begin{DoxyReturn}{Returns}
+array List of available parking spots, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00048}{48}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_a28a3ea795ea7ae8fd153a641a970e834}\index{GroundManagementSystem@{GroundManagementSystem}!getAvailableRunways@{getAvailableRunways}}
+\index{getAvailableRunways@{getAvailableRunways}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{getAvailableRunways()}{getAvailableRunways()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a28a3ea795ea7ae8fd153a641a970e834} 
+get\+Available\+Runways (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Returns all runways that are currently free. 
+
+Queries the database for runways with no flight assigned.
+
+\begin{DoxyReturn}{Returns}
+array List of available runways, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00071}{71}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_a4b58fa231d7953e0942a3e3f1dedf7eb}\index{GroundManagementSystem@{GroundManagementSystem}!getAvailableTaxiways@{getAvailableTaxiways}}
+\index{getAvailableTaxiways@{getAvailableTaxiways}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{getAvailableTaxiways()}{getAvailableTaxiways()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a4b58fa231d7953e0942a3e3f1dedf7eb} 
+get\+Available\+Taxiways (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Returns all taxiways. 
+
+Fetches the full list of taxiways from the database.
+
+\begin{DoxyReturn}{Returns}
+array List of taxiways, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00094}{94}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_a706227e9f240f8da602034e32f1a9f12}\index{GroundManagementSystem@{GroundManagementSystem}!getFlightsForGates@{getFlightsForGates}}
+\index{getFlightsForGates@{getFlightsForGates}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{getFlightsForGates()}{getFlightsForGates()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a706227e9f240f8da602034e32f1a9f12} 
+get\+Flights\+For\+Gates (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets flights that are ready to be assigned a gate. 
+
+Only returns departing flights that are parked, confirmed/\+accepted, not yet assigned a gate, and scheduled from this airport.
+
+\begin{DoxyReturn}{Returns}
+array List of eligible flights with basic info, or empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00235}{235}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_a5160fb22cbfd654ac4e02807667f692a}\index{GroundManagementSystem@{GroundManagementSystem}!getPlanesOnGround@{getPlanesOnGround}}
+\index{getPlanesOnGround@{getPlanesOnGround}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{getPlanesOnGround()}{getPlanesOnGround()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a5160fb22cbfd654ac4e02807667f692a} 
+get\+Planes\+On\+Ground (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets all planes currently on the ground. 
+
+Fetches planes involved in active flights, along with their current status and assigned infrastructure (spot, runway, gate, taxiway).
+
+\begin{DoxyReturn}{Returns}
+array List of planes with flight and ground assignment details, or an empty array on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00014}{14}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_afeeddc6350b6e2e0f36483ddbd40f20a}\index{GroundManagementSystem@{GroundManagementSystem}!movePlaneToParking@{movePlaneToParking}}
+\index{movePlaneToParking@{movePlaneToParking}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{movePlaneToParking()}{movePlaneToParking()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_afeeddc6350b6e2e0f36483ddbd40f20a} 
+move\+Plane\+To\+Parking (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{, }\item[{int}]{\$spot\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Moves a plane to a parking spot after landing. 
+
+Assigns the given spot to the plane, clears any previous spot or taxiway assignments, and marks the flight as finished.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight whose plane needs to be parked. \\
+\hline
+{\em spot\+Id} & ID of the parking spot to assign.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00121}{121}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_a8ea040e50c0415579c1e8c08cb3fc3d5}\index{GroundManagementSystem@{GroundManagementSystem}!movePlaneToTaxiway@{movePlaneToTaxiway}}
+\index{movePlaneToTaxiway@{movePlaneToTaxiway}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{movePlaneToTaxiway()}{movePlaneToTaxiway()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a8ea040e50c0415579c1e8c08cb3fc3d5} 
+move\+Plane\+To\+Taxiway (\begin{DoxyParamCaption}\item[{int}]{\$flight\+Id}{, }\item[{int}]{\$taxiway\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Moves a plane to a taxiway to prepare for departure. 
+
+Clears existing taxiway, parking, and runway assignments for the flight, sets the status to Boarding so it shows up in the TC queue, then assigns the requested taxiway.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight\+Id} & ID of the flight to move. \\
+\hline
+{\em taxiway\+Id} & ID of the taxiway to assign.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00182}{182}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+\Hypertarget{class_ground_management_system_a4da1ef9631fc4852ae4a8f252c1fd917}\index{GroundManagementSystem@{GroundManagementSystem}!updateGate@{updateGate}}
+\index{updateGate@{updateGate}!GroundManagementSystem@{GroundManagementSystem}}
+\doxysubsubsection{\texorpdfstring{updateGate()}{updateGate()}}
+{\footnotesize\ttfamily \label{class_ground_management_system_a4da1ef9631fc4852ae4a8f252c1fd917} 
+update\+Gate (\begin{DoxyParamCaption}\item[{int}]{\$flight}{, }\item[{int}]{\$gate}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Assigns a gate to a flight. 
+
+Updates the gate record with the given flight ID. Both parameters must be valid numeric values.
+
+
+\begin{DoxyParams}{Parameters}
+{\em flight} & ID of the flight to assign. \\
+\hline
+{\em gate} & ID of the gate to update.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Success message or error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_ground_management_system_8php_source_l00293}{293}} of file \doxymbox{\hyperlink{_ground_management_system_8php_source}{Ground\+Management\+System.\+php}}.
+
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+C:\+/\+\+Users/\+\+LENOVO/\+\+Desktop/\+\+Software\+E/\+software\+E/\+\+Povo\+Airport/\+\+Controllers/\+\doxymbox{\hyperlink{_ground_management_system_8php}{Ground\+Management\+System.\+php}}\end{DoxyCompactItemize}

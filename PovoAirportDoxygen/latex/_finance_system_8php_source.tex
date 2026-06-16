@@ -1,0 +1,83 @@
+\doxysection{Finance\+System.\+php}
+\hypertarget{_finance_system_8php_source}{}\label{_finance_system_8php_source}\index{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Controllers/FinanceSystem.php@{C:/Users/LENOVO/Desktop/SoftwareE/softwareE/PovoAirport/Controllers/FinanceSystem.php}}
+\doxymbox{\hyperlink{_finance_system_8php}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00001}00001\ <?php}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00010}\doxymbox{\hyperlink{class_finance_system}{00010}}\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_finance_system}{FinanceSystem}}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00011}00011\ \{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00015}\doxymbox{\hyperlink{class_finance_system_a56501c5cd4c099f4ec1fa3f683ca0c40}{00015}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_finance_system_a56501c5cd4c099f4ec1fa3f683ca0c40}{DAILY\_COST}}=5000;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00020}\doxymbox{\hyperlink{class_finance_system_a53d8df602cf93ab36b12eba9e2e5ed11}{00020}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_finance_system_a53d8df602cf93ab36b12eba9e2e5ed11}{DAILY\_REVENUE}}=5500;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00025}\doxymbox{\hyperlink{class_finance_system_a0e377a2f8aee707619615510a0c0b87a}{00025}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_finance_system_a0e377a2f8aee707619615510a0c0b87a}{LANDING\_COST}}=100;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00030}\doxymbox{\hyperlink{class_finance_system_a73b06be7ed8e9d82135d93459618bd06}{00030}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_finance_system_a73b06be7ed8e9d82135d93459618bd06}{TAKING\_OFF\_COST}}=100;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00035}\doxymbox{\hyperlink{class_finance_system_acd87d36731de394d1979206d2e4a65fb}{00035}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_finance_system_acd87d36731de394d1979206d2e4a65fb}{TAKING\_OFF\_REVENUE}}=250;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00049}\doxymbox{\hyperlink{class_finance_system_ae215ae63c430f00d3f678e552097f479}{00049}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_finance_system_ae215ae63c430f00d3f678e552097f479}{calculateAirportCosts}}(String\ \$t1,\ String\ \$t2):\ float\{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00050}00050\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00054}00054\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00056}00056\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00057}00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ COUNT(*)\ AS\ 'n'\ FROM\ flights\ WHERE\ scheduled\_time\ BETWEEN\ :t1\ AND\ :t2\ AND\ departure\_airport\_id=1\ AND\ validation\ IN\ ('ACCEPTED','CONFIRMED')\ AND\ modify\_id\ IS\ NULL"{}});}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':t1'},\$t1);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':t2'},\$t2);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\$query-\/>fetch();}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \$tot=\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}[\textcolor{stringliteral}{"{}n"{}}]*self::TAKING\_OFF\_COST;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ COUNT(*)\ AS\ 'n'\ FROM\ flights\ WHERE\ scheduled\_time\ BETWEEN\ :t1\ AND\ :t2\ AND\ arrival\_airport\_id=1\ AND\ validation\ IN\ ('ACCEPTED','CONFIRMED')\ AND\ modify\_id\ IS\ NULL"{}});}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':t1'},\$t1);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':t2'},\$t2);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\$query-\/>fetch();}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \$tot=\$tot+\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}[\textcolor{stringliteral}{"{}n"{}}]*self::LANDING\_COST;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \$tot=\$tot+\ (round((strtotime(\$t2)-\/strtotime(\$t1))\ /\ (60\ *\ 60\ *\ 24))+1)*self::DAILY\_COST;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$tot;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00073}00073\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00075}00075\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00076}00076\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00089}\doxymbox{\hyperlink{class_finance_system_a8b1c0e4d41bd3ca9c1b7247a58e21907}{00089}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_finance_system_a8b1c0e4d41bd3ca9c1b7247a58e21907}{calculateAirportRevenue}}(String\ \$t1,\ String\ \$t2):\ float\{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00090}00090\ \ \ \ \ \ \ \ \ require\ \textcolor{stringliteral}{'DatabaseInfo.php'};}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn\ =\ \textcolor{keyword}{new}\ PDO(\textcolor{stringliteral}{"{}mysql:host=\$servername;dbname=\$dbname"{}},\ \doxymbox{\hyperlink{_database_info_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{\$username}},\ \doxymbox{\hyperlink{_database_info_8php_a607686ef9f99ea7c42f4f3dd3dbb2b0d}{\$password}});}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \$conn-\/>setAttribute(PDO::ATTR\_ERRMODE,\ PDO::ERRMODE\_EXCEPTION);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00094}00094\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00096}00096\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00097}00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \$query=\$conn-\/>prepare(\textcolor{stringliteral}{"{}SELECT\ COUNT(*)\ AS\ 'n'\ FROM\ flights\ WHERE\ scheduled\_time\ BETWEEN\ :t1\ AND\ :t2\ AND\ departure\_airport\_id=1\ AND\ validation\ IN\ ('ACCEPTED','CONFIRMED')\ AND\ modify\_id\ IS\ NULL"{}});}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':t1'},\$t1);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>bindParam(\textcolor{stringliteral}{':t2'},\$t2);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \$query-\/>execute();}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}=\$query-\/>fetch();}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \$tot=\doxymbox{\hyperlink{_admin_page_8php_a112ef069ddc0454086e3d1e6d8d55d07}{\$result}}[\textcolor{stringliteral}{"{}n"{}}]*self::TAKING\_OFF\_REVENUE;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \$tot=\$tot+\ (round((strtotime(\$t2)-\/strtotime(\$t1))\ /\ (60\ *\ 60\ *\ 24))+1)*self::DAILY\_REVENUE;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \$tot;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00106}00106\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}(PDOException\ \$e)\ \{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00108}00108\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00109}00109\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00125}\doxymbox{\hyperlink{class_finance_system_a4a78b4f7abd7d746c964e318a364c977}{00125}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{function}\ \doxymbox{\hyperlink{class_finance_system_a4a78b4f7abd7d746c964e318a364c977}{getFinancialOverview}}(String\ \$t1,\ String\ \$t2):\ array\{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00126}00126\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{index_8php_ae2a30b4c00d62248ceb9b7b398a9560c}{if}}(strtotime(\$t1)\&\&strtotime(\$t2)\&\&\$t1<=\$t2)\{}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \$cost=self::calculateAirportCosts(\$t1,\$t2);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \$revenue=self::calculateAirportRevenue(\$t1,\$t2);}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \$total=\$revenue-\/\$cost;}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [\$cost,\$revenue,\$total];}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00131}00131\ \ \ \ \ \ \ \ \ \}\textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}[0,0,0];}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00133}00133\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00134}00134\ \}}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00135}00135\ ?>}
+\DoxyCodeLine{\Hypertarget{_finance_system_8php_source_l00136}00136\ }
+
+\end{DoxyCode}

@@ -1,0 +1,204 @@
+\doxysection{Account\+Manager Class Reference}
+\hypertarget{class_account_manager}{}\label{class_account_manager}\index{AccountManager@{AccountManager}}
+
+
+Handles user account management operations.  
+
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \doxymbox{\hyperlink{class_account_manager_a905c2f4fd4a52f6257f9a62f4da34790}{create\+Account}} (string \$email, string \$name, string \$surname, int \$role, int \$company=NULL)
+\begin{DoxyCompactList}\small\item\em Creates a new user account. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_account_manager_ae0640e35b498486f125114997a6757cf}{modify\+Account}} (int \$id, string \$email, string \$name, string \$surname, int \$role, bool \$change\+Password, int \$company=NULL)
+\begin{DoxyCompactList}\small\item\em Updates an existing user account. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_account_manager_a1c57d553878a36d507ca9d8294c1fa25}{delete\+Account}} (int \$id)
+\begin{DoxyCompactList}\small\item\em Deletes a user account. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_account_manager_aa139f769dda511615f97c4dd0ca5aa5e}{generate\+Password}} ()
+\begin{DoxyCompactList}\small\item\em Generates a random password. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_account_manager_adad6e09055789146f5bc494134aea5d8}{check\+Password}} (string \$password)
+\begin{DoxyCompactList}\small\item\em Validates a password against the application\textquotesingle{}s requirements. \end{DoxyCompactList}\item 
+static \doxymbox{\hyperlink{class_account_manager_a9ba7d5070d94475d96be078639259d9c}{update\+User\+Password}} (int \$id, string \$new\+Pass, string \$new\+Pass\+Bis)
+\begin{DoxyCompactList}\small\item\em Updates the password of a user. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles user account management operations. 
+
+This class provides methods for creating, updating, deleting, and managing user accounts and passwords. 
+
+Definition at line \doxymbox{\hyperlink{_account_manager_8php_source_l00009}{9}} of file \doxymbox{\hyperlink{_account_manager_8php_source}{Account\+Manager.\+php}}.
+
+
+
+\label{class_account_manager_doc-func-members}
+\Hypertarget{class_account_manager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_account_manager_adad6e09055789146f5bc494134aea5d8}\index{AccountManager@{AccountManager}!checkPassword@{checkPassword}}
+\index{checkPassword@{checkPassword}!AccountManager@{AccountManager}}
+\doxysubsubsection{\texorpdfstring{checkPassword()}{checkPassword()}}
+{\footnotesize\ttfamily \label{class_account_manager_adad6e09055789146f5bc494134aea5d8} 
+check\+Password (\begin{DoxyParamCaption}\item[{string}]{\$password}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Validates a password against the application\textquotesingle{}s requirements. 
+
+A valid password must contain at least one lowercase letter, one uppercase letter, one number, one special character, and have a length between 12 and 128 characters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em password} & Password to validate.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool True if the password is valid, false otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_account_manager_8php_source_l00198}{198}} of file \doxymbox{\hyperlink{_account_manager_8php_source}{Account\+Manager.\+php}}.
+
+\Hypertarget{class_account_manager_a905c2f4fd4a52f6257f9a62f4da34790}\index{AccountManager@{AccountManager}!createAccount@{createAccount}}
+\index{createAccount@{createAccount}!AccountManager@{AccountManager}}
+\doxysubsubsection{\texorpdfstring{createAccount()}{createAccount()}}
+{\footnotesize\ttfamily \label{class_account_manager_a905c2f4fd4a52f6257f9a62f4da34790} 
+create\+Account (\begin{DoxyParamCaption}\item[{string}]{\$email}{, }\item[{string}]{\$name}{, }\item[{string}]{\$surname}{, }\item[{int}]{\$role}{, }\item[{int}]{\$company}{ = {\ttfamily NULL}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Creates a new user account. 
+
+Validates the provided user information, generates a random password, stores the user in the database, and returns the generated password.
+
+
+\begin{DoxyParams}{Parameters}
+{\em email} & \doxylink{class_user}{User} email address. \\
+\hline
+{\em name} & \doxylink{class_user}{User} first name. \\
+\hline
+{\em surname} & \doxylink{class_user}{User} surname. \\
+\hline
+{\em role} & Role id assigned to the user. \\
+\hline
+{\em company} & \doxylink{class_company}{Company} id when required by the selected role.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Result message containing either a success message or an error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_account_manager_8php_source_l00026}{26}} of file \doxymbox{\hyperlink{_account_manager_8php_source}{Account\+Manager.\+php}}.
+
+\Hypertarget{class_account_manager_a1c57d553878a36d507ca9d8294c1fa25}\index{AccountManager@{AccountManager}!deleteAccount@{deleteAccount}}
+\index{deleteAccount@{deleteAccount}!AccountManager@{AccountManager}}
+\doxysubsubsection{\texorpdfstring{deleteAccount()}{deleteAccount()}}
+{\footnotesize\ttfamily \label{class_account_manager_a1c57d553878a36d507ca9d8294c1fa25} 
+delete\+Account (\begin{DoxyParamCaption}\item[{int}]{\$id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Deletes a user account. 
+
+Removes the user identified by the provided ID from the database.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & id of the user to delete.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Result message containing either a success message or an error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_account_manager_8php_source_l00143}{143}} of file \doxymbox{\hyperlink{_account_manager_8php_source}{Account\+Manager.\+php}}.
+
+\Hypertarget{class_account_manager_aa139f769dda511615f97c4dd0ca5aa5e}\index{AccountManager@{AccountManager}!generatePassword@{generatePassword}}
+\index{generatePassword@{generatePassword}!AccountManager@{AccountManager}}
+\doxysubsubsection{\texorpdfstring{generatePassword()}{generatePassword()}}
+{\footnotesize\ttfamily \label{class_account_manager_aa139f769dda511615f97c4dd0ca5aa5e} 
+generate\+Password (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Generates a random password. 
+
+Creates a 12-\/character password containing at least one lowercase letter, one uppercase letter, one number, and one special character.
+
+\begin{DoxyReturn}{Returns}
+string Generated password. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_account_manager_8php_source_l00174}{174}} of file \doxymbox{\hyperlink{_account_manager_8php_source}{Account\+Manager.\+php}}.
+
+\Hypertarget{class_account_manager_ae0640e35b498486f125114997a6757cf}\index{AccountManager@{AccountManager}!modifyAccount@{modifyAccount}}
+\index{modifyAccount@{modifyAccount}!AccountManager@{AccountManager}}
+\doxysubsubsection{\texorpdfstring{modifyAccount()}{modifyAccount()}}
+{\footnotesize\ttfamily \label{class_account_manager_ae0640e35b498486f125114997a6757cf} 
+modify\+Account (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{string}]{\$email}{, }\item[{string}]{\$name}{, }\item[{string}]{\$surname}{, }\item[{int}]{\$role}{, }\item[{bool}]{\$change\+Password}{, }\item[{int}]{\$company}{ = {\ttfamily NULL}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates an existing user account. 
+
+Modifies the information associated with a user account. Optionally generates and assigns a new password.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & id of the user to update. \\
+\hline
+{\em email} & Updated email address. \\
+\hline
+{\em name} & Updated first name. \\
+\hline
+{\em surname} & Updated surname. \\
+\hline
+{\em role} & Updated role id. \\
+\hline
+{\em change\+Password} & Indicates whether a new password should be generated. \\
+\hline
+{\em company} & \doxylink{class_company}{Company} id when required by the selected role.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Result message containing either a success message or an error description. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_account_manager_8php_source_l00081}{81}} of file \doxymbox{\hyperlink{_account_manager_8php_source}{Account\+Manager.\+php}}.
+
+\Hypertarget{class_account_manager_a9ba7d5070d94475d96be078639259d9c}\index{AccountManager@{AccountManager}!updateUserPassword@{updateUserPassword}}
+\index{updateUserPassword@{updateUserPassword}!AccountManager@{AccountManager}}
+\doxysubsubsection{\texorpdfstring{updateUserPassword()}{updateUserPassword()}}
+{\footnotesize\ttfamily \label{class_account_manager_a9ba7d5070d94475d96be078639259d9c} 
+update\+User\+Password (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{string}]{\$new\+Pass}{, }\item[{string}]{\$new\+Pass\+Bis}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates the password of a user. 
+
+Verifies that the provided passwords match, validates the password format, hashes the password, and stores it in the database.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & id of the user whose password will be updated. \\
+\hline
+{\em new\+Pass} & New password chosen by the user. \\
+\hline
+{\em new\+Pass\+Bis} & Confirmation of the new password.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Empty string on success or an error message on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \doxymbox{\hyperlink{_account_manager_8php_source_l00217}{217}} of file \doxymbox{\hyperlink{_account_manager_8php_source}{Account\+Manager.\+php}}.
+
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+C:\+/\+\+Users/\+\+LENOVO/\+\+Desktop/\+\+Software\+E/\+software\+E/\+\+Povo\+Airport/\+\+Controllers/\+\doxymbox{\hyperlink{_account_manager_8php}{Account\+Manager.\+php}}\end{DoxyCompactItemize}

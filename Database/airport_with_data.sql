@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 08, 2026 alle 02:55
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Generation Time: Jun 16, 2026 at 08:22 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -26,7 +26,7 @@ USE `airport`;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `airports`
+-- Table structure for table `airports`
 --
 
 CREATE TABLE `airports` (
@@ -38,7 +38,7 @@ CREATE TABLE `airports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `airports`
+-- Dumping data for table `airports`
 --
 
 INSERT INTO `airports` (`id`, `name`, `code`, `nation`, `city`) VALUES
@@ -50,7 +50,7 @@ INSERT INTO `airports` (`id`, `name`, `code`, `nation`, `city`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `companies`
+-- Table structure for table `companies`
 --
 
 CREATE TABLE `companies` (
@@ -59,7 +59,7 @@ CREATE TABLE `companies` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `companies`
+-- Dumping data for table `companies`
 --
 
 INSERT INTO `companies` (`id`, `company_name`) VALUES
@@ -77,7 +77,7 @@ INSERT INTO `companies` (`id`, `company_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `flights`
+-- Table structure for table `flights`
 --
 
 CREATE TABLE `flights` (
@@ -93,22 +93,10 @@ CREATE TABLE `flights` (
   `modify_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dump dei dati per la tabella `flights`
---
-
-INSERT INTO `flights` (`id`, `priority`, `scheduled_time`, `validation`, `plane_id`, `pilot_id`, `departure_airport_id`, `arrival_airport_id`, `status_id`, `modify_id`) VALUES
-(1, 1, '2026-07-02 09:00:00', 'CONFIRMED', 'RYR32KE', 2, 3, 1, 5, NULL),
-(2, 1, '2026-07-02 14:20:00', 'CONFIRMED', 'RYR32KE', 2, 1, 3, 1, NULL),
-(3, 2, '2026-07-03 10:30:00', 'CONFIRMED', 'DAL222', 3, 1, 2, 3, NULL),
-(4, 2, '2026-07-03 21:00:00', 'CONFIRMED', 'DAL222', 3, 2, 1, 1, NULL),
-(16, NULL, '2026-06-17 18:02:00', 'DELETED', 'RYR32KE', 2, 1, 3, 3, NULL),
-(20, NULL, '2026-06-26 01:08:00', 'CONFIRMED', 'RYR32KE', 2, 1, 3, 1, NULL);
-
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `flight_status`
+-- Table structure for table `flight_status`
 --
 
 CREATE TABLE `flight_status` (
@@ -117,7 +105,7 @@ CREATE TABLE `flight_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `flight_status`
+-- Dumping data for table `flight_status`
 --
 
 INSERT INTO `flight_status` (`id`, `status`) VALUES
@@ -132,7 +120,7 @@ INSERT INTO `flight_status` (`id`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `gates`
+-- Table structure for table `gates`
 --
 
 CREATE TABLE `gates` (
@@ -142,7 +130,7 @@ CREATE TABLE `gates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `gates`
+-- Dumping data for table `gates`
 --
 
 INSERT INTO `gates` (`id`, `gate_number`, `flight_id`) VALUES
@@ -160,7 +148,7 @@ INSERT INTO `gates` (`id`, `gate_number`, `flight_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `parking_spots`
+-- Table structure for table `parking_spots`
 --
 
 CREATE TABLE `parking_spots` (
@@ -170,11 +158,11 @@ CREATE TABLE `parking_spots` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `parking_spots`
+-- Dumping data for table `parking_spots`
 --
 
 INSERT INTO `parking_spots` (`id`, `spot_number`, `plane_id`) VALUES
-(1, 'PA1', 'RYR32KE'),
+(1, 'PA1', NULL),
 (2, 'PA2', NULL),
 (3, 'PA3', NULL),
 (4, 'PA4', NULL),
@@ -198,7 +186,7 @@ INSERT INTO `parking_spots` (`id`, `spot_number`, `plane_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `planes`
+-- Table structure for table `planes`
 --
 
 CREATE TABLE `planes` (
@@ -208,7 +196,7 @@ CREATE TABLE `planes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `planes`
+-- Dumping data for table `planes`
 --
 
 INSERT INTO `planes` (`plane_number`, `model`, `company_id`) VALUES
@@ -218,7 +206,7 @@ INSERT INTO `planes` (`plane_number`, `model`, `company_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `roles`
+-- Table structure for table `roles`
 --
 
 CREATE TABLE `roles` (
@@ -227,7 +215,7 @@ CREATE TABLE `roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `roles`
+-- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`id`, `role_name`) VALUES
@@ -242,7 +230,7 @@ INSERT INTO `roles` (`id`, `role_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `runways`
+-- Table structure for table `runways`
 --
 
 CREATE TABLE `runways` (
@@ -252,7 +240,7 @@ CREATE TABLE `runways` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `runways`
+-- Dumping data for table `runways`
 --
 
 INSERT INTO `runways` (`id`, `runway_number`, `flight_id`) VALUES
@@ -263,7 +251,7 @@ INSERT INTO `runways` (`id`, `runway_number`, `flight_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `taxiways`
+-- Table structure for table `taxiways`
 --
 
 CREATE TABLE `taxiways` (
@@ -272,7 +260,7 @@ CREATE TABLE `taxiways` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `taxiways`
+-- Dumping data for table `taxiways`
 --
 
 INSERT INTO `taxiways` (`id`, `taxiway_number`) VALUES
@@ -282,7 +270,7 @@ INSERT INTO `taxiways` (`id`, `taxiway_number`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `taxiway_flight`
+-- Table structure for table `taxiway_flight`
 --
 
 CREATE TABLE `taxiway_flight` (
@@ -294,7 +282,7 @@ CREATE TABLE `taxiway_flight` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -309,39 +297,39 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `name`, `surname`, `role_id`, `company_id`, `password_reset`) VALUES
 (1, 'admin@admin.com', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'Albert', 'Robinson', 5, NULL, 0),
 (2, 'pilot@pilot.com', 'a4317322c01ef6d39c2ec0d46cb5070d973c7ea8c4f744a80c17d8a7b318d8799410f0149bdeca412dcf1510df369b34da3067eb5d4e5b880142ce0013589aff', 'Lucas', 'Fly', 2, 7, 0),
 (3, 'pilota@pilota.com', '1d575c9b088d664e83b9c9c04d38a107e6dd75edfed386b4357b1f3578bdd0e8ade0731b4a81a2153e9bf9095251ba4f2aa2bd8f18ff1266aa63886f48b2ff60', 'Luca', 'Volo', 2, 3, 0),
-(14, 'analyst@analyst.com', 'cc731411d0924f9ac456d49df60e525cea0d7aad1a652577859d794bfc830276b668f78421a8ed3dbc66f83b0d8e69a49b4779f43f2a56750ea7e25c8718be87', 'ana', 'list', 7, NULL, 0),
+(14, 'analyst@analyst.com', '8d38ca2e584de3ca757e06cb54b290c2c509fcc6fe172c32578ca52918faff6e4b2f3a8f820b41ec56b7da9d2f0a678ebab707172a24b7603e4dd1a662ee6b7a', 'ana', 'list', 7, NULL, 0),
 (15, 'airline@airline.com', '20e335154f790d5ac446712b2511b83c7292efa88665d9968289c2cdd83c7bbe74f87174faf2340cd6368b76453d592591bddbb4a3d417f71069ca205f8c05a7', 'air', 'line', 6, 7, 0),
 (16, 'ground@crew.com', 'fff7beb75e9ed4080857ffdf74e074a7b8a63923ce81606bc914c3cf89838091e54082060a54d32a45e9e560ad4bbea85689ae44581556e6d5203dc6fa08df2e', 'ground', 'crew', 3, NULL, 0),
 (17, 'tower@controller.com', '00c031b136a903266a44540cb4846430bfd91c8673b40bdeca50c017e9220e4dda3b429da92fb572da3a52681628686b86853f7d5d75d230031b6769593e8351', 'tower', 'controller', 1, NULL, 0),
 (18, 'gate@agent.com', 'bc2a235f2e2cb06b3c9df4932fc60146dd0b4771943ae86a6612d222f3aaf8027b357383569245aabd8508b0b6804a2bb5663bbde49567d663d3c9c737983f0b', 'gate', 'agent', 4, NULL, 0);
 
 --
--- Indici per le tabelle scaricate
+-- Indexes for dumped tables
 --
 
 --
--- Indici per le tabelle `airports`
+-- Indexes for table `airports`
 --
 ALTER TABLE `airports`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `code` (`code`);
 
 --
--- Indici per le tabelle `companies`
+-- Indexes for table `companies`
 --
 ALTER TABLE `companies`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `company_name` (`company_name`);
 
 --
--- Indici per le tabelle `flights`
+-- Indexes for table `flights`
 --
 ALTER TABLE `flights`
   ADD PRIMARY KEY (`id`),
@@ -353,14 +341,14 @@ ALTER TABLE `flights`
   ADD KEY `modify_id` (`modify_id`);
 
 --
--- Indici per le tabelle `flight_status`
+-- Indexes for table `flight_status`
 --
 ALTER TABLE `flight_status`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `status` (`status`);
 
 --
--- Indici per le tabelle `gates`
+-- Indexes for table `gates`
 --
 ALTER TABLE `gates`
   ADD PRIMARY KEY (`id`),
@@ -368,41 +356,41 @@ ALTER TABLE `gates`
   ADD KEY `flight_fk2` (`flight_id`);
 
 --
--- Indici per le tabelle `parking_spots`
+-- Indexes for table `parking_spots`
 --
 ALTER TABLE `parking_spots`
   ADD PRIMARY KEY (`id`),
   ADD KEY `plane_fk2` (`plane_id`);
 
 --
--- Indici per le tabelle `planes`
+-- Indexes for table `planes`
 --
 ALTER TABLE `planes`
   ADD PRIMARY KEY (`plane_number`),
   ADD KEY `company_fk2` (`company_id`);
 
 --
--- Indici per le tabelle `roles`
+-- Indexes for table `roles`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `role_name` (`role_name`);
 
 --
--- Indici per le tabelle `runways`
+-- Indexes for table `runways`
 --
 ALTER TABLE `runways`
   ADD PRIMARY KEY (`id`),
   ADD KEY `flight_fk4` (`flight_id`);
 
 --
--- Indici per le tabelle `taxiways`
+-- Indexes for table `taxiways`
 --
 ALTER TABLE `taxiways`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `taxiway_flight`
+-- Indexes for table `taxiway_flight`
 --
 ALTER TABLE `taxiway_flight`
   ADD PRIMARY KEY (`id`),
@@ -410,7 +398,7 @@ ALTER TABLE `taxiway_flight`
   ADD KEY `taxiway_id` (`taxiway_id`);
 
 --
--- Indici per le tabelle `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -419,81 +407,81 @@ ALTER TABLE `users`
   ADD KEY `company_fk` (`company_id`);
 
 --
--- AUTO_INCREMENT per le tabelle scaricate
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT per la tabella `airports`
+-- AUTO_INCREMENT for table `airports`
 --
 ALTER TABLE `airports`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT per la tabella `companies`
+-- AUTO_INCREMENT for table `companies`
 --
 ALTER TABLE `companies`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT per la tabella `flights`
+-- AUTO_INCREMENT for table `flights`
 --
 ALTER TABLE `flights`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT per la tabella `flight_status`
+-- AUTO_INCREMENT for table `flight_status`
 --
 ALTER TABLE `flight_status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT per la tabella `gates`
+-- AUTO_INCREMENT for table `gates`
 --
 ALTER TABLE `gates`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT per la tabella `parking_spots`
+-- AUTO_INCREMENT for table `parking_spots`
 --
 ALTER TABLE `parking_spots`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT per la tabella `roles`
+-- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT per la tabella `runways`
+-- AUTO_INCREMENT for table `runways`
 --
 ALTER TABLE `runways`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT per la tabella `taxiways`
+-- AUTO_INCREMENT for table `taxiways`
 --
 ALTER TABLE `taxiways`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT per la tabella `taxiway_flight`
+-- AUTO_INCREMENT for table `taxiway_flight`
 --
 ALTER TABLE `taxiway_flight`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT per la tabella `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- Limiti per le tabelle scaricate
+-- Constraints for dumped tables
 --
 
 --
--- Limiti per la tabella `flights`
+-- Constraints for table `flights`
 --
 ALTER TABLE `flights`
   ADD CONSTRAINT `airport_fk1` FOREIGN KEY (`departure_airport_id`) REFERENCES `airports` (`id`),
@@ -504,38 +492,38 @@ ALTER TABLE `flights`
   ADD CONSTRAINT `plane_fk` FOREIGN KEY (`plane_id`) REFERENCES `planes` (`plane_number`);
 
 --
--- Limiti per la tabella `gates`
+-- Constraints for table `gates`
 --
 ALTER TABLE `gates`
   ADD CONSTRAINT `flight_fk2` FOREIGN KEY (`flight_id`) REFERENCES `flights` (`id`);
 
 --
--- Limiti per la tabella `parking_spots`
+-- Constraints for table `parking_spots`
 --
 ALTER TABLE `parking_spots`
   ADD CONSTRAINT `plane_fk2` FOREIGN KEY (`plane_id`) REFERENCES `planes` (`plane_number`);
 
 --
--- Limiti per la tabella `planes`
+-- Constraints for table `planes`
 --
 ALTER TABLE `planes`
   ADD CONSTRAINT `company_fk2` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`);
 
 --
--- Limiti per la tabella `runways`
+-- Constraints for table `runways`
 --
 ALTER TABLE `runways`
   ADD CONSTRAINT `flight_fk4` FOREIGN KEY (`flight_id`) REFERENCES `flights` (`id`);
 
 --
--- Limiti per la tabella `taxiway_flight`
+-- Constraints for table `taxiway_flight`
 --
 ALTER TABLE `taxiway_flight`
   ADD CONSTRAINT `flight_fk` FOREIGN KEY (`flight_id`) REFERENCES `flights` (`id`),
   ADD CONSTRAINT `taxiway_id` FOREIGN KEY (`taxiway_id`) REFERENCES `taxiways` (`id`);
 
 --
--- Limiti per la tabella `users`
+-- Constraints for table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `company_fk` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),

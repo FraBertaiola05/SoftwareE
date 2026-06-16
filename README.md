@@ -1,10 +1,10 @@
-# SoftwareEngineering project
-Group Neptune
+# Software Engineering project
+Group Neptune - Airport Application - FLY Project
 
 ## Execution
 For execution you need to run the program on a webserver.
 The database file is called airport.sql and can be found in the folder database. 
-Database management system used is "mariaDB".
+Database management system used is "mariaDB". If you want to import the database with data in it, you can find inside the database folder a text file with emails and passwords for the various user accounts to test the application
 
 
 
@@ -22,4 +22,4 @@ There are no dependencies for this program, and it should run on any webserver.
 
 ## Credits
 This project is the work of Francesco Bertaiola, Francesco Spezzati, Amir H. Sazegarzadeh, Abdelrahman Abdelhamid.
-All materials belong to th owners of the project, any use, change, or reupload should be disscussed with one of the authors beforehand.
+All materials belong to the owners of the project, any use, change, or reupload should be disscussed with one of the authors beforehand.

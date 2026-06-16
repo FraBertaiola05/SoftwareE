@@ -2,6 +2,15 @@
 
 class GroundManagementSystem
 {
+    /**
+     * @brief Gets all planes currently on the ground.
+     *
+     * Fetches planes involved in active flights, along with their
+     * current status and assigned infrastructure (spot, runway, gate, taxiway).
+     *
+     * @return array List of planes with flight and ground assignment details,
+     *               or an empty array on failure.
+     */
     public function getPlanesOnGround(): array{
         require 'DatabaseInfo.php';
         try {
@@ -29,6 +38,13 @@ class GroundManagementSystem
         }
     }
 
+    /**
+     * @brief Returns all parking spots that are currently free.
+     *
+     * Queries the database for spots with no plane assigned.
+     *
+     * @return array List of available parking spots, or empty array on failure.
+     */
     public function getAvailableParkingSpots(): array{
         require 'DatabaseInfo.php';
         try {
@@ -45,6 +61,13 @@ class GroundManagementSystem
         }
     }
 
+    /**
+     * @brief Returns all runways that are currently free.
+     *
+     * Queries the database for runways with no flight assigned.
+     *
+     * @return array List of available runways, or empty array on failure.
+     */
     public function getAvailableRunways(): array{
         require 'DatabaseInfo.php';
         try {
@@ -61,6 +84,13 @@ class GroundManagementSystem
         }
     }
 
+    /**
+     * @brief Returns all taxiways.
+     *
+     * Fetches the full list of taxiways from the database.
+     *
+     * @return array List of taxiways, or empty array on failure.
+     */
     public function getAvailableTaxiways(): array{
         require 'DatabaseInfo.php';
         try {
@@ -77,6 +107,17 @@ class GroundManagementSystem
         }
     }
 
+    /**
+     * @brief Moves a plane to a parking spot after landing.
+     *
+     * Assigns the given spot to the plane, clears any previous spot or taxiway
+     * assignments, and marks the flight as finished.
+     *
+     * @param flightId ID of the flight whose plane needs to be parked.
+     * @param spotId ID of the parking spot to assign.
+     *
+     * @return string Success message or error description.
+     */
     public function movePlaneToParking(int $flightId, int $spotId): string{
         require 'DatabaseInfo.php';
         try {
@@ -126,6 +167,18 @@ class GroundManagementSystem
         }
     }
 
+    /**
+     * @brief Moves a plane to a taxiway to prepare for departure.
+     *
+     * Clears existing taxiway, parking, and runway assignments for the flight,
+     * sets the status to Boarding so it shows up in the TC queue,
+     * then assigns the requested taxiway.
+     *
+     * @param flightId ID of the flight to move.
+     * @param taxiwayId ID of the taxiway to assign.
+     *
+     * @return string Success message or error description.
+     */
     public function movePlaneToTaxiway(int $flightId, int $taxiwayId): string{
         require 'DatabaseInfo.php';
         try {
@@ -171,7 +224,14 @@ class GroundManagementSystem
         }
     }
 
-    //Get flights that are elegible to be assigned to a gates
+    /**
+     * @brief Gets flights that are ready to be assigned a gate.
+     *
+     * Only returns departing flights that are parked, confirmed/accepted,
+     * not yet assigned a gate, and scheduled from this airport.
+     *
+     * @return array List of eligible flights with basic info, or empty array on failure.
+     */
     public function getFlightsForGates(): array{
         //Import required file
         require 'DatabaseInfo.php';
@@ -195,7 +255,13 @@ class GroundManagementSystem
         }
     }
 
-    //Get free gates
+    /**
+     * @brief Returns all gates that have no flight assigned.
+     *
+     * Simple query to find free gates available for assignment.
+     *
+     * @return array List of free gates, or empty array on failure.
+     */
     public function getAvailableGates(): array{
         //Import required file
         require 'DatabaseInfo.php';
@@ -213,7 +279,17 @@ class GroundManagementSystem
         }
     }
 
-    //Assign a free gate to one flight that is elegible to be assigned to a gate
+    /**
+     * @brief Assigns a gate to a flight.
+     *
+     * Updates the gate record with the given flight ID.
+     * Both parameters must be valid numeric values.
+     *
+     * @param flight ID of the flight to assign.
+     * @param gate ID of the gate to update.
+     *
+     * @return string Success message or error description.
+     */
     public static function updateGate(int $flight, int $gate): string{
         //Import required file
         require 'DatabaseInfo.php';

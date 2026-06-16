@@ -2,7 +2,16 @@
 
 class TrafficControlSystem
 {
-    //Fetch all flights waiting in the take-off queue (status_id=3)
+    /**
+     * @brief Gets all flights currently waiting for take-off clearance.
+     *
+     * Returns flights with status Boarding or InQueueTakeOff that are
+     * confirmed/accepted and don't have a runway assigned yet.
+     * Ordered by priority first, then scheduled time.
+     *
+     * @return array List of queued flights with pilot and route info,
+     *               or empty array on failure.
+     */
     public function getTakeOffQueue(): array{
         //Import required file
         require 'DatabaseInfo.php';
@@ -32,7 +41,15 @@ class TrafficControlSystem
         }
     }
 
-    //Fetch all flights waiting in the landing queue (status_id=4)
+    /**
+     * @brief Gets all flights currently waiting to land.
+     *
+     * Returns confirmed/accepted flights with status InQueueLanding,
+     * ordered by priority and then scheduled time.
+     *
+     * @return array List of incoming flights with pilot and route info,
+     *               or empty array on failure.
+     */
     public function getLandingQueue(): array{
         //Import required file
         require 'DatabaseInfo.php';
@@ -61,7 +78,14 @@ class TrafficControlSystem
         }
     }
 
-    //Return runways that are not currently assigned to any flight
+    /**
+     * @brief Returns all runways that have no flight assigned.
+     *
+     * Used to populate the runway selection when clearing a flight for
+     * take-off or landing.
+     *
+     * @return array List of free runways, or empty array on failure.
+     */
     public function getAvailableRunways(): array{
         //Import required file
         require 'DatabaseInfo.php';
@@ -79,7 +103,17 @@ class TrafficControlSystem
         }
     }
 
-    //Assign a free runway to a flight waiting for take-off and clean up the taxiway and parking spot
+    /**
+     * @brief Assigns a runway to a flight and clears it for take-off.
+     *
+     * Checks the flight doesn't already have a runway, assigns the chosen one,
+     * removes taxiway/parking/gate assignments, and sets the status to InQueueTakeOff.
+     *
+     * @param flightId ID of the flight being cleared for take-off.
+     * @param runwayId ID of the runway to assign.
+     *
+     * @return string Success message or error description.
+     */
     public function assignRunwayForTakeOff(int $flightId, int $runwayId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -140,7 +174,17 @@ class TrafficControlSystem
         }
     }
 
-    //Assign a free runway to a flight that is ready to land
+    /**
+     * @brief Assigns a runway to an incoming flight for landing.
+     *
+     * Verifies the flight doesn't already have a runway, then assigns
+     * the requested one if it's free.
+     *
+     * @param flightId ID of the flight being cleared to land.
+     * @param runwayId ID of the runway to assign.
+     *
+     * @return string Success message or error description.
+     */
     public function assignRunwayForLanding(int $flightId, int $runwayId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -177,7 +221,16 @@ class TrafficControlSystem
         }
     }
 
-    //Confirm a take-off: release the runway and mark the flight as finished
+    /**
+     * @brief Confirms that a flight has taken off.
+     *
+     * Releases the runway and marks the flight as finished,
+     * keeping the validation status as CONFIRMED.
+     *
+     * @param flightId ID of the flight that has taken off.
+     *
+     * @return string Success message or error description.
+     */
     public function confirmTakeOff(int $flightId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -205,7 +258,16 @@ class TrafficControlSystem
         }
     }
 
-    //Confirm a landing: release the runway and mark the flight as finished
+    /**
+     * @brief Confirms that a flight has landed.
+     *
+     * Releases the runway and sets the flight status to Landed.
+     * Priority is cleared since it's no longer needed.
+     *
+     * @param flightId ID of the flight that has landed.
+     *
+     * @return string Success message or error description.
+     */
     public function confirmLanding(int $flightId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -233,7 +295,14 @@ class TrafficControlSystem
         }
     }
 
-    //Return all taxiways for the pilot to choose after landing
+    /**
+     * @brief Returns all taxiways available for post-landing routing.
+     *
+     * Fetches the full taxiway list so the TC can pick one to guide
+     * the plane from the runway toward parking.
+     *
+     * @return array List of taxiways, or empty array on failure.
+     */
     public function getAvailableTaxiways(): array{
         //Import required file
         require 'DatabaseInfo.php';
@@ -251,7 +320,17 @@ class TrafficControlSystem
         }
     }
 
-    //Assign a taxiway to a flight after landing
+    /**
+     * @brief Assigns a taxiway to a flight after it has landed.
+     *
+     * Replaces any existing taxiway assignment with the new one,
+     * so the ground crew knows where to direct the plane.
+     *
+     * @param flightId ID of the landed flight.
+     * @param taxiwayId ID of the taxiway to assign.
+     *
+     * @return string Success message or error description.
+     */
     public function assignTaxiwayAfterLanding(int $flightId, int $taxiwayId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -280,7 +359,15 @@ class TrafficControlSystem
         }
     }
 
-    //Fetch flights that have not been accepted or rejected yet by the TC
+    /**
+     * @brief Fetches flights that are still waiting for TC approval.
+     *
+     * Returns all flights with validation set to NOT_ACCEPTED,
+     * ordered by scheduled time so the oldest requests appear first.
+     *
+     * @return array List of pending flights with pilot and route info,
+     *               or empty array on failure.
+     */
     public function getPendingFlights(): array{
         //Import required file
         require 'DatabaseInfo.php';
@@ -309,7 +396,17 @@ class TrafficControlSystem
         }
     }
 
-    //Approve a pending flight by setting its validation to ACCEPTED
+    /**
+     * @brief Approves a pending flight request.
+     *
+     * Sets the validation to ACCEPTED so the flight can proceed
+     * through the rest of the workflow.
+     *
+     * @param flightId ID of the flight to approve.
+     *
+     * @return string Success message, "Flight not found" if already
+     *                processed, or error description.
+     */
     public function confirmFlight(int $flightId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -333,7 +430,17 @@ class TrafficControlSystem
         }
     }
 
-    //Reject a pending flight by setting its validation to REJECTED
+    /**
+     * @brief Rejects a pending flight request.
+     *
+     * Sets the validation to REJECTED. Only works if the flight
+     * is still in NOT_ACCEPTED state.
+     *
+     * @param flightId ID of the flight to reject.
+     *
+     * @return string Success message, "Flight not found" if already
+     *                processed, or error description.
+     */
     public function rejectFlight(int $flightId): string{
         //Import required file
         require 'DatabaseInfo.php';
@@ -357,7 +464,16 @@ class TrafficControlSystem
         }
     }
 
-    //Change the priority of a flight in the take-off or landing queue
+    /**
+     * @brief Updates the priority of a flight in the queue.
+     *
+     * Lower numbers mean higher priority. Must be at least 1.
+     *
+     * @param flightId ID of the flight to update.
+     * @param priority New priority value, must be >= 1.
+     *
+     * @return string Success message or error description.
+     */
     public function updatePriority(int $flightId, int $priority): string{
         //Import required file
         require 'DatabaseInfo.php';

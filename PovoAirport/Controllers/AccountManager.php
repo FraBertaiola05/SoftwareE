@@ -17,8 +17,8 @@ class AccountManager
      * @param email User email address.
      * @param name User first name.
      * @param surname User surname.
-     * @param role Role identifier assigned to the user.
-     * @param company Company identifier when required by the selected role.
+     * @param role Role id assigned to the user.
+     * @param company Company id when required by the selected role.
      *
      * @return string Result message containing either a success message
      *                or an error description.
@@ -67,13 +67,13 @@ class AccountManager
      * Modifies the information associated with a user account.
      * Optionally generates and assigns a new password.
      *
-     * @param id Identifier of the user to update.
+     * @param id id of the user to update.
      * @param email Updated email address.
      * @param name Updated first name.
      * @param surname Updated surname.
-     * @param role Updated role identifier.
+     * @param role Updated role id.
      * @param changePassword Indicates whether a new password should be generated.
-     * @param company Company identifier when required by the selected role.
+     * @param company Company id when required by the selected role.
      *
      * @return string Result message containing either a success message
      *                or an error description.
@@ -135,7 +135,7 @@ class AccountManager
      *
      * Removes the user identified by the provided ID from the database.
      *
-     * @param id Identifier of the user to delete.
+     * @param id id of the user to delete.
      *
      * @return string Result message containing either a success message
      *                or an error description.
@@ -208,7 +208,7 @@ class AccountManager
      * Verifies that the provided passwords match, validates the
      * password format, hashes the password, and stores it in the database.
      *
-     * @param id Identifier of the user whose password will be updated.
+     * @param id id of the user whose password will be updated.
      * @param newPass New password chosen by the user.
      * @param newPassBis Confirmation of the new password.
      *
@@ -244,4 +244,3 @@ class AccountManager
     }
 }
 ?>
-```

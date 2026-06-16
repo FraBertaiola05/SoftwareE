@@ -11,7 +11,7 @@ Database management system used is "mariaDB".
 xampp is recommended for running the program.
 you can download xampp from: https://www.apachefriends.org/download.html
 
-guide for how to run php on xampp webserver:
+guide to how to run php on xampp webserver:
 https://www.edureka.co/blog/how-to-run-a-php-program-in-xampp/
 
 or watch: https://www.youtube.com/watch?v=Mip_RuSEoso
